@@ -269,27 +269,23 @@ import { trigger, transition, style, animate } from '@angular/animations';
       top: 16px;
       left: 24px;
       right: 24px;
-      /* No transform — transform on scroll causes jitter/shake */
       width: auto;
       max-width: 1400px;
       margin: 0 auto;
       z-index: var(--z-sticky);
-      /* Only transition background/shadow/border — NOT position/size */
       transition:
         background 0.35s ease,
         box-shadow 0.35s ease,
         border-color 0.35s ease,
         top 0.35s ease;
       padding: 0;
-      background: rgba(245,240,232,0.18);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(201,168,76,0.22);
+      /* Default: fully transparent — no background */
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border: 2px solid transparent;
       border-radius: 16px;
-      box-shadow:
-        0 4px 24px rgba(26,26,26,0.10),
-        0 1px 0 rgba(255,255,255,0.25) inset;
-      /* GPU composite layer — prevents layout-triggered repaints */
+      box-shadow: none;
       will-change: background, box-shadow;
       transform: translateZ(0);
 
@@ -302,13 +298,13 @@ import { trigger, transition, style, animate } from '@angular/animations';
         transition: height 0.3s ease;
       }
 
-      /* Scrolled state — denser glass */
+      /* Scrolled state — golden border + glass background */
       &.scrolled {
         top: 10px;
         background: rgba(245,240,232,0.94);
         backdrop-filter: blur(24px);
         -webkit-backdrop-filter: blur(24px);
-        border-color: rgba(201,168,76,0.32);
+        border: 2px solid #C9A84C;
         box-shadow:
           0 8px 32px rgba(26,26,26,0.13),
           0 1px 0 rgba(255,255,255,0.45) inset;
