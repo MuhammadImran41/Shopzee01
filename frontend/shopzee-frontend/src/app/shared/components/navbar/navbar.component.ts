@@ -76,145 +76,87 @@ import { trigger, transition, style, animate } from '@angular/animations';
             </li>
 
             <!-- Women Mega Menu -->
-            <li class="has-mega"
-              (mouseenter)="openMega('women')"
-              (mouseleave)="closeMega()">
-              <a routerLink="/women" routerLinkActive="active" class="nav-link nav-link--mega"
-                (click)="closeMega()">
+            <li class="has-mega">
+              <a routerLink="/women" routerLinkActive="active" class="nav-link nav-link--mega">
                 Women
                 <svg class="nav-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true">
                   <path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                 </svg>
               </a>
-
-              @if (activeMega() === 'women') {
-                <div class="mega-menu" [@megaAnim] (mouseenter)="openMega('women')" (mouseleave)="closeMega()">
-                  <div class="mega-inner">
-                    <!-- Col 1: Categories -->
-                    <div class="mega-col">
-                      <p class="mega-heading">Shop By Category</p>
-                      <ul class="mega-links">
-                        <li><a routerLink="/women" [queryParams]="{sub:'suits'}" (click)="closeMega()" class="mega-link">
-                          <span class="mega-link-dot"></span>Embroidered Suits
-                        </a></li>
-                        <li><a routerLink="/women" [queryParams]="{sub:'kameez'}" (click)="closeMega()" class="mega-link">
-                          <span class="mega-link-dot"></span>Shalwar Kameez
-                        </a></li>
-                        <li><a routerLink="/women" [queryParams]="{sub:'formal'}" (click)="closeMega()" class="mega-link">
-                          <span class="mega-link-dot"></span>Formal Wear
-                        </a></li>
-                        <li><a routerLink="/women" [queryParams]="{sub:'bridal'}" (click)="closeMega()" class="mega-link">
-                          <span class="mega-link-dot"></span>Bridal Collection
-                        </a></li>
-                        <li><a routerLink="/women" [queryParams]="{sub:'casual'}" (click)="closeMega()" class="mega-link">
-                          <span class="mega-link-dot"></span>Casual Wear
-                        </a></li>
-                      </ul>
-                    </div>
-
-                    <!-- Col 2: Collections -->
-                    <div class="mega-col">
-                      <p class="mega-heading">Collections</p>
-                      <ul class="mega-links">
-                        <li><a routerLink="/women" [queryParams]="{tag:'new'}" (click)="closeMega()" class="mega-link">
-                          <span class="mega-link-dot mega-link-dot--gold"></span>New Arrivals
-                        </a></li>
-                        <li><a routerLink="/women" [queryParams]="{tag:'sale'}" (click)="closeMega()" class="mega-link">
-                          <span class="mega-link-dot mega-link-dot--red"></span>Sale
-                        </a></li>
-                        <li><a routerLink="/women" [queryParams]="{tag:'bestseller'}" (click)="closeMega()" class="mega-link">
-                          <span class="mega-link-dot"></span>Best Sellers
-                        </a></li>
-                        <li><a routerLink="/women" [queryParams]="{tag:'luxury'}" (click)="closeMega()" class="mega-link">
-                          <span class="mega-link-dot"></span>Luxury Edit
-                        </a></li>
-                      </ul>
-                    </div>
-
-                    <!-- Col 3: Featured image -->
-                    <div class="mega-col mega-col--image">
-                      <a routerLink="/women" (click)="closeMega()" class="mega-featured">
-                        <img src="assets/images/women/women-3.png" alt="Women's Collection" loading="lazy"/>
-                        <div class="mega-featured-label">
-                          <span>Women's Collection</span>
-                          <strong>Shop Now →</strong>
-                        </div>
-                      </a>
-                    </div>
+              <div class="mega-menu">
+                <div class="mega-inner">
+                  <div class="mega-col">
+                    <p class="mega-heading">Shop By Category</p>
+                    <ul class="mega-links">
+                      <li><a routerLink="/women" [queryParams]="{sub:'suits'}" class="mega-link"><span class="mega-link-dot"></span>Embroidered Suits</a></li>
+                      <li><a routerLink="/women" [queryParams]="{sub:'kameez'}" class="mega-link"><span class="mega-link-dot"></span>Shalwar Kameez</a></li>
+                      <li><a routerLink="/women" [queryParams]="{sub:'formal'}" class="mega-link"><span class="mega-link-dot"></span>Formal Wear</a></li>
+                      <li><a routerLink="/women" [queryParams]="{sub:'bridal'}" class="mega-link"><span class="mega-link-dot"></span>Bridal Collection</a></li>
+                      <li><a routerLink="/women" [queryParams]="{sub:'casual'}" class="mega-link"><span class="mega-link-dot"></span>Casual Wear</a></li>
+                    </ul>
+                  </div>
+                  <div class="mega-col">
+                    <p class="mega-heading">Collections</p>
+                    <ul class="mega-links">
+                      <li><a routerLink="/women" [queryParams]="{tag:'new'}" class="mega-link"><span class="mega-link-dot mega-link-dot--gold"></span>New Arrivals</a></li>
+                      <li><a routerLink="/women" [queryParams]="{tag:'sale'}" class="mega-link"><span class="mega-link-dot mega-link-dot--red"></span>Sale</a></li>
+                      <li><a routerLink="/women" [queryParams]="{tag:'bestseller'}" class="mega-link"><span class="mega-link-dot"></span>Best Sellers</a></li>
+                      <li><a routerLink="/women" [queryParams]="{tag:'luxury'}" class="mega-link"><span class="mega-link-dot"></span>Luxury Edit</a></li>
+                    </ul>
+                  </div>
+                  <div class="mega-col mega-col--image">
+                    <a routerLink="/women" class="mega-featured">
+                      <img src="assets/images/women/women-3.png" alt="Women's Collection" loading="lazy"/>
+                      <div class="mega-featured-label">
+                        <span>Women's Collection</span>
+                        <strong>Shop Now →</strong>
+                      </div>
+                    </a>
                   </div>
                 </div>
-              }
+              </div>
             </li>
 
             <!-- Men Mega Menu -->
-            <li class="has-mega"
-              (mouseenter)="openMega('men')"
-              (mouseleave)="closeMega()">
-              <a routerLink="/men" routerLinkActive="active" class="nav-link nav-link--mega"
-                (click)="closeMega()">
+            <li class="has-mega">
+              <a routerLink="/men" routerLinkActive="active" class="nav-link nav-link--mega">
                 Men
                 <svg class="nav-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true">
                   <path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                 </svg>
               </a>
-
-              @if (activeMega() === 'men') {
-                <div class="mega-menu" [@megaAnim] (mouseenter)="openMega('men')" (mouseleave)="closeMega()">
-                  <div class="mega-inner">
-                    <!-- Col 1 -->
-                    <div class="mega-col">
-                      <p class="mega-heading">Shop By Category</p>
-                      <ul class="mega-links">
-                        <li><a routerLink="/men" [queryParams]="{sub:'shalwar'}" (click)="closeMega()" class="mega-link">
-                          <span class="mega-link-dot"></span>Shalwar Kameez
-                        </a></li>
-                        <li><a routerLink="/men" [queryParams]="{sub:'kurta'}" (click)="closeMega()" class="mega-link">
-                          <span class="mega-link-dot"></span>Kurta Collection
-                        </a></li>
-                        <li><a routerLink="/men" [queryParams]="{sub:'formal'}" (click)="closeMega()" class="mega-link">
-                          <span class="mega-link-dot"></span>Formal Wear
-                        </a></li>
-                        <li><a routerLink="/men" [queryParams]="{sub:'sherwani'}" (click)="closeMega()" class="mega-link">
-                          <span class="mega-link-dot"></span>Sherwani
-                        </a></li>
-                        <li><a routerLink="/men" [queryParams]="{sub:'casual'}" (click)="closeMega()" class="mega-link">
-                          <span class="mega-link-dot"></span>Casual Wear
-                        </a></li>
-                      </ul>
-                    </div>
-
-                    <!-- Col 2 -->
-                    <div class="mega-col">
-                      <p class="mega-heading">Collections</p>
-                      <ul class="mega-links">
-                        <li><a routerLink="/men" [queryParams]="{tag:'new'}" (click)="closeMega()" class="mega-link">
-                          <span class="mega-link-dot mega-link-dot--gold"></span>New Arrivals
-                        </a></li>
-                        <li><a routerLink="/men" [queryParams]="{tag:'sale'}" (click)="closeMega()" class="mega-link">
-                          <span class="mega-link-dot mega-link-dot--red"></span>Sale
-                        </a></li>
-                        <li><a routerLink="/men" [queryParams]="{tag:'bestseller'}" (click)="closeMega()" class="mega-link">
-                          <span class="mega-link-dot"></span>Best Sellers
-                        </a></li>
-                        <li><a routerLink="/men" [queryParams]="{tag:'eid'}" (click)="closeMega()" class="mega-link">
-                          <span class="mega-link-dot"></span>Eid Special
-                        </a></li>
-                      </ul>
-                    </div>
-
-                    <!-- Col 3: Image -->
-                    <div class="mega-col mega-col--image">
-                      <a routerLink="/men" (click)="closeMega()" class="mega-featured">
-                        <img src="assets/images/men/men-2.png" alt="Men's Collection" loading="lazy"/>
-                        <div class="mega-featured-label">
-                          <span>Men's Collection</span>
-                          <strong>Shop Now →</strong>
-                        </div>
-                      </a>
-                    </div>
+              <div class="mega-menu">
+                <div class="mega-inner">
+                  <div class="mega-col">
+                    <p class="mega-heading">Shop By Category</p>
+                    <ul class="mega-links">
+                      <li><a routerLink="/men" [queryParams]="{sub:'shalwar'}" class="mega-link"><span class="mega-link-dot"></span>Shalwar Kameez</a></li>
+                      <li><a routerLink="/men" [queryParams]="{sub:'kurta'}" class="mega-link"><span class="mega-link-dot"></span>Kurta Collection</a></li>
+                      <li><a routerLink="/men" [queryParams]="{sub:'formal'}" class="mega-link"><span class="mega-link-dot"></span>Formal Wear</a></li>
+                      <li><a routerLink="/men" [queryParams]="{sub:'sherwani'}" class="mega-link"><span class="mega-link-dot"></span>Sherwani</a></li>
+                      <li><a routerLink="/men" [queryParams]="{sub:'casual'}" class="mega-link"><span class="mega-link-dot"></span>Casual Wear</a></li>
+                    </ul>
+                  </div>
+                  <div class="mega-col">
+                    <p class="mega-heading">Collections</p>
+                    <ul class="mega-links">
+                      <li><a routerLink="/men" [queryParams]="{tag:'new'}" class="mega-link"><span class="mega-link-dot mega-link-dot--gold"></span>New Arrivals</a></li>
+                      <li><a routerLink="/men" [queryParams]="{tag:'sale'}" class="mega-link"><span class="mega-link-dot mega-link-dot--red"></span>Sale</a></li>
+                      <li><a routerLink="/men" [queryParams]="{tag:'bestseller'}" class="mega-link"><span class="mega-link-dot"></span>Best Sellers</a></li>
+                      <li><a routerLink="/men" [queryParams]="{tag:'eid'}" class="mega-link"><span class="mega-link-dot"></span>Eid Special</a></li>
+                    </ul>
+                  </div>
+                  <div class="mega-col mega-col--image">
+                    <a routerLink="/men" class="mega-featured">
+                      <img src="assets/images/men/men-2.png" alt="Men's Collection" loading="lazy"/>
+                      <div class="mega-featured-label">
+                        <span>Men's Collection</span>
+                        <strong>Shop Now →</strong>
+                      </div>
+                    </a>
                   </div>
                 </div>
-              }
+              </div>
             </li>
 
             <!-- New Arrivals -->
@@ -480,7 +422,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
       }
     }
 
-    .has-mega { position: static; }
+    .has-mega { position: relative; }
 
     .nav-link {
       display: flex; align-items: center; gap: 4px;
@@ -514,24 +456,31 @@ import { trigger, transition, style, animate } from '@angular/animations';
     }
     .has-mega:hover .nav-chevron { transform: rotate(180deg); }
 
-    /* ── MEGA MENU ───────────────────────────────────────── */
+    /* ── MEGA MENU — pure CSS hover ──────────────────────── */
     .mega-menu {
-      position: fixed;
-      top: 90px;
-      left: 24px; right: 24px;
-      max-width: 1400px;
-      margin: 0 auto;
+      position: absolute;
+      top: calc(100% + 12px);
+      left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+      width: 680px;
       background: #fff;
       border: 1px solid rgba(201,168,76,0.25);
       border-top: 3px solid #C9A84C;
-      border-radius: 0 0 16px 16px;
-      box-shadow: 0 24px 60px rgba(26,26,26,0.14), 0 4px 16px rgba(26,26,26,0.06);
-      z-index: 199;
+      border-radius: 16px;
+      box-shadow: 0 24px 60px rgba(26,26,26,0.18), 0 4px 16px rgba(26,26,26,0.08);
+      z-index: 999;
       overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease, transform 0.22s ease;
     }
 
-    .navbar.scrolled ~ .mega-menu,
-    .navbar.scrolled .mega-menu { top: 80px; }
+    /* Show on hover — pure CSS, no JS needed */
+    .has-mega:hover .mega-menu {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateX(-50%) translateY(0);
+    }
 
     .mega-inner {
       display: grid;
