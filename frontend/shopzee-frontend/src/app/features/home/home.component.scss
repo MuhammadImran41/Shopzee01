@@ -29,9 +29,15 @@
     filter: brightness(1.08) contrast(1.04) saturate(1.06);
   }
 
-  // Poster image shown on slow connections — same styling as video
+  // Poster image shown on slow connections / before video load
   &__poster {
-    animation: none !important;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 10%;
+    z-index: 0;
   }
 
   &__overlay {

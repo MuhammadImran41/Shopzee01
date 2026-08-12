@@ -10,24 +10,19 @@
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
-  <!-- DNS prefetch for external origins -->
-  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <!-- Preload Hero Poster Image for fast LCP -->
+  <link rel="preload" as="image" href="assets/images/women/women-1.png" type="image/png">
 
   <!-- Preconnect to font origins — reduces connection latency -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <!--
-    Fonts: swap display so text is visible immediately with fallback font,
-    then swaps to custom font when loaded. Prevents invisible text (FCP issue).
-    Only load weights actually used on critical path.
-  -->
+  <!-- Google Fonts asynchronously -->
   <link
-    rel="preload"
-    as="style"
+    rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap"
-    onload="this.onload=null;this.rel='stylesheet'"
+    media="print"
+    onload="this.media='all'"
   >
   <noscript>
     <link
