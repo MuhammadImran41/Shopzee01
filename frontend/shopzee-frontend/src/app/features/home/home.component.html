@@ -4,29 +4,18 @@
 <!-- ============================================================ -->
 <section class="hero" aria-label="Hero">
 
-  <!-- Background: Video (fast connection) OR Poster Image (slow connection) -->
+  <!-- Background Video -->
   <div class="hero__video-wrap">
-    @if (videoEnabled()) {
-      <!-- Fast connection: real video with smart buffer detection -->
-      <video
-        #heroVideo
-        class="hero__video"
-        muted loop playsinline
-        preload="none"
-        poster="assets/images/women/women-3.png"
-        aria-hidden="true"
-      >
-        <source src="assets/videos/hero-main.mp4" type="video/mp4"/>
-      </video>
-    } @else {
-      <!-- Slow connection: just the poster image, zero bandwidth wasted -->
-      <img
-        src="assets/images/women/women-3.png"
-        alt="Shopzee luxury collection"
-        class="hero__video hero__poster"
-        fetchpriority="high"
-      />
-    }
+    <video
+      #heroVideo
+      class="hero__video"
+      muted loop playsinline
+      preload="none"
+      poster="assets/images/women/women-3.png"
+      aria-hidden="true"
+    >
+      <source src="assets/videos/hero-main.mp4" type="video/mp4"/>
+    </video>
     <div class="hero__overlay"></div>
   </div>
 

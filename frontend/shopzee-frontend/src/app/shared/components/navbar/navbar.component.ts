@@ -120,7 +120,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
               >
                 <div class="user-avatar-sm">{{ userInitial() }}</div>
                 <span class="user-name-sm hide-mobile">{{ authApi.currentUser()!.name.split(' ')[0] }}</span>
-                <app-icon name="chevron-down" [size]="14" class="user-chevron" [class.rotated]="userDropOpen()"/>
+                <app-icon name="chevron-down" [size]="12" class="user-chevron hide-mobile" [class.rotated]="userDropOpen()"/>
               </button>
 
               @if (userDropOpen()) {
@@ -175,8 +175,8 @@ import { trigger, transition, style, animate } from '@angular/animations';
             </div>
           } @else {
             <button class="action-btn login-btn" (click)="showAuthModal.set(true)" aria-label="Sign In">
-              <app-icon name="user" [size]="20"/>
-              <span class="login-text hide-mobile">Sign In</span>
+              <app-icon name="user" [size]="18"/>
+              <span class="login-text">Sign In</span>
             </button>
           }
 
@@ -398,7 +398,8 @@ import { trigger, transition, style, animate } from '@angular/animations';
     .navbar__actions {
       display: flex;
       align-items: center;
-      gap: var(--space-1);
+      gap: 2px;
+      flex-shrink: 0;
     }
 
     .action-btn {
@@ -406,8 +407,8 @@ import { trigger, transition, style, animate } from '@angular/animations';
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 44px;
-      height: 44px;
+      width: 40px;
+      height: 40px;
       background: none;
       border: none;
       cursor: pointer;
@@ -415,6 +416,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
       border-radius: 50%;
       transition: all var(--transition-base);
       text-decoration: none;
+      flex-shrink: 0;
 
       &:hover {
         color: var(--gold);
@@ -639,15 +641,18 @@ import { trigger, transition, style, animate } from '@angular/animations';
     .user-menu-btn {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.375rem;
       background: rgba(201,168,76,0.08);
       border: 1px solid rgba(201,168,76,0.25);
-      border-radius: 24px;
-      padding: 0.375rem 0.75rem 0.375rem 0.375rem;
+      border-radius: 20px;
+      padding: 0.25rem 0.625rem 0.25rem 0.25rem;
       cursor: pointer;
       color: var(--black);
       transition: all 0.25s ease;
       font-family: var(--font-body);
+      white-space: nowrap;
+      height: auto;
+      width: auto;
 
       &:hover {
         background: rgba(201,168,76,0.14);
@@ -656,24 +661,24 @@ import { trigger, transition, style, animate } from '@angular/animations';
     }
 
     .user-avatar-sm {
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--gold), var(--gold-dark));
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: var(--font-heading);
-      font-size: 0.875rem;
+      font-size: 0.8rem;
       font-weight: 700;
       color: var(--black);
       flex-shrink: 0;
     }
 
     .user-name-sm {
-      font-size: 0.8125rem;
-      font-weight: 500;
-      max-width: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      max-width: 80px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -689,14 +694,17 @@ import { trigger, transition, style, animate } from '@angular/animations';
     .login-btn {
       display: flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.35rem;
       border: 1px solid rgba(201,168,76,0.3) !important;
-      border-radius: 24px !important;
-      padding: 0.375rem 0.875rem !important;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      border-radius: 20px !important;
+      padding: 0.3rem 0.75rem !important;
+      font-size: 0.65rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.1em !important;
+      text-transform: uppercase !important;
+      white-space: nowrap !important;
+      width: auto !important;
+      height: auto !important;
 
       &:hover {
         background: rgba(201,168,76,0.1) !important;
@@ -706,10 +714,12 @@ import { trigger, transition, style, animate } from '@angular/animations';
     }
 
     .login-text {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
+      white-space: nowrap;
+      line-height: 1;
     }
 
     /* Backdrop to close dropdown on outside click */
