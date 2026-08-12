@@ -59,16 +59,13 @@ import { trigger, transition, style, animate } from '@angular/animations';
               <circle cx="4"  cy="14" r="2" fill="#C9A84C"/>
               <circle cx="20" cy="8"  r="2" fill="#C9A84C"/>
               <circle cx="36" cy="14" r="2" fill="#C9A84C"/>
-              <!-- Text: x=46 to give enough space for full SHOPZEE -->
+              <!-- Text -->
               <text x="46" y="26"
                 font-family="Cormorant Garamond, Georgia, serif"
                 font-size="19"
                 font-weight="600"
                 fill="#1A1A1A"
                 letter-spacing="3">SHOPZEE</text>
-              <!-- Gold underline -->
-              <line x1="46" y1="31" x2="158" y2="31"
-                stroke="#C9A84C" stroke-width="0.75"/>
             </svg>
           </div>
         </a>
@@ -334,8 +331,8 @@ import { trigger, transition, style, animate } from '@angular/animations';
     }
 
     .logo-svg {
-      width: 170px;
-      height: 44px;
+      width: 210px;
+      height: 52px;
 
       /* Default: white text on transparent navbar */
       text { fill: #fff; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4)); }
