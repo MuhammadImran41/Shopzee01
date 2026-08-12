@@ -81,8 +81,6 @@ import { trigger, transition, style, animate } from '@angular/animations';
             <li><a routerLink="/men" routerLinkActive="active" class="nav-link">Men</a></li>
             <li><a routerLink="/women" [queryParams]="{tag:'new'}" class="nav-link">New Arrivals</a></li>
             <li><a routerLink="/women" [queryParams]="{tag:'sale'}" class="nav-link nav-link--sale">Sale</a></li>
-            <li><a routerLink="/about" routerLinkActive="active" class="nav-link">About</a></li>
-            <li><a routerLink="/contact" routerLinkActive="active" class="nav-link">Contact</a></li>
           </ul>
         </nav>
 
@@ -226,8 +224,6 @@ import { trigger, transition, style, animate } from '@angular/animations';
           <li><a routerLink="/men" (click)="closeMobileMenu()" class="drawer-link">Men's Collection</a></li>
           <li><a routerLink="/women" [queryParams]="{tag:'new'}" (click)="closeMobileMenu()" class="drawer-link">New Arrivals</a></li>
           <li><a routerLink="/women" [queryParams]="{tag:'sale'}" (click)="closeMobileMenu()" class="drawer-link drawer-link--sale">Sale</a></li>
-          <li><a routerLink="/about" (click)="closeMobileMenu()" class="drawer-link">About</a></li>
-          <li><a routerLink="/contact" (click)="closeMobileMenu()" class="drawer-link">Contact</a></li>
         </ul>
         <div class="drawer-actions">
           <a routerLink="/account" (click)="closeMobileMenu()" class="drawer-action-link">
