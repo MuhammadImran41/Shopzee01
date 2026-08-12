@@ -462,7 +462,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
       top: calc(100% + 12px);
       left: 50%;
       transform: translateX(-50%) translateY(-8px);
-      width: 680px;
+      width: 860px;
       background: #fff;
       border: 1px solid rgba(201,168,76,0.25);
       border-top: 3px solid #C9A84C;
@@ -484,7 +484,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 
     .mega-inner {
       display: grid;
-      grid-template-columns: 1fr 1fr 220px;
+      grid-template-columns: 1fr 1fr 280px;
       gap: 0;
       padding: 0;
     }
