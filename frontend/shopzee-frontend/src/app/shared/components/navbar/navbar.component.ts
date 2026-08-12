@@ -84,26 +84,70 @@ import { trigger, transition, style, animate } from '@angular/animations';
                 </svg>
               </a>
               <div class="mega-menu">
+                <!-- Top promo bar -->
+                <div class="mega-promo-bar">
+                  <span>✦ Free shipping on orders above PKR 5,000</span>
+                  <a routerLink="/women" [queryParams]="{tag:'new'}">View New Arrivals →</a>
+                </div>
                 <div class="mega-inner">
+                  <!-- Col 1: Categories -->
                   <div class="mega-col">
-                    <p class="mega-heading">Shop By Category</p>
+                    <p class="mega-heading">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+                      Shop By Category
+                    </p>
                     <ul class="mega-links">
-                      <li><a routerLink="/women" [queryParams]="{sub:'suits'}" class="mega-link"><span class="mega-link-dot"></span>Embroidered Suits</a></li>
-                      <li><a routerLink="/women" [queryParams]="{sub:'kameez'}" class="mega-link"><span class="mega-link-dot"></span>Shalwar Kameez</a></li>
-                      <li><a routerLink="/women" [queryParams]="{sub:'formal'}" class="mega-link"><span class="mega-link-dot"></span>Formal Wear</a></li>
-                      <li><a routerLink="/women" [queryParams]="{sub:'bridal'}" class="mega-link"><span class="mega-link-dot"></span>Bridal Collection</a></li>
-                      <li><a routerLink="/women" [queryParams]="{sub:'casual'}" class="mega-link"><span class="mega-link-dot"></span>Casual Wear</a></li>
+                      <li><a routerLink="/women" [queryParams]="{sub:'suits'}" class="mega-link">
+                        <span class="mega-link-icon">🌸</span>
+                        <span class="mega-link-content"><strong>Embroidered Suits</strong><small>Luxury hand-crafted</small></span>
+                      </a></li>
+                      <li><a routerLink="/women" [queryParams]="{sub:'kameez'}" class="mega-link">
+                        <span class="mega-link-icon">👗</span>
+                        <span class="mega-link-content"><strong>Shalwar Kameez</strong><small>Classic elegance</small></span>
+                      </a></li>
+                      <li><a routerLink="/women" [queryParams]="{sub:'formal'}" class="mega-link">
+                        <span class="mega-link-icon">✨</span>
+                        <span class="mega-link-content"><strong>Formal Wear</strong><small>Office & events</small></span>
+                      </a></li>
+                      <li><a routerLink="/women" [queryParams]="{sub:'bridal'}" class="mega-link">
+                        <span class="mega-link-icon">💍</span>
+                        <span class="mega-link-content"><strong>Bridal Collection</strong><small>Wedding season</small></span>
+                      </a></li>
+                      <li><a routerLink="/women" [queryParams]="{sub:'casual'}" class="mega-link">
+                        <span class="mega-link-icon">🌿</span>
+                        <span class="mega-link-content"><strong>Casual Wear</strong><small>Everyday comfort</small></span>
+                      </a></li>
                     </ul>
                   </div>
+                  <!-- Col 2: Collections -->
                   <div class="mega-col">
-                    <p class="mega-heading">Collections</p>
-                    <ul class="mega-links">
-                      <li><a routerLink="/women" [queryParams]="{tag:'new'}" class="mega-link"><span class="mega-link-dot mega-link-dot--gold"></span>New Arrivals</a></li>
-                      <li><a routerLink="/women" [queryParams]="{tag:'sale'}" class="mega-link"><span class="mega-link-dot mega-link-dot--red"></span>Sale</a></li>
-                      <li><a routerLink="/women" [queryParams]="{tag:'bestseller'}" class="mega-link"><span class="mega-link-dot"></span>Best Sellers</a></li>
-                      <li><a routerLink="/women" [queryParams]="{tag:'luxury'}" class="mega-link"><span class="mega-link-dot"></span>Luxury Edit</a></li>
+                    <p class="mega-heading">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg>
+                      Collections
+                    </p>
+                    <ul class="mega-links mega-links--collections">
+                      <li><a routerLink="/women" [queryParams]="{tag:'new'}" class="mega-link mega-link--featured">
+                        <span class="mega-badge mega-badge--new">NEW</span>
+                        <span class="mega-link-content"><strong>New Arrivals</strong><small>Fresh this season</small></span>
+                        <svg class="mega-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                      </a></li>
+                      <li><a routerLink="/women" [queryParams]="{tag:'sale'}" class="mega-link mega-link--sale">
+                        <span class="mega-badge mega-badge--sale">SALE</span>
+                        <span class="mega-link-content"><strong>Sale</strong><small>Up to 50% off</small></span>
+                        <svg class="mega-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                      </a></li>
+                      <li><a routerLink="/women" [queryParams]="{tag:'bestseller'}" class="mega-link">
+                        <span class="mega-link-icon">🏆</span>
+                        <span class="mega-link-content"><strong>Best Sellers</strong><small>Customer favourites</small></span>
+                      </a></li>
+                      <li><a routerLink="/women" [queryParams]="{tag:'luxury'}" class="mega-link">
+                        <span class="mega-link-icon">👑</span>
+                        <span class="mega-link-content"><strong>Luxury Edit</strong><small>Premium picks</small></span>
+                      </a></li>
                     </ul>
+                    <a routerLink="/women" class="mega-view-all">View All Women's →</a>
                   </div>
+                  <!-- Col 3: Image -->
                   <div class="mega-col mega-col--image">
                     <a routerLink="/women" class="mega-featured">
                       <img src="assets/images/women/women-3.png" alt="Women's Collection" loading="lazy"/>
@@ -126,25 +170,65 @@ import { trigger, transition, style, animate } from '@angular/animations';
                 </svg>
               </a>
               <div class="mega-menu">
+                <div class="mega-promo-bar">
+                  <span>✦ New arrivals every week — stay updated</span>
+                  <a routerLink="/men" [queryParams]="{tag:'new'}">Explore Men's →</a>
+                </div>
                 <div class="mega-inner">
                   <div class="mega-col">
-                    <p class="mega-heading">Shop By Category</p>
+                    <p class="mega-heading">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+                      Shop By Category
+                    </p>
                     <ul class="mega-links">
-                      <li><a routerLink="/men" [queryParams]="{sub:'shalwar'}" class="mega-link"><span class="mega-link-dot"></span>Shalwar Kameez</a></li>
-                      <li><a routerLink="/men" [queryParams]="{sub:'kurta'}" class="mega-link"><span class="mega-link-dot"></span>Kurta Collection</a></li>
-                      <li><a routerLink="/men" [queryParams]="{sub:'formal'}" class="mega-link"><span class="mega-link-dot"></span>Formal Wear</a></li>
-                      <li><a routerLink="/men" [queryParams]="{sub:'sherwani'}" class="mega-link"><span class="mega-link-dot"></span>Sherwani</a></li>
-                      <li><a routerLink="/men" [queryParams]="{sub:'casual'}" class="mega-link"><span class="mega-link-dot"></span>Casual Wear</a></li>
+                      <li><a routerLink="/men" [queryParams]="{sub:'shalwar'}" class="mega-link">
+                        <span class="mega-link-icon">👔</span>
+                        <span class="mega-link-content"><strong>Shalwar Kameez</strong><small>Heritage style</small></span>
+                      </a></li>
+                      <li><a routerLink="/men" [queryParams]="{sub:'kurta'}" class="mega-link">
+                        <span class="mega-link-icon">🎽</span>
+                        <span class="mega-link-content"><strong>Kurta Collection</strong><small>Modern classics</small></span>
+                      </a></li>
+                      <li><a routerLink="/men" [queryParams]="{sub:'formal'}" class="mega-link">
+                        <span class="mega-link-icon">💼</span>
+                        <span class="mega-link-content"><strong>Formal Wear</strong><small>Sharp & refined</small></span>
+                      </a></li>
+                      <li><a routerLink="/men" [queryParams]="{sub:'sherwani'}" class="mega-link">
+                        <span class="mega-link-icon">✨</span>
+                        <span class="mega-link-content"><strong>Sherwani</strong><small>Wedding & festive</small></span>
+                      </a></li>
+                      <li><a routerLink="/men" [queryParams]="{sub:'casual'}" class="mega-link">
+                        <span class="mega-link-icon">🌿</span>
+                        <span class="mega-link-content"><strong>Casual Wear</strong><small>Relaxed comfort</small></span>
+                      </a></li>
                     </ul>
                   </div>
                   <div class="mega-col">
-                    <p class="mega-heading">Collections</p>
-                    <ul class="mega-links">
-                      <li><a routerLink="/men" [queryParams]="{tag:'new'}" class="mega-link"><span class="mega-link-dot mega-link-dot--gold"></span>New Arrivals</a></li>
-                      <li><a routerLink="/men" [queryParams]="{tag:'sale'}" class="mega-link"><span class="mega-link-dot mega-link-dot--red"></span>Sale</a></li>
-                      <li><a routerLink="/men" [queryParams]="{tag:'bestseller'}" class="mega-link"><span class="mega-link-dot"></span>Best Sellers</a></li>
-                      <li><a routerLink="/men" [queryParams]="{tag:'eid'}" class="mega-link"><span class="mega-link-dot"></span>Eid Special</a></li>
+                    <p class="mega-heading">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg>
+                      Collections
+                    </p>
+                    <ul class="mega-links mega-links--collections">
+                      <li><a routerLink="/men" [queryParams]="{tag:'new'}" class="mega-link mega-link--featured">
+                        <span class="mega-badge mega-badge--new">NEW</span>
+                        <span class="mega-link-content"><strong>New Arrivals</strong><small>Fresh this season</small></span>
+                        <svg class="mega-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                      </a></li>
+                      <li><a routerLink="/men" [queryParams]="{tag:'sale'}" class="mega-link mega-link--sale">
+                        <span class="mega-badge mega-badge--sale">SALE</span>
+                        <span class="mega-link-content"><strong>Sale</strong><small>Up to 50% off</small></span>
+                        <svg class="mega-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                      </a></li>
+                      <li><a routerLink="/men" [queryParams]="{tag:'bestseller'}" class="mega-link">
+                        <span class="mega-link-icon">🏆</span>
+                        <span class="mega-link-content"><strong>Best Sellers</strong><small>Customer favourites</small></span>
+                      </a></li>
+                      <li><a routerLink="/men" [queryParams]="{tag:'eid'}" class="mega-link">
+                        <span class="mega-link-icon">🌙</span>
+                        <span class="mega-link-content"><strong>Eid Special</strong><small>Festive collection</small></span>
+                      </a></li>
                     </ul>
+                    <a routerLink="/men" class="mega-view-all">View All Men's →</a>
                   </div>
                   <div class="mega-col mega-col--image">
                     <a routerLink="/men" class="mega-featured">
@@ -459,120 +543,205 @@ import { trigger, transition, style, animate } from '@angular/animations';
     /* ── MEGA MENU — pure CSS hover ──────────────────────── */
     .mega-menu {
       position: absolute;
-      top: calc(100% + 12px);
+      top: calc(100% + 16px);
       left: 50%;
-      transform: translateX(-50%) translateY(-8px);
-      width: 860px;
-      background: #fff;
-      border: 1px solid rgba(201,168,76,0.25);
+      transform: translateX(-50%) translateY(-10px);
+      width: 900px;
+      background: #fdfaf6;
+      border: 1px solid rgba(201,168,76,0.2);
       border-top: 3px solid #C9A84C;
-      border-radius: 16px;
-      box-shadow: 0 24px 60px rgba(26,26,26,0.18), 0 4px 16px rgba(26,26,26,0.08);
+      border-radius: 20px;
+      box-shadow:
+        0 32px 80px rgba(26,26,26,0.18),
+        0 4px 20px rgba(26,26,26,0.08),
+        0 0 0 1px rgba(201,168,76,0.06);
       z-index: 999;
       overflow: hidden;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.22s ease, transform 0.22s ease;
+      transition: opacity 0.25s ease, transform 0.25s ease;
     }
 
-    /* Show on hover — pure CSS, no JS needed */
     .has-mega:hover .mega-menu {
       opacity: 1;
       pointer-events: all;
       transform: translateX(-50%) translateY(0);
     }
 
+    /* Promo bar at top */
+    .mega-promo-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.6rem 2rem;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2118 100%);
+      font-family: var(--font-body);
+      font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+
+      span { color: rgba(245,240,232,0.7); }
+
+      a {
+        color: #C9A84C; text-decoration: none; font-weight: 600;
+        transition: color 0.2s;
+        &:hover { color: #e8c96a; }
+      }
+    }
+
     .mega-inner {
       display: grid;
-      grid-template-columns: 1fr 1fr 280px;
+      grid-template-columns: 1fr 1fr 260px;
       gap: 0;
-      padding: 0;
     }
 
     .mega-col {
-      padding: 2rem 2.5rem;
+      padding: 1.75rem 2rem;
 
-      &:not(:last-child) {
+      &:nth-child(1) { background: #fdfaf6; }
+      &:nth-child(2) {
+        background: #fdfaf6;
+        border-left: 1px solid rgba(201,168,76,0.12);
         border-right: 1px solid rgba(201,168,76,0.12);
       }
-
-      &--image { padding: 0; overflow: hidden; border-radius: 0 0 16px 0; }
+      &--image { padding: 0; overflow: hidden; }
     }
 
     .mega-heading {
+      display: flex; align-items: center; gap: 0.5rem;
       font-family: var(--font-body);
-      font-size: 0.65rem; font-weight: 700;
-      letter-spacing: 0.18em; text-transform: uppercase;
+      font-size: 0.6rem; font-weight: 800;
+      letter-spacing: 0.22em; text-transform: uppercase;
       color: #C9A84C;
       margin: 0 0 1.25rem;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid rgba(201,168,76,0.2);
+      padding-bottom: 0.875rem;
+      border-bottom: 1px solid rgba(201,168,76,0.18);
     }
 
     .mega-links {
       list-style: none; padding: 0; margin: 0;
-      display: flex; flex-direction: column; gap: 0.125rem;
+      display: flex; flex-direction: column; gap: 0;
     }
 
     .mega-link {
-      display: flex; align-items: center; gap: 0.75rem;
-      padding: 0.55rem 0.5rem;
-      font-family: var(--font-heading);
-      font-size: 1rem; font-weight: 400;
-      color: #2a2a2a;
+      display: flex; align-items: center; gap: 0.875rem;
+      padding: 0.65rem 0.75rem;
       text-decoration: none;
-      border-radius: 6px;
-      transition: all 0.18s ease;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      position: relative;
 
       &:hover {
-        color: #a07830;
-        background: rgba(201,168,76,0.06);
-        padding-left: 1rem;
+        background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.04));
+        transform: translateX(4px);
 
-        .mega-link-dot { background: #C9A84C; transform: scale(1.4); }
+        .mega-link-content strong { color: #a07830; }
+        .mega-arrow { opacity: 1; transform: translateX(0); }
+      }
+
+      &--featured {
+        background: linear-gradient(135deg, rgba(201,168,76,0.06), transparent);
+        border: 1px solid rgba(201,168,76,0.15);
+        margin-bottom: 0.25rem;
+      }
+
+      &--sale {
+        background: linear-gradient(135deg, rgba(220,50,50,0.05), transparent);
+        border: 1px solid rgba(220,50,50,0.12);
+        margin-bottom: 0.5rem;
       }
     }
 
-    .mega-link-dot {
-      width: 5px; height: 5px; border-radius: 50%;
-      background: #ccc; flex-shrink: 0;
-      transition: all 0.18s ease;
+    .mega-link-icon {
+      font-size: 1.25rem; flex-shrink: 0;
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(201,168,76,0.08);
+      border-radius: 8px;
+      transition: background 0.2s;
 
-      &--gold { background: #C9A84C; }
-      &--red  { background: #e05252; }
+      .mega-link:hover & { background: rgba(201,168,76,0.14); }
     }
 
-    /* Featured image card */
+    .mega-link-content {
+      flex: 1;
+      strong {
+        display: block;
+        font-family: var(--font-heading);
+        font-size: 0.95rem; font-weight: 500;
+        color: #1a1a1a;
+        transition: color 0.2s;
+      }
+      small {
+        display: block;
+        font-family: var(--font-body);
+        font-size: 0.68rem; color: #999;
+        margin-top: 1px; letter-spacing: 0.02em;
+      }
+    }
+
+    .mega-badge {
+      flex-shrink: 0;
+      font-family: var(--font-body);
+      font-size: 0.55rem; font-weight: 800;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 3px 7px; border-radius: 4px;
+
+      &--new { background: #C9A84C; color: #1a1a1a; }
+      &--sale { background: #dc3232; color: #fff; }
+    }
+
+    .mega-arrow {
+      flex-shrink: 0; color: #C9A84C;
+      opacity: 0; transform: translateX(-4px);
+      transition: all 0.2s;
+    }
+
+    .mega-view-all {
+      display: inline-flex; align-items: center;
+      margin-top: 1rem;
+      font-family: var(--font-body);
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: #C9A84C; text-decoration: none;
+      padding: 0.5rem 1rem;
+      border: 1.5px solid rgba(201,168,76,0.35);
+      border-radius: 8px;
+      transition: all 0.2s;
+
+      &:hover {
+        background: #C9A84C; color: #1a1a1a;
+        border-color: #C9A84C;
+      }
+    }
+
+    /* Featured image col */
     .mega-featured {
       display: block; position: relative;
-      height: 100%; min-height: 260px;
+      height: 100%; min-height: 280px;
       overflow: hidden; text-decoration: none;
 
       img {
         width: 100%; height: 100%;
         object-fit: cover; object-position: center top;
-        transition: transform 0.5s ease;
+        transition: transform 0.6s ease;
       }
 
-      &:hover img { transform: scale(1.05); }
+      &:hover img { transform: scale(1.06); }
 
       &-label {
         position: absolute; bottom: 0; left: 0; right: 0;
-        background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
-        padding: 2rem 1.25rem 1.25rem;
-        display: flex; flex-direction: column; gap: 0.25rem;
+        background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.3) 60%, transparent 100%);
+        padding: 2.5rem 1.5rem 1.5rem;
+        display: flex; flex-direction: column; gap: 0.375rem;
 
         span {
           font-family: var(--font-body);
-          font-size: 0.65rem; font-weight: 600;
-          letter-spacing: 0.15em; text-transform: uppercase;
-          color: rgba(255,255,255,0.75);
+          font-size: 0.6rem; font-weight: 700;
+          letter-spacing: 0.2em; text-transform: uppercase;
+          color: rgba(201,168,76,0.8);
         }
 
         strong {
           font-family: var(--font-heading);
-          font-size: 1.1rem; font-weight: 500;
-          color: #C9A84C;
+          font-size: 1.25rem; font-weight: 500;
+          color: #fff; letter-spacing: 0.02em;
         }
       }
     }
