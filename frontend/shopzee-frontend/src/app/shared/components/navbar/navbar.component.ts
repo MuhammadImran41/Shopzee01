@@ -336,6 +336,15 @@ import { trigger, transition, style, animate } from '@angular/animations';
     .logo-svg {
       width: 170px;
       height: 44px;
+
+      /* Default: white text on transparent navbar */
+      text { fill: #fff; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4)); }
+    }
+
+    /* Scrolled: dark text */
+    .navbar.scrolled .logo-svg text {
+      fill: #1A1A1A;
+      filter: none;
     }
 
     .navbar__nav {
@@ -355,11 +364,12 @@ import { trigger, transition, style, animate } from '@angular/animations';
 
     .nav-link {
       font-family: var(--font-body);
-      font-size: var(--text-xs);
-      font-weight: 500;
+      font-size: 0.8rem;
+      font-weight: 600;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: var(--black);
+      color: #fff;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.5);
       text-decoration: none;
       position: relative;
       padding-bottom: 4px;
@@ -371,19 +381,35 @@ import { trigger, transition, style, animate } from '@angular/animations';
         bottom: 0;
         left: 0;
         width: 0;
-        height: 1px;
+        height: 2px;
         background: var(--gold);
         transition: width var(--transition-base);
       }
 
       &:hover, &.active {
-        color: var(--gold-dark);
+        color: var(--gold);
+        text-shadow: none;
         &::after { width: 100%; }
       }
 
       &--sale {
+        color: #C9A84C;
+        font-weight: 700;
+        text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+      }
+    }
+
+    /* Scrolled state nav links — dark text */
+    .navbar.scrolled .nav-link {
+      color: var(--black);
+      text-shadow: none;
+
+      &:hover, &.active {
         color: var(--gold-dark);
-        font-weight: 600;
+      }
+
+      &--sale {
+        color: var(--gold-dark);
       }
     }
 
@@ -399,16 +425,29 @@ import { trigger, transition, style, animate } from '@angular/animations';
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       background: none;
       border: none;
       cursor: pointer;
-      color: var(--black);
+      color: #fff;
+      filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
       border-radius: 50%;
       transition: all var(--transition-base);
       text-decoration: none;
       flex-shrink: 0;
+
+      &:hover {
+        color: var(--gold);
+        filter: none;
+        background: rgba(201,168,76,0.12);
+      }
+    }
+
+    /* Scrolled state icons — dark */
+    .navbar.scrolled .action-btn {
+      color: var(--black);
+      filter: none;
 
       &:hover {
         color: var(--gold);
@@ -687,16 +726,31 @@ import { trigger, transition, style, animate } from '@angular/animations';
       display: flex;
       align-items: center;
       gap: 0.35rem;
-      border: 1px solid rgba(201,168,76,0.3) !important;
+      border: 1px solid rgba(255,255,255,0.6) !important;
       border-radius: 20px !important;
       padding: 0.3rem 0.75rem !important;
-      font-size: 0.65rem !important;
+      font-size: 0.7rem !important;
       font-weight: 700 !important;
       letter-spacing: 0.1em !important;
       text-transform: uppercase !important;
       white-space: nowrap !important;
       width: auto !important;
       height: auto !important;
+      color: #fff !important;
+      filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4));
+
+      &:hover {
+        background: rgba(201,168,76,0.15) !important;
+        border-color: var(--gold) !important;
+        color: var(--gold) !important;
+        filter: none;
+      }
+    }
+
+    .navbar.scrolled .login-btn {
+      border: 1px solid rgba(201,168,76,0.3) !important;
+      color: var(--black) !important;
+      filter: none;
 
       &:hover {
         background: rgba(201,168,76,0.1) !important;
@@ -706,7 +760,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
     }
 
     .login-text {
-      font-size: 0.65rem;
+      font-size: 0.7rem;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
