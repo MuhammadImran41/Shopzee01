@@ -163,18 +163,19 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.initScrollReveal();
 
-    // Defer video loading until page interactive (2 seconds after load)
     setTimeout(() => {
+      if (!this.videoEnabled()) return;
+
+      // Hero video: ensure autoplay
       const heroVid = this.heroVideoRef?.nativeElement;
-      if (heroVid && heroVid.readyState === 0) {
-        heroVid.load();
+      if (heroVid) {
         heroVid.play().catch(() => {});
       }
 
-      // Below-fold videos: lazy load on viewport
+      // Below-fold videos: lazy play via IntersectionObserver
       this.lazyPlayVideo(this.menVideoRef,    0.25);
       this.lazyPlayVideo(this.bannerVideoRef, 0.20);
-    }, 2000);
+    }, 100);
   }
 
   ngOnDestroy() {
