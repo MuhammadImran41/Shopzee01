@@ -1,0 +1,469 @@
+<!-- ============================================================ -->
+<!-- ============================================================ -->
+<!-- HERO SECTION — Luxury Split Layout -->
+<!-- ============================================================ -->
+<section class="hero" aria-label="Hero">
+
+  <!-- Background: Video (fast connection) OR Poster Image (slow connection) -->
+  <div class="hero__video-wrap">
+    @if (videoEnabled()) {
+      <!-- Fast connection: real video with smart buffer detection -->
+      <video
+        #heroVideo
+        class="hero__video"
+        muted loop playsinline
+        preload="none"
+        poster="assets/images/women/women-3.png"
+        aria-hidden="true"
+      >
+        <source src="assets/videos/hero-men-1.mp4" type="video/mp4"/>
+      </video>
+    } @else {
+      <!-- Slow connection: just the poster image, zero bandwidth wasted -->
+      <img
+        src="assets/images/women/women-3.png"
+        alt="Shopzee luxury collection"
+        class="hero__video hero__poster"
+        fetchpriority="high"
+      />
+    }
+    <div class="hero__overlay"></div>
+  </div>
+
+  <!-- Content -->
+  <div class="hero__content">
+    <div class="hero__content-inner">
+
+      <!-- Left: Text Block -->
+      <div class="hero__text">
+
+        <!-- Top Label -->
+        <div class="hero__label animate-fade-in-up">
+          <span class="hero__label-line"></span>
+          <span class="hero__label-text">New Collection 2026</span>
+        </div>
+
+        <!-- Main Heading -->
+        <h1 class="hero__title animate-fade-in-up" style="animation-delay:0.2s">
+          <span class="hero__title-line1">Timeless</span>
+          <em class="hero__title-em">Elegance</em>
+        </h1>
+
+        <!-- Gold Ornament -->
+        <div class="hero__ornament animate-fade-in-up" style="animation-delay:0.35s">
+          <span class="hero__ornament-line"></span>
+          <svg viewBox="0 0 20 20" class="hero__ornament-diamond" aria-hidden="true">
+            <path d="M10 1l3 9h6l-5 4 2 6-6-4-6 4 2-6-5-4h6z" fill="#C9A84C"/>
+          </svg>
+          <span class="hero__ornament-line"></span>
+        </div>
+
+        <!-- Subtitle -->
+        <p class="hero__subtitle animate-fade-in-up" style="animation-delay:0.45s">
+          Premium Pakistani fashion — handcrafted luxury<br/>
+          for the modern wardrobe
+        </p>
+
+        <!-- CTAs -->
+        <div class="hero__cta animate-fade-in-up" style="animation-delay:0.6s">
+          <a routerLink="/women" class="hero__btn hero__btn--primary">
+            <span>Shop Women</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </a>
+          <a routerLink="/men" class="hero__btn hero__btn--outline">
+            <span>Shop Men</span>
+          </a>
+        </div>
+
+        <!-- Trust Badges -->
+        <div class="hero__badges animate-fade-in-up" style="animation-delay:0.75s">
+          <span class="hero__badge">✦ Free Shipping</span>
+          <span class="hero__badge-sep">|</span>
+          <span class="hero__badge">✦ Premium Quality</span>
+          <span class="hero__badge-sep">|</span>
+          <span class="hero__badge">✦ Easy Returns</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div class="hero__scroll" aria-hidden="true">
+    <span class="hero__scroll-text">Scroll</span>
+    <div class="hero__scroll-line"></div>
+  </div>
+
+</section>
+<!-- FEATURES STRIP -->
+<!-- ============================================================ -->
+<section class="features-strip" aria-label="Store features">
+  <div class="container">
+    <div class="features-grid">
+      <div class="feature-item reveal">
+        <app-icon name="truck" [size]="28" class="feature-icon"/>
+        <div>
+          <h3 class="feature-title">Free Shipping</h3>
+          <p class="feature-desc">On orders above PKR 5,000</p>
+        </div>
+      </div>
+      <div class="feature-item reveal" style="transition-delay:0.1s">
+        <app-icon name="refresh" [size]="28" class="feature-icon"/>
+        <div>
+          <h3 class="feature-title">Easy Returns</h3>
+          <p class="feature-desc">7 days hassle-free returns</p>
+        </div>
+      </div>
+      <div class="feature-item reveal" style="transition-delay:0.2s">
+        <app-icon name="shield" [size]="28" class="feature-icon"/>
+        <div>
+          <h3 class="feature-title">Secure Payment</h3>
+          <p class="feature-desc">100% secure transactions</p>
+        </div>
+      </div>
+      <div class="feature-item reveal" style="transition-delay:0.3s">
+        <app-icon name="star-filled" [size]="28" class="feature-icon"/>
+        <div>
+          <h3 class="feature-title">Premium Quality</h3>
+          <p class="feature-desc">Finest fabrics & craftsmanship</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- WOMEN'S COLLECTION SECTION -->
+<!-- ============================================================ -->
+<section class="collection-section section" aria-labelledby="women-heading">
+  <div class="container">
+    <!-- Women's Banner — 4 image mosaic -->
+    <div class="collection-mosaic collection-mosaic--women reveal">
+      <div class="mosaic-main">
+        <img
+          src="assets/images/women/women-3.png"
+          alt="Ivory gold bridal luxury"
+          loading="lazy"
+          decoding="async"
+          class="mosaic-img"
+        />
+      </div>
+      <div class="mosaic-side">
+        <div class="mosaic-cell">
+          <img src="assets/images/women/women-1.png" alt="Sage embroidered suit" loading="lazy" decoding="async" class="mosaic-img"/>
+        </div>
+        <div class="mosaic-cell">
+          <img src="assets/images/women/women-5.png" alt="Cream pearl suit" loading="lazy" decoding="async" class="mosaic-img"/>
+        </div>
+        <div class="mosaic-cell">
+          <img src="assets/images/women/women-6.png" alt="Rose gold gown" loading="lazy" decoding="async" class="mosaic-img"/>
+        </div>
+      </div>
+      <div class="mosaic-overlay">
+        <span class="collection-banner__label">Women's Collection</span>
+        <h2 class="collection-banner__title" id="women-heading">Her Story<br/>Begins Here</h2>
+        <a routerLink="/women" class="btn btn-outline">Explore Collection</a>
+      </div>
+    </div>
+
+    <!-- Section Header -->
+    <div class="section-header reveal" style="margin-top:4rem">
+      <span class="section-label">Featured</span>
+      <h2 class="section-title">Women's Picks</h2>
+      <div class="gold-divider">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z" fill="#C9A84C"/></svg>
+      </div>
+      <p class="section-desc">Curated elegance — from festive suits to bridal luxury</p>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="product-grid">
+      @for (product of womenProducts(); track product.id) {
+        <article class="product-card reveal" [style.transition-delay]="($index * 0.08) + 's'">
+          @if (product.isNew) {
+            <span class="card-badge badge-new">New</span>
+          }
+          @if (product.discount) {
+            <span class="card-badge badge-sale" style="top:2.5rem">-{{ product.discount }}%</span>
+          }
+          <button
+            class="card-wishlist"
+            [class.active]="isWishlisted(product.id)"
+            (click)="toggleWishlist(product)"
+            [attr.aria-label]="isWishlisted(product.id) ? 'Remove from wishlist' : 'Add to wishlist'"
+          >
+            <app-icon [name]="isWishlisted(product.id) ? 'heart-filled' : 'heart'" [size]="18"/>
+          </button>
+          <a [routerLink]="['/product', product.id]" class="card-image-wrap">
+            <img
+              [src]="product.images[0]"
+              [alt]="product.name"
+              loading="lazy"
+              decoding="async"
+            />
+            <div class="card-overlay">
+              <button class="btn btn-primary w-full" (click)="$event.preventDefault(); addToCart(product)">
+                <app-icon name="cart" [size]="16"/> Quick Add
+              </button>
+            </div>
+          </a>
+          <div class="card-body">
+            <span class="card-category">{{ product.subCategory }}</span>
+            <h3 class="card-title">
+              <a [routerLink]="['/product', product.id]">{{ product.name }}</a>
+            </h3>
+            <div class="card-price-wrap">
+              <span class="card-price">{{ formatPrice(product.price) }}</span>
+              @if (product.originalPrice) {
+                <span class="card-price-original">{{ formatPrice(product.originalPrice) }}</span>
+              }
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+
+    <div class="section-cta text-center reveal" style="margin-top:3rem">
+      <a routerLink="/women" class="btn btn-dark">View All Women's</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- MEN'S VIDEO SECTION — lazy loaded via IntersectionObserver -->
+<!-- ============================================================ -->
+<section class="men-video-section" aria-labelledby="men-video-heading">
+  <div class="men-video-inner">
+    <div class="men-video-wrap reveal-left">
+      @if (videoEnabled()) {
+        <video
+          #menVideo
+          class="men-video"
+          muted loop playsinline
+          preload="none"
+          poster="assets/images/men/men-2.png"
+          aria-label="Men's suit collection video"
+        >
+          <source src="assets/videos/men-suit.mp4" type="video/mp4"/>
+        </video>
+      } @else {
+        <img
+          src="assets/images/men/men-2.png"
+          alt="Men's collection"
+          class="men-video men-poster"
+        />
+      }
+      <div class="men-video-overlay"></div>
+    </div>
+    <div class="men-video-content reveal-right">
+      <span class="section-label">Men's Collection</span>
+      <h2 class="men-video-title" id="men-video-heading">
+        Crafted for<br/>the Modern Man
+      </h2>
+      <div class="ornament-divider">
+        <div class="line"></div>
+        <div class="diamond"></div>
+        <div class="line"></div>
+      </div>
+      <p class="men-video-desc">
+        Premium shalwar kameez and formal wear that speaks of heritage, refined for today's gentleman.
+        From crisp cotton to luxurious silk blends.
+      </p>
+      <ul class="men-features">
+        <li><app-icon name="check" [size]="16" class="check-icon"/> Premium Fabrics</li>
+        <li><app-icon name="check" [size]="16" class="check-icon"/> Expert Tailoring</li>
+        <li><app-icon name="check" [size]="16" class="check-icon"/> Custom Sizes Available</li>
+      </ul>
+      <a routerLink="/men" class="btn btn-primary">Shop Men's Collection</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- MEN'S PRODUCT GRID -->
+<!-- ============================================================ -->
+<section class="collection-section section" aria-labelledby="men-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">Explore</span>
+      <h2 class="section-title" id="men-heading">Men's Picks</h2>
+      <div class="gold-divider">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z" fill="#C9A84C"/></svg>
+      </div>
+      <p class="section-desc">Classic cuts, premium fabrics, timeless style</p>
+    </div>
+    <div class="product-grid">
+      @for (product of menProducts(); track product.id) {
+        <article class="product-card reveal" [style.transition-delay]="($index * 0.08) + 's'">
+          @if (product.isNew) {
+            <span class="card-badge badge-new">New</span>
+          }
+          <button
+            class="card-wishlist"
+            [class.active]="isWishlisted(product.id)"
+            (click)="toggleWishlist(product)"
+            [attr.aria-label]="isWishlisted(product.id) ? 'Remove from wishlist' : 'Add to wishlist'"
+          >
+            <app-icon [name]="isWishlisted(product.id) ? 'heart-filled' : 'heart'" [size]="18"/>
+          </button>
+          <a [routerLink]="['/product', product.id]" class="card-image-wrap">
+            <img [src]="product.images[0]" [alt]="product.name" loading="lazy" decoding="async"/>
+            <div class="card-overlay">
+              <button class="btn btn-primary w-full" (click)="$event.preventDefault(); addToCart(product)">
+                <app-icon name="cart" [size]="16"/> Quick Add
+              </button>
+            </div>
+          </a>
+          <div class="card-body">
+            <span class="card-category">{{ product.subCategory }}</span>
+            <h3 class="card-title">
+              <a [routerLink]="['/product', product.id]">{{ product.name }}</a>
+            </h3>
+            <div class="card-price-wrap">
+              <span class="card-price">{{ formatPrice(product.price) }}</span>
+              @if (product.originalPrice) {
+                <span class="card-price-original">{{ formatPrice(product.originalPrice) }}</span>
+              }
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+    <div class="section-cta text-center reveal" style="margin-top:3rem">
+      <a routerLink="/men" class="btn btn-dark">View All Men's</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- NEW ARRIVALS MARQUEE -->
+<!-- ============================================================ -->
+<section class="marquee-section" aria-label="New arrivals showcase">
+  <div class="marquee-header reveal">
+    <span class="section-label">Just Landed</span>
+    <h2 class="section-title" style="font-size:var(--text-4xl)">New Arrivals</h2>
+  </div>
+  <div class="marquee-track" aria-hidden="true">
+    <div class="marquee-inner">
+      @for (product of allProductsForMarquee(); track product.id) {
+        <div class="marquee-item">
+          <img [src]="product.images[0]" [alt]="product.name" loading="lazy" decoding="async"/>
+          <div class="marquee-item-info">
+            <span>{{ product.name }}</span>
+            <span class="marquee-price">{{ formatPrice(product.price) }}</span>
+          </div>
+        </div>
+      }
+      @for (product of allProductsForMarquee(); track 'dup-' + product.id) {
+        <div class="marquee-item" aria-hidden="true">
+          <img [src]="product.images[0]" alt="" loading="lazy" decoding="async"/>
+          <div class="marquee-item-info">
+            <span>{{ product.name }}</span>
+            <span class="marquee-price">{{ formatPrice(product.price) }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIDEO BANNER #3 — lazy loaded -->
+<!-- ============================================================ -->
+<section class="video-banner" aria-label="Collection video banner">
+  @if (videoEnabled()) {
+    <video
+      #bannerVideo
+      class="video-banner__video"
+      muted loop playsinline
+      preload="none"
+      poster="assets/images/women/women-7.png"
+      aria-hidden="true"
+    >
+      <source src="assets/videos/hero-men-2.mp4" type="video/mp4"/>
+    </video>
+  } @else {
+    <img
+      src="assets/images/women/women-7.png"
+      alt="New Collection 2026"
+      class="video-banner__video video-banner__poster"
+    />
+  }
+  <div class="video-banner__overlay"></div>
+  <div class="video-banner__content reveal">
+    <span class="video-banner__label">Limited Edition</span>
+    <h2 class="video-banner__title">New Collection<br/><em>2026</em></h2>
+    <p class="video-banner__desc">Exclusive designs. Limited pieces. Infinite elegance.</p>
+    <div class="flex-center gap-4" style="margin-top:2rem">
+      <a routerLink="/women" class="btn btn-primary">Shop Women</a>
+      <a routerLink="/men" class="btn btn-outline" style="color:var(--cream);border-color:var(--cream)">Shop Men</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- TESTIMONIALS -->
+<!-- ============================================================ -->
+<section class="testimonials section" aria-labelledby="testimonials-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">Reviews</span>
+      <h2 class="section-title" id="testimonials-heading">What Our Customers Say</h2>
+      <div class="gold-divider">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z" fill="#C9A84C"/></svg>
+      </div>
+    </div>
+    <div class="testimonials-grid">
+      @for (t of testimonials; track t.name) {
+        <div class="testimonial-card reveal" [style.transition-delay]="($index * 0.15) + 's'">
+          <div class="testimonial-stars">
+            @for (s of stars(t.rating); track $index) {
+              <app-icon name="star-filled" [size]="16" class="star-icon"/>
+            }
+          </div>
+          <p class="testimonial-text">"{{ t.text }}"</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">{{ t.name[0] }}</div>
+            <div>
+              <div class="author-name">{{ t.name }}</div>
+              <div class="author-location">{{ t.location }}</div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- NEWSLETTER -->
+<!-- ============================================================ -->
+<section class="newsletter-section" aria-labelledby="newsletter-heading">
+  <div class="newsletter-bg"></div>
+  <div class="container">
+    <div class="newsletter-inner reveal">
+      <div class="newsletter-icon">
+        <app-icon name="mail" [size]="40" class="nl-icon"/>
+      </div>
+      <h2 class="newsletter-title" id="newsletter-heading">Join the Shopzee Family</h2>
+      <p class="newsletter-desc">
+        Subscribe for exclusive offers, new arrivals, and style inspiration straight to your inbox.
+      </p>
+      <form class="nl-form" (submit)="$event.preventDefault()">
+        <div class="nl-input-wrap">
+          <input
+            type="email"
+            placeholder="Enter your email address"
+            class="nl-input"
+            aria-label="Email address"
+            required
+          />
+          <button type="submit" class="btn btn-primary nl-btn">Subscribe</button>
+        </div>
+        <p class="nl-privacy">No spam. Unsubscribe anytime. We respect your privacy.</p>
+      </form>
+    </div>
+  </div>
+</section>

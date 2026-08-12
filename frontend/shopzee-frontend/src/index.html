@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Shopzee — Premium Pakistani Fashion</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Shopzee — Premium men's and women's Pakistani fashion. Luxury embroidered suits, shalwar kameez, and formal wear.">
+  <meta name="theme-color" content="#C9A84C">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- DNS prefetch for external origins -->
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+
+  <!-- Preconnect to font origins — reduces connection latency -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!--
+    LCP image preload — men-1.png is the video poster (first visible image).
+    Preloading it means the hero appears instantly even before video loads.
+  -->
+  <link
+    rel="preload"
+    as="image"
+    href="assets/images/men/men-1.png"
+    fetchpriority="high"
+  >
+
+  <!--
+    Fonts: swap display so text is visible immediately with fallback font,
+    then swaps to custom font when loaded. Prevents invisible text (FCP issue).
+    Only load weights actually used on critical path.
+  -->
+  <link
+    rel="preload"
+    as="style"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap"
+    onload="this.onload=null;this.rel='stylesheet'"
+  >
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    >
+  </noscript>
+
+  <base href="/">
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>
