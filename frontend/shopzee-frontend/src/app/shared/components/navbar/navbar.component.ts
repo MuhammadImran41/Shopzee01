@@ -84,70 +84,80 @@ import { trigger, transition, style, animate } from '@angular/animations';
                 </svg>
               </a>
               <div class="mega-menu">
-                <!-- Top promo bar -->
                 <div class="mega-promo-bar">
                   <span>✦ Free shipping on orders above PKR 5,000</span>
                   <a routerLink="/women" [queryParams]="{tag:'new'}">View New Arrivals →</a>
                 </div>
                 <div class="mega-inner">
-                  <!-- Col 1: Categories -->
                   <div class="mega-col">
                     <p class="mega-heading">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
                       Shop By Category
                     </p>
                     <ul class="mega-links">
                       <li><a routerLink="/women" [queryParams]="{sub:'suits'}" class="mega-link">
-                        <span class="mega-link-icon">🌸</span>
-                        <span class="mega-link-content"><strong>Embroidered Suits</strong><small>Luxury hand-crafted</small></span>
+                        <span class="mega-link-icon">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 2C6 2 4 7 4 12v8h16v-8c0-5-2-10-8-10z"/><path d="M8 6c0 2 2 4 4 4s4-2 4-4"/></svg>
+                        </span>
+                        <span class="mega-link-content"><strong>Embroidered Suits</strong></span>
                       </a></li>
                       <li><a routerLink="/women" [queryParams]="{sub:'kameez'}" class="mega-link">
-                        <span class="mega-link-icon">👗</span>
-                        <span class="mega-link-content"><strong>Shalwar Kameez</strong><small>Classic elegance</small></span>
+                        <span class="mega-link-icon">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 3L4 7v4l8-2 8 2V7z"/><path d="M4 11v9h16v-9"/></svg>
+                        </span>
+                        <span class="mega-link-content"><strong>Shalwar Kameez</strong></span>
                       </a></li>
                       <li><a routerLink="/women" [queryParams]="{sub:'formal'}" class="mega-link">
-                        <span class="mega-link-icon">✨</span>
-                        <span class="mega-link-content"><strong>Formal Wear</strong><small>Office & events</small></span>
+                        <span class="mega-link-icon">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                        </span>
+                        <span class="mega-link-content"><strong>Formal Wear</strong></span>
                       </a></li>
                       <li><a routerLink="/women" [queryParams]="{sub:'bridal'}" class="mega-link">
-                        <span class="mega-link-icon">💍</span>
-                        <span class="mega-link-content"><strong>Bridal Collection</strong><small>Wedding season</small></span>
+                        <span class="mega-link-icon">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </span>
+                        <span class="mega-link-content"><strong>Bridal Collection</strong></span>
                       </a></li>
                       <li><a routerLink="/women" [queryParams]="{sub:'casual'}" class="mega-link">
-                        <span class="mega-link-icon">🌿</span>
-                        <span class="mega-link-content"><strong>Casual Wear</strong><small>Everyday comfort</small></span>
+                        <span class="mega-link-icon">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                        </span>
+                        <span class="mega-link-content"><strong>Casual Wear</strong></span>
                       </a></li>
                     </ul>
                   </div>
-                  <!-- Col 2: Collections -->
                   <div class="mega-col">
                     <p class="mega-heading">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2.5" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                       Collections
                     </p>
-                    <ul class="mega-links mega-links--collections">
+                    <ul class="mega-links">
                       <li><a routerLink="/women" [queryParams]="{tag:'new'}" class="mega-link mega-link--featured">
                         <span class="mega-badge mega-badge--new">NEW</span>
-                        <span class="mega-link-content"><strong>New Arrivals</strong><small>Fresh this season</small></span>
-                        <svg class="mega-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        <span class="mega-link-content"><strong>New Arrivals</strong></span>
+                        <svg class="mega-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                       </a></li>
                       <li><a routerLink="/women" [queryParams]="{tag:'sale'}" class="mega-link mega-link--sale">
                         <span class="mega-badge mega-badge--sale">SALE</span>
-                        <span class="mega-link-content"><strong>Sale</strong><small>Up to 50% off</small></span>
-                        <svg class="mega-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        <span class="mega-link-content"><strong>Sale</strong></span>
+                        <svg class="mega-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                       </a></li>
                       <li><a routerLink="/women" [queryParams]="{tag:'bestseller'}" class="mega-link">
-                        <span class="mega-link-icon">🏆</span>
-                        <span class="mega-link-content"><strong>Best Sellers</strong><small>Customer favourites</small></span>
+                        <span class="mega-link-icon">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        </span>
+                        <span class="mega-link-content"><strong>Best Sellers</strong></span>
                       </a></li>
                       <li><a routerLink="/women" [queryParams]="{tag:'luxury'}" class="mega-link">
-                        <span class="mega-link-icon">👑</span>
-                        <span class="mega-link-content"><strong>Luxury Edit</strong><small>Premium picks</small></span>
+                        <span class="mega-link-icon">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                        </span>
+                        <span class="mega-link-content"><strong>Luxury Edit</strong></span>
                       </a></li>
                     </ul>
                     <a routerLink="/women" class="mega-view-all">View All Women's →</a>
                   </div>
-                  <!-- Col 3: Image -->
                   <div class="mega-col mega-col--image">
                     <a routerLink="/women" class="mega-featured">
                       <img src="assets/images/women/women-3.png" alt="Women's Collection" loading="lazy"/>
@@ -177,55 +187,69 @@ import { trigger, transition, style, animate } from '@angular/animations';
                 <div class="mega-inner">
                   <div class="mega-col">
                     <p class="mega-heading">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
                       Shop By Category
                     </p>
                     <ul class="mega-links">
                       <li><a routerLink="/men" [queryParams]="{sub:'shalwar'}" class="mega-link">
-                        <span class="mega-link-icon">👔</span>
-                        <span class="mega-link-content"><strong>Shalwar Kameez</strong><small>Heritage style</small></span>
+                        <span class="mega-link-icon">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 3L4 7v4l8-2 8 2V7z"/><path d="M4 11v9h16v-9"/></svg>
+                        </span>
+                        <span class="mega-link-content"><strong>Shalwar Kameez</strong></span>
                       </a></li>
                       <li><a routerLink="/men" [queryParams]="{sub:'kurta'}" class="mega-link">
-                        <span class="mega-link-icon">🎽</span>
-                        <span class="mega-link-content"><strong>Kurta Collection</strong><small>Modern classics</small></span>
+                        <span class="mega-link-icon">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 2C6 2 4 7 4 12v8h16v-8c0-5-2-10-8-10z"/><path d="M9 2l3 4 3-4"/></svg>
+                        </span>
+                        <span class="mega-link-content"><strong>Kurta Collection</strong></span>
                       </a></li>
                       <li><a routerLink="/men" [queryParams]="{sub:'formal'}" class="mega-link">
-                        <span class="mega-link-icon">💼</span>
-                        <span class="mega-link-content"><strong>Formal Wear</strong><small>Sharp & refined</small></span>
+                        <span class="mega-link-icon">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/></svg>
+                        </span>
+                        <span class="mega-link-content"><strong>Formal Wear</strong></span>
                       </a></li>
                       <li><a routerLink="/men" [queryParams]="{sub:'sherwani'}" class="mega-link">
-                        <span class="mega-link-icon">✨</span>
-                        <span class="mega-link-content"><strong>Sherwani</strong><small>Wedding & festive</small></span>
+                        <span class="mega-link-icon">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </span>
+                        <span class="mega-link-content"><strong>Sherwani</strong></span>
                       </a></li>
                       <li><a routerLink="/men" [queryParams]="{sub:'casual'}" class="mega-link">
-                        <span class="mega-link-icon">🌿</span>
-                        <span class="mega-link-content"><strong>Casual Wear</strong><small>Relaxed comfort</small></span>
+                        <span class="mega-link-icon">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                        </span>
+                        <span class="mega-link-content"><strong>Casual Wear</strong></span>
                       </a></li>
                     </ul>
                   </div>
                   <div class="mega-col">
                     <p class="mega-heading">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2.5" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                       Collections
                     </p>
-                    <ul class="mega-links mega-links--collections">
+                    <ul class="mega-links">
                       <li><a routerLink="/men" [queryParams]="{tag:'new'}" class="mega-link mega-link--featured">
                         <span class="mega-badge mega-badge--new">NEW</span>
-                        <span class="mega-link-content"><strong>New Arrivals</strong><small>Fresh this season</small></span>
-                        <svg class="mega-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        <span class="mega-link-content"><strong>New Arrivals</strong></span>
+                        <svg class="mega-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                       </a></li>
                       <li><a routerLink="/men" [queryParams]="{tag:'sale'}" class="mega-link mega-link--sale">
                         <span class="mega-badge mega-badge--sale">SALE</span>
-                        <span class="mega-link-content"><strong>Sale</strong><small>Up to 50% off</small></span>
-                        <svg class="mega-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        <span class="mega-link-content"><strong>Sale</strong></span>
+                        <svg class="mega-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                       </a></li>
                       <li><a routerLink="/men" [queryParams]="{tag:'bestseller'}" class="mega-link">
-                        <span class="mega-link-icon">🏆</span>
-                        <span class="mega-link-content"><strong>Best Sellers</strong><small>Customer favourites</small></span>
+                        <span class="mega-link-icon">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        </span>
+                        <span class="mega-link-content"><strong>Best Sellers</strong></span>
                       </a></li>
                       <li><a routerLink="/men" [queryParams]="{tag:'eid'}" class="mega-link">
-                        <span class="mega-link-icon">🌙</span>
-                        <span class="mega-link-content"><strong>Eid Special</strong><small>Festive collection</small></span>
+                        <span class="mega-link-icon">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 3a6 6 0 009 9 9 9 0 11-9-9z"/></svg>
+                        </span>
+                        <span class="mega-link-content"><strong>Eid Special</strong></span>
                       </a></li>
                     </ul>
                     <a routerLink="/men" class="mega-view-all">View All Men's →</a>
@@ -649,14 +673,24 @@ import { trigger, transition, style, animate } from '@angular/animations';
     }
 
     .mega-link-icon {
-      font-size: 1.25rem; flex-shrink: 0;
-      width: 36px; height: 36px;
+      width: 32px; height: 32px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
-      background: rgba(201,168,76,0.08);
+      border: 1px solid rgba(201,168,76,0.2);
       border-radius: 8px;
-      transition: background 0.2s;
+      background: rgba(201,168,76,0.05);
+      transition: all 0.2s;
 
-      .mega-link:hover & { background: rgba(201,168,76,0.14); }
+      svg {
+        width: 15px; height: 15px;
+        stroke: #b8964a;
+        transition: stroke 0.2s;
+      }
+
+      .mega-link:hover & {
+        background: rgba(201,168,76,0.12);
+        border-color: rgba(201,168,76,0.4);
+        svg { stroke: #C9A84C; }
+      }
     }
 
     .mega-link-content {
@@ -667,12 +701,6 @@ import { trigger, transition, style, animate } from '@angular/animations';
         font-size: 0.95rem; font-weight: 500;
         color: #1a1a1a;
         transition: color 0.2s;
-      }
-      small {
-        display: block;
-        font-family: var(--font-body);
-        font-size: 0.68rem; color: #999;
-        margin-top: 1px; letter-spacing: 0.02em;
       }
     }
 
