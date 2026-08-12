@@ -1,20 +1,16 @@
 <!-- ============================================================ -->
-<!-- ============================================================ -->
 <!-- HERO SECTION — Luxury Split Layout -->
 <!-- ============================================================ -->
 <section class="hero" aria-label="Hero">
 
-  <!-- Background Video -->
+  <!-- Background Image -->
   <div class="hero__video-wrap">
-    <video
-      #heroVideo
+    <img
+      src="assets/images/women/women-1.png"
+      alt="Hero banner"
       class="hero__video"
-      autoplay muted loop playsinline
-      preload="auto"
-      aria-hidden="true"
-    >
-      <source src="assets/videos/hero-main.mp4" type="video/mp4"/>
-    </video>
+      fetchpriority="high"
+    />
     <div class="hero__overlay"></div>
   </div>
 
@@ -85,6 +81,8 @@
   </div>
 
 </section>
+
+<!-- ============================================================ -->
 <!-- FEATURES STRIP -->
 <!-- ============================================================ -->
 <section class="features-strip" aria-label="Store features">
@@ -220,29 +218,18 @@
 </section>
 
 <!-- ============================================================ -->
-<!-- MEN'S VIDEO SECTION — lazy loaded via IntersectionObserver -->
+<!-- MEN'S IMAGE SECTION -->
 <!-- ============================================================ -->
 <section class="men-video-section" aria-labelledby="men-video-heading">
   <div class="men-video-inner">
     <div class="men-video-wrap reveal-left">
-      @if (videoEnabled()) {
-        <video
-          #menVideo
-          class="men-video"
-          muted loop playsinline
-          preload="none"
-          poster="assets/images/men/men-2.png"
-          aria-label="Men's suit collection video"
-        >
-          <source src="assets/videos/men-suit.mp4" type="video/mp4"/>
-        </video>
-      } @else {
-        <img
-          src="assets/images/men/men-2.png"
-          alt="Men's collection"
-          class="men-video men-poster"
-        />
-      }
+      <img
+        src="assets/images/men/men-2.png"
+        alt="Men's collection"
+        class="men-video"
+        loading="lazy"
+        decoding="async"
+      />
       <div class="men-video-overlay"></div>
     </div>
     <div class="men-video-content reveal-right">
@@ -358,27 +345,16 @@
 </section>
 
 <!-- ============================================================ -->
-<!-- VIDEO BANNER #3 — lazy loaded -->
+<!-- IMAGE BANNER #3 -->
 <!-- ============================================================ -->
-<section class="video-banner" aria-label="Collection video banner">
-  @if (videoEnabled()) {
-    <video
-      #bannerVideo
-      class="video-banner__video"
-      muted loop playsinline
-      preload="none"
-      poster="assets/images/women/women-7.png"
-      aria-hidden="true"
-    >
-      <source src="assets/videos/hero-men-2.mp4" type="video/mp4"/>
-    </video>
-  } @else {
-    <img
-      src="assets/images/women/women-7.png"
-      alt="New Collection 2026"
-      class="video-banner__video video-banner__poster"
-    />
-  }
+<section class="video-banner" aria-label="Collection banner">
+  <img
+    src="assets/images/women/women-7.png"
+    alt="New Collection 2026"
+    class="video-banner__video"
+    loading="lazy"
+    decoding="async"
+  />
   <div class="video-banner__overlay"></div>
   <div class="video-banner__content reveal">
     <span class="video-banner__label">Limited Edition</span>
