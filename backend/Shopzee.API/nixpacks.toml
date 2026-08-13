@@ -1,8 +1,8 @@
-﻿[phases.setup]
+[phases.setup]
 nixPkgs = ["dotnet-sdk_9"]
 
 [phases.build]
-cmds = ["dotnet publish -c Release -o /app/publish"]
+cmds = ["dotnet publish Shopzee.API.csproj -c Release -o /app/publish"]
 
 [start]
 cmd = "dotnet /app/publish/Shopzee.API.dll"
