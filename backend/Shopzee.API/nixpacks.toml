@@ -1,7 +1,4 @@
-# Nixpacks configuration for Railway deployment
-# This tells Railway exactly how to build and run .NET 9 app
-
-[phases.setup]
+﻿[phases.setup]
 nixPkgs = ["dotnet-sdk_9"]
 
 [phases.build]
