@@ -55,11 +55,31 @@ import { Product } from '../../core/models/product.model';
     </div>
   `,
   styles: [`
-    .wishlist-page { padding:var(--space-10) var(--space-6) var(--space-16); padding-top: calc(var(--space-10) + 100px); }
-    .page-header { margin-bottom:var(--space-8); }
-    .page-title { font-family:var(--font-heading); font-size:var(--text-5xl); font-weight:400; }
-    .page-subtitle { font-size:var(--text-sm); color:var(--gray-400); letter-spacing:0.1em; }
-    .empty-wish { display:flex; flex-direction:column; align-items:center; gap:var(--space-4); padding:var(--space-24) var(--space-6); text-align:center; .empty-icon{color:var(--gray-300);} h2{font-family:var(--font-heading);font-size:var(--text-4xl);} p{color:var(--gray-400);} }
+    .wishlist-page {
+      padding: var(--space-10) var(--space-6) var(--space-16);
+      padding-top: calc(var(--space-10) + 100px);
+      @media (max-width: 768px) { padding: calc(90px + var(--space-6)) var(--space-4) var(--space-12); }
+      @media (max-width: 480px) { padding: calc(85px + var(--space-4)) var(--space-3) var(--space-10); }
+    }
+
+    .page-header { margin-bottom: var(--space-7); }
+
+    .page-title {
+      font-family: var(--font-heading); font-size: var(--text-5xl); font-weight: 400;
+      @media (max-width: 768px) { font-size: var(--text-4xl); }
+      @media (max-width: 480px) { font-size: var(--text-3xl); }
+    }
+
+    .page-subtitle { font-size: var(--text-sm); color: var(--gray-400); letter-spacing: 0.1em; }
+
+    .empty-wish {
+      display: flex; flex-direction: column; align-items: center; gap: var(--space-4);
+      padding: var(--space-20) var(--space-6); text-align: center;
+      @media (max-width: 480px) { padding: var(--space-12) var(--space-4); }
+      .empty-icon { color: var(--gray-300); }
+      h2 { font-family: var(--font-heading); font-size: var(--text-3xl); @media (max-width: 480px) { font-size: var(--text-2xl); } }
+      p { color: var(--gray-400); font-size: var(--text-sm); }
+    }
   `]
 })
 export class WishlistComponent {

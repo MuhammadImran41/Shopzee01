@@ -311,14 +311,17 @@ p { line-height: 1.7; }
 .section {
   padding: var(--space-24) 0;
 
-  @media (max-width: 768px) {
-    padding: var(--space-16) 0;
-  }
+  @media (max-width: 900px)  { padding: var(--space-20) 0; }
+  @media (max-width: 768px)  { padding: var(--space-16) 0; }
+  @media (max-width: 480px)  { padding: var(--space-12) 0; }
 }
 
 .section-header {
   text-align: center;
-  margin-bottom: var(--space-16);
+  margin-bottom: var(--space-12);
+
+  @media (max-width: 768px) { margin-bottom: var(--space-8); }
+  @media (max-width: 480px) { margin-bottom: var(--space-6); }
 
   .section-label {
     font-family: var(--font-body);
@@ -338,9 +341,8 @@ p { line-height: 1.7; }
     color: var(--black);
     margin-bottom: var(--space-4);
 
-    @media (max-width: 768px) {
-      font-size: var(--text-3xl);
-    }
+    @media (max-width: 768px) { font-size: var(--text-4xl); }
+    @media (max-width: 480px) { font-size: var(--text-3xl); }
   }
 
   .section-desc {
@@ -349,6 +351,8 @@ p { line-height: 1.7; }
     max-width: 600px;
     margin: 0 auto;
     line-height: 1.8;
+
+    @media (max-width: 480px) { font-size: var(--text-sm); }
   }
 
   .gold-divider {
@@ -369,11 +373,7 @@ p { line-height: 1.7; }
       background: linear-gradient(to left, transparent, var(--gold));
     }
 
-    svg {
-      width: 16px;
-      height: 16px;
-      fill: var(--gold);
-    }
+    svg { width: 16px; height: 16px; fill: var(--gold); }
   }
 }
 
@@ -428,6 +428,8 @@ p { line-height: 1.7; }
   .card-body {
     padding: var(--space-4);
 
+    @media (max-width: 480px) { padding: var(--space-3); }
+
     .card-category {
       font-size: var(--text-xs);
       letter-spacing: 0.15em;
@@ -442,12 +444,16 @@ p { line-height: 1.7; }
       font-weight: 400;
       color: var(--black);
       margin-bottom: var(--space-2);
+
+      @media (max-width: 480px) { font-size: var(--text-lg); }
     }
 
     .card-price {
       font-size: var(--text-lg);
       font-weight: 600;
       color: var(--gold-dark);
+
+      @media (max-width: 480px) { font-size: var(--text-base); }
     }
 
     .card-price-original {
@@ -517,18 +523,10 @@ p { line-height: 1.7; }
   grid-template-columns: repeat(4, 1fr);
   gap: var(--space-6);
 
-  @media (max-width: 1200px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-3);
-  }
-
-  @media (max-width: 480px) {
-    grid-template-columns: 1fr;
-  }
+  @media (max-width: 1200px) { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 900px)  { grid-template-columns: repeat(2, 1fr); gap: var(--space-4); }
+  @media (max-width: 480px)  { grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
+  @media (max-width: 340px)  { grid-template-columns: 1fr; }
 }
 
 // ============================================================
@@ -736,6 +734,12 @@ p { line-height: 1.7; }
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+
+  @media (max-width: 480px) {
+    bottom: var(--space-4);
+    right: var(--space-3);
+    left: var(--space-3);
+  }
 }
 
 .toast {
@@ -751,17 +755,15 @@ p { line-height: 1.7; }
   max-width: 360px;
   animation: fadeInUp 0.4s ease;
 
-  svg {
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
-    fill: var(--gold);
+  @media (max-width: 480px) {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    padding: var(--space-3) var(--space-4);
   }
 
-  .toast-msg {
-    font-size: var(--text-sm);
-    flex: 1;
-  }
+  svg { width: 20px; height: 20px; flex-shrink: 0; fill: var(--gold); }
+  .toast-msg { font-size: var(--text-sm); flex: 1; }
 }
 
 // ============================================================
