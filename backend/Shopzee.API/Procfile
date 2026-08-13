@@ -1,1 +1,1 @@
-web: dotnet Shopzee.API.dll
+web: dotnet /app/publish/Shopzee.API.dll
