@@ -522,12 +522,16 @@ p { line-height: 1.7; }
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--space-6);
+  width: 100%;
 
   @media (max-width: 1200px) { grid-template-columns: repeat(3, 1fr); }
   @media (max-width: 900px)  { grid-template-columns: repeat(2, 1fr); gap: var(--space-4); }
   @media (max-width: 480px)  { grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
   @media (max-width: 340px)  { grid-template-columns: 1fr; }
 }
+
+/* Prevent grid children overflow */
+.product-grid > * { min-width: 0; }
 
 // ============================================================
 // FORM ELEMENTS
