@@ -103,6 +103,7 @@ export const routes: Routes = [
           import('./features/admin/components/resellers/resellers.component').then(m => m.ResellersComponent)
       },
       {
+        path: 'seo',
         loadComponent: () =>
           import('./features/admin/components/seo/seo.component').then(m => m.SeoComponent)
       }
