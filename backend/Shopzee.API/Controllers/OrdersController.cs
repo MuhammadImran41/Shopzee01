@@ -12,7 +12,7 @@ namespace Shopzee.API.Controllers;
 [ApiController]
 [Route("api/orders")]
 [Authorize]
-public class OrdersController(ShopzeeDbContext db) : ControllerBase
+public class OrdersController(ShopzeeDbContext db, EmailService emailService) : ControllerBase
 {
     private int UserId => int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
@@ -89,8 +89,29 @@ public class OrdersController(ShopzeeDbContext db) : ControllerBase
 
         await db.SaveChangesAsync();
 
-        var created = await db.Orders.Include(o => o.Items).FirstAsync(o => o.Id == order.Id);
-        return CreatedAtAction(nameof(GetById), new { id = order.Id }, created.ToDto());
+        var created = await db.Orders
+            .Include(o => o.Items)
+            .FirstAsync(o => o.Id == order.Id);
+
+        var orderDto = created.ToDto();
+
+        // ── Send emails (fire & forget — don't block response) ──
+        var user = await db.Users.FindAsync(UserId);
+        if (user is not null)
+        {
+            _ = Task.Run(async () =>
+            {
+                // 1. Confirmation to customer
+                await emailService.SendOrderConfirmationAsync(
+                    user.Email, user.Name, orderDto);
+
+                // 2. Alert to admin
+                await emailService.SendAdminOrderAlertAsync(
+                    orderDto, user.Email);
+            });
+        }
+
+        return CreatedAtAction(nameof(GetById), new { id = order.Id }, orderDto);
     }
 
     // GET api/orders  — my orders

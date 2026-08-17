@@ -67,7 +67,8 @@ import { trigger, transition, style, animate } from '@angular/animations';
             @if (loading()) { <span>Signing in...</span> } @else { <span>Sign In</span> }
           </button>
           <p class="auth-hint">
-            Demo: <strong>admin&#64;trendzy.pk</strong> / <strong>Admin&#64;123</strong>
+            Demo: <strong>admin&#64;trendzy.pk</strong> / <strong>Admin&#64;123</strong><br/>
+            <small style="color:#aaa">Support: trendzyofficial.store&#64;gmail.com</small>
           </p>
         </form>
       }

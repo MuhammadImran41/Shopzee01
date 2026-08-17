@@ -117,7 +117,7 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
               </div>
               <div class="contact-item">
                 <app-icon name="mail" [size]="16"/>
-                <span>hello&#64;trendzy.pk</span>
+                <span>trendzyofficial.store&#64;gmail.com</span>
               </div>
               <div class="contact-item">
                 <app-icon name="phone" [size]="16"/>

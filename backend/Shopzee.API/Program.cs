@@ -46,6 +46,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 builder.Services.AddSingleton<JwtHelper>();
+builder.Services.AddScoped<EmailService>();
 
 // CORS — allow all origins in production (Railway + Vercel + custom domain)
 builder.Services.AddCors(opt =>
