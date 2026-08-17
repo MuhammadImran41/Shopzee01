@@ -553,6 +553,7 @@ p { line-height: 1.7; }
     color: var(--black);
     font-size: var(--text-base);
     transition: border-color var(--transition-base);
+    box-sizing: border-box;
 
     &:focus {
       border-color: var(--gold);

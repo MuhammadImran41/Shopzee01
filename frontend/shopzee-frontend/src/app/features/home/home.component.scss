@@ -761,7 +761,7 @@
 .testimonials-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-5);
+  gap: var(--space-6);
 
   @media (max-width: 900px) { grid-template-columns: 1fr; }
   @media (max-width: 600px) { gap: var(--space-4); }
@@ -769,12 +769,13 @@
 
 .testimonial-card {
   background: var(--cream);
-  padding: var(--space-7);
+  padding: var(--space-8) var(--space-7);
   border: 1px solid var(--gray-200);
   position: relative;
   transition: box-shadow 0.3s;
+  overflow: hidden;
 
-  @media (max-width: 480px) { padding: var(--space-5); }
+  @media (max-width: 480px) { padding: var(--space-6) var(--space-5); }
 
   &::before {
     content: '"';
