@@ -384,8 +384,7 @@ p { line-height: 1.7; }
   background: var(--cream-light);
   position: relative;
   overflow: hidden;
-  // NO transform on hover — causes layout shift/shake
-  // Only shadow changes on hover
+  min-width: 0;
   transition: box-shadow var(--transition-slow);
 
   &:hover {

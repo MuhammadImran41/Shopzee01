@@ -397,10 +397,14 @@ import { AuthModalComponent } from '../../shared/components/auth-modal/auth-moda
     }
 
     /* ── Content ───────────────────────────────────── */
-    .account-content { background: var(--cream-light); border: 1px solid var(--gray-200); overflow: hidden; }
+    .account-content { background: var(--cream-light); border: 1px solid var(--gray-200); overflow: hidden; min-width: 0; }
     .tab-section {
       padding: var(--space-7) var(--space-8);
-      @media (max-width: 480px) { padding: var(--space-5) var(--space-5); }
+      box-sizing: border-box;
+      width: 100%;
+      overflow: hidden;
+      @media (max-width: 768px) { padding: var(--space-6); }
+      @media (max-width: 480px) { padding: var(--space-5); }
     }
     .tab-title {
       font-family: var(--font-heading); font-size: var(--text-3xl); font-weight: 400;
@@ -423,15 +427,18 @@ import { AuthModalComponent } from '../../shared/components/auth-modal/auth-moda
     .form-grid {
       display: grid; grid-template-columns: 1fr 1fr;
       gap: var(--space-4); margin-bottom: var(--space-4);
+      width: 100%; box-sizing: border-box;
       @media (max-width: 600px) { grid-template-columns: 1fr; gap: var(--space-3); }
     }
     .form-group {
       display: flex; flex-direction: column; gap: var(--space-1);
+      min-width: 0;
       label { font-size: var(--text-sm); font-weight: 600; color: var(--black); }
       input {
         padding: var(--space-3) var(--space-4); border: 1px solid var(--gray-300);
         background: var(--cream-light); font-size: var(--text-sm);
         transition: border-color 0.2s; width: 100%; box-sizing: border-box;
+        max-width: 100%;
         &:focus { border-color: var(--gold); }
       }
     }
