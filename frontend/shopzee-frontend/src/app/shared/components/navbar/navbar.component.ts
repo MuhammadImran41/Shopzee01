@@ -2,7 +2,8 @@ import {
   Component, inject, signal, computed, HostListener, OnInit, PLATFORM_ID
 } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { RouterModule, RouterLink, RouterLinkActive, Router } from '@angular/router';
+import { RouterModule, RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { CartService } from '../../../core/services/cart.service';
 import { WishlistService } from '../../../core/services/wishlist.service';
 import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
@@ -1097,7 +1098,30 @@ export class NavbarComponent implements OnInit {
   );
 
   ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) this.checkScroll();
+    if (isPlatformBrowser(this.platformId)) {
+      const nonHomePages = ['/account', '/cart', '/checkout', '/wishlist', '/women', '/men', '/product', '/new-arrivals', '/about', '/contact', '/admin'];
+
+      const setScrolledForRoute = (url: string) => {
+        const isNonHome = nonHomePages.some(p => url.startsWith(p));
+        if (isNonHome) {
+          this.isScrolled.set(true);
+        } else if (url === '/' || url === '') {
+          // On home page, reset to actual scroll position
+          this.isScrolled.set(window.scrollY > 20);
+        }
+      };
+
+      // Set on initial load
+      setScrolledForRoute(this.router.url);
+      this.checkScroll();
+
+      // Set on every route change
+      this.router.events.pipe(
+        filter(e => e instanceof NavigationEnd)
+      ).subscribe((e: any) => {
+        setScrolledForRoute(e.urlAfterRedirects || e.url);
+      });
+    }
   }
 
   private _ticking = false;
@@ -1106,7 +1130,10 @@ export class NavbarComponent implements OnInit {
   checkScroll() {
     if (!this._ticking) {
       requestAnimationFrame(() => {
-        this.isScrolled.set(window.scrollY > 20);
+        // Only update scroll state on home page — other pages always stay scrolled
+        if (this.router.url === '/' || this.router.url === '') {
+          this.isScrolled.set(window.scrollY > 20);
+        }
         this._ticking = false;
       });
       this._ticking = true;
