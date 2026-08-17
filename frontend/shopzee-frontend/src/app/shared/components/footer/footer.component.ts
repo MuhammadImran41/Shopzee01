@@ -30,7 +30,6 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
                 <text x="46" y="26"
                   font-family="Cormorant Garamond, Georgia, serif"
                   font-size="17" font-weight="600" fill="#ffffff" letter-spacing="2">STYLEMAKER</text>
-                <line x1="46" y1="31" x2="198" y2="31" stroke="#C9A84C" stroke-width="0.75"/>
               </svg>
             </a>
             <p class="footer__tagline">
