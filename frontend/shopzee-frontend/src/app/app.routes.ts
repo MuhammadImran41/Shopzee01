@@ -20,6 +20,11 @@ export const routes: Routes = [
     data: { category: 'men' }
   },
   {
+    path: 'new-arrivals',
+    loadComponent: () =>
+      import('./features/new-arrivals/new-arrivals.component').then(m => m.NewArrivalsComponent)
+  },
+  {
     path: 'product/:id',
     loadComponent: () =>
       import('./features/product-detail/product-detail.component').then(m => m.ProductDetailComponent)

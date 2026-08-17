@@ -133,7 +133,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
                       Collections
                     </p>
                     <ul class="mega-links">
-                      <li><a routerLink="/women" [queryParams]="{tag:'new'}" class="mega-link mega-link--featured">
+                      <li><a routerLink="/new-arrivals" (click)="closeMega()" class="mega-link mega-link--featured">
                         <span class="mega-badge mega-badge--new">NEW</span>
                         <span class="mega-link-content"><strong>New Arrivals</strong></span>
                         <svg class="mega-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -269,7 +269,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 
             <!-- New Arrivals -->
             <li>
-              <a routerLink="/women" [queryParams]="{tag:'new'}" class="nav-link">New Arrivals</a>
+              <a routerLink="/new-arrivals" routerLinkActive="active" class="nav-link">New Arrivals</a>
             </li>
 
             <!-- Sale -->
@@ -434,7 +434,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
             }
           </li>
 
-          <li><a routerLink="/women" [queryParams]="{tag:'new'}" (click)="closeMobileMenu()" class="drawer-link">New Arrivals</a></li>
+          <li><a routerLink="/new-arrivals" (click)="closeMobileMenu()" class="drawer-link">New Arrivals</a></li>
           <li><a routerLink="/women" [queryParams]="{tag:'sale'}" (click)="closeMobileMenu()" class="drawer-link drawer-link--sale">Sale</a></li>
         </ul>
 
