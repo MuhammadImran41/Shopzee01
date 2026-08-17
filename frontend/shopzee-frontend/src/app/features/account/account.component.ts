@@ -93,7 +93,7 @@ import { AuthModalComponent } from '../../shared/components/auth-modal/auth-moda
           </nav>
 
           <!-- Content area -->
-          <div class="account-content">
+          <div class="account-content" style="min-width:0;overflow:hidden;width:100%;">
 
             <!-- ── Profile Tab ─────────────────────────────── -->
             @if (activeTab() === 'profile') {
@@ -111,7 +111,7 @@ import { AuthModalComponent } from '../../shared/components/auth-modal/auth-moda
                   </div>
                 </div>
 
-                <form class="form-grid" (submit)="saveProfile($event)">
+                <form class="form-grid" style="width:100%;box-sizing:border-box;" (submit)="saveProfile($event)">
                   <div class="form-group">
                     <label>Full Name</label>
                     <input
@@ -255,7 +255,7 @@ import { AuthModalComponent } from '../../shared/components/auth-modal/auth-moda
               <div class="tab-section" style="padding:2rem;box-sizing:border-box;width:100%;overflow:hidden;">
                 <h2 class="tab-title">Change Password</h2>
 
-                <form class="form-grid" style="max-width:480px" (submit)="changePassword($event)">
+                <form class="form-grid" style="width:100%;box-sizing:border-box;" style="max-width:480px" (submit)="changePassword($event)">
                   <div class="form-group form-full">
                     <label>Current Password</label>
                     <input type="password" [(ngModel)]="passwordForm.current" name="current" placeholder="••••••••" required/>
@@ -310,6 +310,7 @@ import { AuthModalComponent } from '../../shared/components/auth-modal/auth-moda
       max-width: 1400px;
       margin: 0 auto;
       box-sizing: border-box;
+      overflow: visible;
       @media (max-width: 768px) { padding: calc(90px + var(--space-6)) var(--space-5) var(--space-12); }
       @media (max-width: 480px) { padding: calc(85px + var(--space-4)) var(--space-4) var(--space-10); }
     }
