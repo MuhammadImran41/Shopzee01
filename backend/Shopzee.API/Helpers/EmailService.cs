@@ -11,7 +11,7 @@ public class EmailSettings
     public int    SmtpPort    { get; set; } = 587;
     public string Username    { get; set; } = "";
     public string Password    { get; set; } = "";
-    public string FromName    { get; set; } = "Trendzy";
+    public string FromName    { get; set; } = "STYLEMAKER";
     public string FromAddress { get; set; } = "";
     public string AdminEmail  { get; set; } = "";
 }
@@ -30,7 +30,7 @@ public class EmailService
     // ── Order confirmation to customer ───────────────────
     public async Task SendOrderConfirmationAsync(string toEmail, string toName, OrderDto order)
     {
-        var subject = $"Order Confirmed — #{order.OrderNumber} | Trendzy";
+        var subject = $"Order Confirmed — #{order.OrderNumber} | STYLEMAKER";
         var html    = BuildOrderConfirmationHtml(toName, order);
         await SendAsync(toEmail, toName, subject, html);
     }
@@ -40,7 +40,7 @@ public class EmailService
     {
         var subject = $"🛒 New Order #{order.OrderNumber} — PKR {order.Total:N0}";
         var html    = BuildAdminAlertHtml(order, customerEmail);
-        await SendAsync(_settings.AdminEmail, "Trendzy Admin", subject, html);
+        await SendAsync(_settings.AdminEmail, "STYLEMAKER Admin", subject, html);
     }
 
     // ── Core send method ──────────────────────────────────
@@ -100,7 +100,7 @@ public class EmailService
 
                 <!-- Header -->
                 <div style="background:#1a1a1a;padding:32px;text-align:center;">
-                  <h1 style="margin:0;color:#c9a84c;font-family:Georgia,serif;font-size:28px;letter-spacing:4px;">TRENDZY</h1>
+                  <h1 style="margin:0;color:#c9a84c;font-family:Georgia,serif;font-size:28px;letter-spacing:4px;">STYLEMAKER</h1>
                   <p style="margin:8px 0 0;color:rgba(245,240,232,0.6);font-size:12px;letter-spacing:2px;text-transform:uppercase;">Premium Pakistani Fashion</p>
                 </div>
 
@@ -168,7 +168,7 @@ public class EmailService
                 <!-- Footer -->
                 <div style="background:#1a1a1a;padding:20px 32px;text-align:center;">
                   <p style="margin:0;color:rgba(245,240,232,0.4);font-size:11px;letter-spacing:1px;">
-                    © {DateTime.UtcNow.Year} Trendzy — Premium Pakistani Fashion
+                    © {DateTime.UtcNow.Year} STYLEMAKER — Premium Pakistani Fashion
                   </p>
                 </div>
 
@@ -196,7 +196,7 @@ public class EmailService
               <div style="max-width:600px;margin:40px auto;background:#fff;border:1px solid #ede9e0;">
 
                 <div style="background:#c9a84c;padding:20px 32px;">
-                  <h1 style="margin:0;color:#1a1a1a;font-size:18px;letter-spacing:2px;">🛒 NEW ORDER — TRENDZY</h1>
+                  <h1 style="margin:0;color:#1a1a1a;font-size:18px;letter-spacing:2px;">🛒 NEW ORDER — STYLEMAKER</h1>
                 </div>
 
                 <div style="padding:32px;">

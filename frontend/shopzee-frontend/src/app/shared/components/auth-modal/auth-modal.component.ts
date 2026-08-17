@@ -67,7 +67,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
             @if (loading()) { <span>Signing in...</span> } @else { <span>Sign In</span> }
           </button>
           <p class="auth-hint">
-            Demo: <strong>admin&#64;trendzy.pk</strong> / <strong>Admin&#64;123</strong><br/>
+            Demo: <strong>admin&#64;STYLEMAKER.pk</strong> / <strong>Admin&#64;123</strong><br/>
             <small style="color:#aaa">Support: trendzyofficial.store&#64;gmail.com</small>
           </p>
         </form>
@@ -166,7 +166,7 @@ export class AuthModalComponent {
       this.registerForm.phone
     ).subscribe({
       next: () => {
-        this.toast.success('Account created! Welcome to Trendzy.');
+        this.toast.success('Account created! Welcome to STYLEMAKER.');
         this.loading.set(false);
         this.loggedIn.emit();
         this.close.emit();

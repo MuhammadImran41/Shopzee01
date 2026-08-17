@@ -20,7 +20,7 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
 
           <!-- Brand Column -->
           <div class="footer__brand">
-            <a routerLink="/" class="footer__logo" aria-label="Trendzy Home">
+            <a routerLink="/" class="footer__logo" aria-label="STYLEMAKER Home">
             <svg viewBox="0 0 160 40" class="logo-svg" aria-hidden="true">
                 <path d="M8 28L4 14l8 6 8-12 8 12 8-6-4 14H8z"
                   fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linejoin="round"/>
@@ -29,7 +29,7 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
                 <circle cx="36" cy="14" r="2" fill="#C9A84C"/>
                 <text x="46" y="26"
                   font-family="Cormorant Garamond, Georgia, serif"
-                  font-size="19" font-weight="600" fill="#1A1A1A" letter-spacing="3">TRENDZY</text>
+                  font-size="19" font-weight="600" fill="#1A1A1A" letter-spacing="3">STYLEMAKER</text>
                 <line x1="46" y1="31" x2="158" y2="31" stroke="#C9A84C" stroke-width="0.75"/>
               </svg>
             </a>
@@ -133,7 +133,7 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
         <div class="container">
           <div class="footer__bottom-inner">
             <p class="footer__copyright">
-              &copy; {{ currentYear }} Trendzy. All rights reserved. Crafted with elegance.
+              &copy; {{ currentYear }} STYLEMAKER. All rights reserved. Crafted with elegance.
             </p>
             <div class="footer__bottom-links">
               <a href="#">Privacy Policy</a>

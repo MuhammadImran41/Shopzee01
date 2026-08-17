@@ -25,7 +25,7 @@ import { SvgIconsComponent } from '../../shared/components/svg-icons/svg-icons.c
             <span class="section-label">Who We Are</span>
             <h2 class="story-title">Born from a love<br/>of Pakistani fashion</h2>
             <div class="ornament-divider"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
-            <p>Trendzy was founded with a singular vision — to bring the timeless beauty of Pakistani fashion to a modern audience. We believe that every thread tells a story, every embroidery carries heritage, and every garment deserves to be worn with pride.</p>
+            <p>STYLEMAKER was founded with a singular vision — to bring the timeless beauty of Pakistani fashion to a modern audience. We believe that every thread tells a story, every embroidery carries heritage, and every garment deserves to be worn with pride.</p>
             <p>From the bustling markets of Lahore to the fashion-forward streets of Karachi, our curated collection celebrates the rich textile traditions of Pakistan while embracing contemporary design sensibilities.</p>
             <a routerLink="/women" class="btn btn-primary" style="margin-top:2rem">Shop the Collection</a>
           </div>

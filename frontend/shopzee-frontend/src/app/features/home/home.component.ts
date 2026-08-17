@@ -46,7 +46,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     },
     {
       name: 'Fatima Khan', location: 'Karachi', rating: 5,
-      text: 'Trendzy never disappoints. Fast delivery, premium packaging, and the fabric quality is exceptional.'
+      text: 'STYLEMAKER never disappoints. Fast delivery, premium packaging, and the fabric quality is exceptional.'
     },
     {
       name: 'Sana Rehman', location: 'Islamabad', rating: 5,

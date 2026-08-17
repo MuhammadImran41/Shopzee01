@@ -49,8 +49,8 @@ export class AuthApiService {
 
   logout() {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem('trendzy_token');
-      localStorage.removeItem('trendzy_user');
+      localStorage.removeItem('STYLEMAKER_token');
+      localStorage.removeItem('STYLEMAKER_user');
     }
     this.currentUser.set(null);
     this.isLoggedIn.set(false);
@@ -67,15 +67,15 @@ export class AuthApiService {
 
   getToken(): string | null {
     return isPlatformBrowser(this.platformId)
-      ? localStorage.getItem('trendzy_token')
+      ? localStorage.getItem('STYLEMAKER_token')
       : null;
   }
 
   // ── Private helpers ──────────────────────────────────────
   private handleAuth(res: AuthResponse) {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('trendzy_token', res.token);
-      localStorage.setItem('trendzy_user', JSON.stringify(res.user));
+      localStorage.setItem('STYLEMAKER_token', res.token);
+      localStorage.setItem('STYLEMAKER_user', JSON.stringify(res.user));
     }
     this.currentUser.set(res.user);
     this.isLoggedIn.set(true);
@@ -83,14 +83,14 @@ export class AuthApiService {
 
   private loadToken(): string | null {
     return isPlatformBrowser(this.platformId)
-      ? localStorage.getItem('trendzy_token')
+      ? localStorage.getItem('STYLEMAKER_token')
       : null;
   }
 
   private loadUser(): ApiUser | null {
     if (!isPlatformBrowser(this.platformId)) return null;
     try {
-      const raw = localStorage.getItem('trendzy_user');
+      const raw = localStorage.getItem('STYLEMAKER_user');
       return raw ? JSON.parse(raw) : null;
     } catch { return null; }
   }
