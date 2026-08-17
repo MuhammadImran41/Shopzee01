@@ -46,7 +46,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
     ])
   ],
   template: `
-    <header class="navbar" [class.scrolled]="isScrolled() || !isHeroPage()" role="banner">
+    <header class="navbar" [class.scrolled]="isScrolled() || !isHomePage" role="banner">
       <div class="navbar__inner container">
 
         <!-- Logo -->
@@ -1087,8 +1087,9 @@ export class NavbarComponent implements OnInit {
   activeMega     = signal<string | null>(null);
   drawerAcc      = signal<string | null>(null);
 
-  // Hero page = only home '/' — all other pages get scrolled navbar
-  isHeroPage = computed(() => this.router.url === '/');
+  get isHomePage(): boolean {
+    return this.router.url === '/' || this.router.url === '';
+  }
 
   private megaTimer: any;
 
@@ -1097,7 +1098,9 @@ export class NavbarComponent implements OnInit {
   );
 
   ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) this.checkScroll();
+    if (isPlatformBrowser(this.platformId)) {
+      this.checkScroll();
+    }
   }
 
   private _ticking = false;
