@@ -2,7 +2,7 @@ import {
   Component, inject, signal, computed, HostListener, OnInit, PLATFORM_ID
 } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { RouterModule, RouterLink, RouterLinkActive, Router } from '@angular/router';
+import { RouterModule, RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
 import { CartService } from '../../../core/services/cart.service';
 import { WishlistService } from '../../../core/services/wishlist.service';
 import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
@@ -1086,9 +1086,7 @@ export class NavbarComponent implements OnInit {
   userDropOpen   = signal(false);
   activeMega     = signal<string | null>(null);
   drawerAcc      = signal<string | null>(null);
-
-  // Hero page = only home '/' — all other pages get scrolled navbar
-  isHeroPage = computed(() => this.router.url === '/');
+  isHeroPage     = signal(true);
 
   private megaTimer: any;
 
@@ -1097,7 +1095,17 @@ export class NavbarComponent implements OnInit {
   );
 
   ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) this.checkScroll();
+    if (isPlatformBrowser(this.platformId)) {
+      this.checkScroll();
+      // Set isHeroPage based on current route
+      this.isHeroPage.set(this.router.url === '/');
+      // Update on route changes
+      this.router.events.subscribe(event => {
+        if (event instanceof NavigationEnd) {
+          this.isHeroPage.set(this.router.url === '/');
+        }
+      });
+    }
   }
 
   private _ticking = false;
