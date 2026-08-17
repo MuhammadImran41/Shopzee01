@@ -307,8 +307,11 @@ import { AuthModalComponent } from '../../shared/components/auth-modal/auth-moda
     .account-page {
       padding: var(--space-10) var(--space-6) var(--space-16);
       padding-top: calc(var(--space-10) + 100px);
-      @media (max-width: 768px) { padding: calc(90px + var(--space-6)) var(--space-4) var(--space-12); }
-      @media (max-width: 480px) { padding: calc(85px + var(--space-4)) var(--space-3) var(--space-10); }
+      max-width: 1400px;
+      margin: 0 auto;
+      box-sizing: border-box;
+      @media (max-width: 768px) { padding: calc(90px + var(--space-6)) var(--space-5) var(--space-12); }
+      @media (max-width: 480px) { padding: calc(85px + var(--space-4)) var(--space-4) var(--space-10); }
     }
 
     /* ── Not logged in ─────────────────────────────── */
@@ -336,9 +339,12 @@ import { AuthModalComponent } from '../../shared/components/auth-modal/auth-moda
 
     /* ── Layout ────────────────────────────────────── */
     .account-layout {
-      display: grid; grid-template-columns: 260px 1fr; gap: var(--space-8);
-      @media (max-width: 900px) { grid-template-columns: 1fr; gap: var(--space-5); }
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: var(--space-8);
       min-width: 0;
+      width: 100%;
+      @media (max-width: 900px) { grid-template-columns: 1fr; gap: var(--space-5); }
     }
 
     /* ── Sidebar ───────────────────────────────────── */
@@ -397,14 +403,20 @@ import { AuthModalComponent } from '../../shared/components/auth-modal/auth-moda
     }
 
     /* ── Content ───────────────────────────────────── */
-    .account-content { background: var(--cream-light); border: 1px solid var(--gray-200); overflow: hidden; min-width: 0; }
+    .account-content {
+      background: var(--cream-light);
+      border: 1px solid var(--gray-200);
+      overflow: hidden;
+      min-width: 0;
+      width: 100%;
+    }
     .tab-section {
-      padding: var(--space-7) var(--space-8);
+      padding: 2rem;
       box-sizing: border-box;
       width: 100%;
       overflow: hidden;
-      @media (max-width: 768px) { padding: var(--space-6); }
-      @media (max-width: 480px) { padding: var(--space-5); }
+      @media (max-width: 768px) { padding: 1.5rem; }
+      @media (max-width: 480px) { padding: 1.25rem; }
     }
     .tab-title {
       font-family: var(--font-heading); font-size: var(--text-3xl); font-weight: 400;
