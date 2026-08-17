@@ -33,7 +33,7 @@ interface Notification {
       <aside class="admin-sidebar" [attr.aria-expanded]="!sidebarCollapsed()">
         <div class="sidebar-brand">
           @if (!sidebarCollapsed()) {
-            <span class="brand-text">SHOPZEE</span>
+            <span class="brand-text">TRENDZY</span>
             <span class="brand-sub">Admin Panel</span>
           } @else {
             <app-icon name="crown" [size]="24" class="brand-icon"/>

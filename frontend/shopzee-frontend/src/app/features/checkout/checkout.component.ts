@@ -122,7 +122,7 @@ import { AuthApiService } from '../../core/services/api/auth-api.service';
             <app-icon name="check-circle" [size]="64" class="success-check"/>
           </div>
           <h2 class="success-title">Order Placed Successfully!</h2>
-          <p class="success-desc">Thank you for shopping with Shopzee. Your order has been received and will be processed shortly.</p>
+          <p class="success-desc">Thank you for shopping with Trendzy. Your order has been received and will be processed shortly.</p>
           <p class="order-id">Order ID: <strong>#SZ{{ orderId() }}</strong></p>
           <div class="success-actions">
             <a routerLink="/account" class="btn btn-primary">Track My Order</a>

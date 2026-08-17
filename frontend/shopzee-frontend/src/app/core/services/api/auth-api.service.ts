@@ -49,8 +49,8 @@ export class AuthApiService {
 
   logout() {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem('shopzee_token');
-      localStorage.removeItem('shopzee_user');
+      localStorage.removeItem('trendzy_token');
+      localStorage.removeItem('trendzy_user');
     }
     this.currentUser.set(null);
     this.isLoggedIn.set(false);
@@ -67,15 +67,15 @@ export class AuthApiService {
 
   getToken(): string | null {
     return isPlatformBrowser(this.platformId)
-      ? localStorage.getItem('shopzee_token')
+      ? localStorage.getItem('trendzy_token')
       : null;
   }
 
   // ── Private helpers ──────────────────────────────────────
   private handleAuth(res: AuthResponse) {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('shopzee_token', res.token);
-      localStorage.setItem('shopzee_user', JSON.stringify(res.user));
+      localStorage.setItem('trendzy_token', res.token);
+      localStorage.setItem('trendzy_user', JSON.stringify(res.user));
     }
     this.currentUser.set(res.user);
     this.isLoggedIn.set(true);
@@ -83,14 +83,14 @@ export class AuthApiService {
 
   private loadToken(): string | null {
     return isPlatformBrowser(this.platformId)
-      ? localStorage.getItem('shopzee_token')
+      ? localStorage.getItem('trendzy_token')
       : null;
   }
 
   private loadUser(): ApiUser | null {
     if (!isPlatformBrowser(this.platformId)) return null;
     try {
-      const raw = localStorage.getItem('shopzee_user');
+      const raw = localStorage.getItem('trendzy_user');
       return raw ? JSON.parse(raw) : null;
     } catch { return null; }
   }

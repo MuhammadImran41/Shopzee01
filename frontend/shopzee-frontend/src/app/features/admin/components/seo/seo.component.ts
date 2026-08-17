@@ -43,7 +43,7 @@ import { SvgIconsComponent } from '../../../../shared/components/svg-icons/svg-i
                   <input
                     type="text"
                     [(ngModel)]="seoData[product.id].title"
-                    [placeholder]="product.name + ' | Shopzee'"
+                    [placeholder]="product.name + ' | Trendzy'"
                     maxlength="60"
                   />
                 </div>
@@ -63,7 +63,7 @@ import { SvgIconsComponent } from '../../../../shared/components/svg-icons/svg-i
                 <div class="seo-preview">
                   <h4 class="preview-label">Search Preview</h4>
                   <div class="google-preview">
-                    <span class="gp-url">shopzee.pk/product/{{ product.id }}</span>
+                    <span class="gp-url">trendzy.pk/product/{{ product.id }}</span>
                     <span class="gp-title">{{ seoData[product.id].title || product.name }}</span>
                     <span class="gp-desc">{{ seoData[product.id].desc || product.description }}</span>
                   </div>

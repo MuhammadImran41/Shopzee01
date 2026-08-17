@@ -11,7 +11,7 @@ export class WishlistService {
   constructor() {
     effect(() => {
       try {
-        localStorage.setItem('shopzee_wishlist', JSON.stringify(this._items()));
+        localStorage.setItem('trendzy_wishlist', JSON.stringify(this._items()));
       } catch {}
     });
   }
@@ -35,7 +35,7 @@ export class WishlistService {
 
   private loadFromStorage(): Product[] {
     try {
-      const data = localStorage.getItem('shopzee_wishlist');
+      const data = localStorage.getItem('trendzy_wishlist');
       return data ? JSON.parse(data) : [];
     } catch {
       return [];

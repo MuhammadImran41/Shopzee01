@@ -89,7 +89,7 @@ export class ContactComponent {
 
   contactInfo = [
     { icon: 'map-pin', label: 'Visit Us', value: '123 Fashion Street, DHA Phase 5, Lahore, Pakistan' },
-    { icon: 'mail',    label: 'Email Us', value: 'hello@shopzee.pk\nsupport@shopzee.pk' },
+    { icon: 'mail',    label: 'Email Us', value: 'hello@trendzy.pk\nsupport@trendzy.pk' },
     { icon: 'phone',   label: 'Call Us',  value: '+92 300 1234567\n+92 42 3456789' },
     { icon: 'clock',   label: 'Hours',    value: 'Mon–Sat: 10am–8pm\nSun: 12pm–6pm' }
   ];

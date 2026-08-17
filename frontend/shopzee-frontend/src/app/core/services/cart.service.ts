@@ -25,7 +25,7 @@ export class CartService {
     // Auto-save to localStorage on change
     effect(() => {
       try {
-        localStorage.setItem('shopzee_cart', JSON.stringify(this._items()));
+        localStorage.setItem('trendzy_cart', JSON.stringify(this._items()));
       } catch {}
     });
   }
@@ -76,7 +76,7 @@ export class CartService {
 
   private loadFromStorage(): CartItem[] {
     try {
-      const data = localStorage.getItem('shopzee_cart');
+      const data = localStorage.getItem('trendzy_cart');
       return data ? JSON.parse(data) : [];
     } catch {
       return [];

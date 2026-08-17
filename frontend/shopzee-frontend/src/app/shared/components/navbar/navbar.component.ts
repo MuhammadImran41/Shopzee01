@@ -50,7 +50,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
       <div class="navbar__inner container">
 
         <!-- Logo -->
-        <a routerLink="/" class="navbar__logo" aria-label="Shopzee Home">
+        <a routerLink="/" class="navbar__logo" aria-label="Trendzy Home">
           <div class="logo-wrap">
             <svg viewBox="0 0 160 40" class="logo-svg" aria-hidden="true">
               <path d="M8 28L4 14l8 6 8-12 8 12 8-6-4 14H8z"
@@ -60,7 +60,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
               <circle cx="36" cy="14" r="2" fill="#C9A84C"/>
               <text x="46" y="26"
                 font-family="Cormorant Garamond, Georgia, serif"
-                font-size="19" font-weight="600" fill="#1A1A1A" letter-spacing="3">SHOPZEE</text>
+                font-size="19" font-weight="600" fill="#1A1A1A" letter-spacing="3">TRENDZY</text>
             </svg>
           </div>
         </a>
@@ -385,7 +385,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
       <div class="mobile-overlay" [@overlayAnim] (click)="closeMobileMenu()" aria-hidden="true"></div>
       <nav class="mobile-drawer" [@drawerAnim] aria-label="Mobile navigation">
         <div class="drawer-header">
-          <span class="drawer-logo">SHOPZEE</span>
+          <span class="drawer-logo">TRENDZY</span>
           <button class="action-btn" (click)="closeMobileMenu()" aria-label="Close menu">
             <app-icon name="close" [size]="24"/>
           </button>
