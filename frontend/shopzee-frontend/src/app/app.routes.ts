@@ -25,6 +25,11 @@ export const routes: Routes = [
       import('./features/new-arrivals/new-arrivals.component').then(m => m.NewArrivalsComponent)
   },
   {
+    path: 'reseller',
+    loadComponent: () =>
+      import('./features/reseller/reseller-dashboard.component').then(m => m.ResellerDashboardComponent)
+  },
+  {
     path: 'product/:id',
     loadComponent: () =>
       import('./features/product-detail/product-detail.component').then(m => m.ProductDetailComponent)
@@ -93,7 +98,11 @@ export const routes: Routes = [
           import('./features/admin/components/analytics/analytics.component').then(m => m.AnalyticsComponent)
       },
       {
-        path: 'seo',
+        path: 'resellers',
+        loadComponent: () =>
+          import('./features/admin/components/resellers/resellers.component').then(m => m.ResellersComponent)
+      },
+      {
         loadComponent: () =>
           import('./features/admin/components/seo/seo.component').then(m => m.SeoComponent)
       }

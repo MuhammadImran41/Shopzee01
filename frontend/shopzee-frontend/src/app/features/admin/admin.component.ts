@@ -166,13 +166,14 @@ export class AdminComponent implements OnInit, OnDestroy {
   private notifTimer: ReturnType<typeof setInterval> | null = null;
 
   navItems = [
-    { path: '/admin/dashboard', label: 'Dashboard',  icon: 'chart' },
-    { path: '/admin/products',  label: 'Products',   icon: 'package' },
-    { path: '/admin/orders',    label: 'Orders',     icon: 'bag' },
-    { path: '/admin/customers', label: 'Customers',  icon: 'users' },
-    { path: '/admin/analytics', label: 'Analytics',  icon: 'chart' },
-    { path: '/admin/seo',       label: 'SEO',        icon: 'globe' },
-    { path: '/admin/dashboard', label: 'Settings',   icon: 'settings' }
+    { path: '/admin/dashboard',  label: 'Dashboard',  icon: 'chart' },
+    { path: '/admin/products',   label: 'Products',   icon: 'package' },
+    { path: '/admin/orders',     label: 'Orders',     icon: 'bag' },
+    { path: '/admin/customers',  label: 'Customers',  icon: 'users' },
+    { path: '/admin/resellers',  label: 'Resellers',  icon: 'star-filled' },
+    { path: '/admin/analytics',  label: 'Analytics',  icon: 'chart' },
+    { path: '/admin/seo',        label: 'SEO',        icon: 'globe' },
+    { path: '/admin/dashboard',  label: 'Settings',   icon: 'settings' }
   ];
 
   notifications = signal<Notification[]>([

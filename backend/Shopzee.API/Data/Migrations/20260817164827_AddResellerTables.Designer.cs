@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shopzee.API.Data;
 
@@ -10,9 +11,11 @@ using Shopzee.API.Data;
 namespace Shopzee.API.Data.Migrations
 {
     [DbContext(typeof(ShopzeeDbContext))]
-    partial class ShopzeeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260817164827_AddResellerTables")]
+    partial class AddResellerTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");

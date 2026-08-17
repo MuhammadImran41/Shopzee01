@@ -330,6 +330,11 @@ import { trigger, transition, style, animate } from '@angular/animations';
                     <a routerLink="/account" [queryParams]="{tab:'orders'}" (click)="userDropOpen.set(false)" class="user-drop-item">
                       <app-icon name="package" [size]="16"/> My Orders
                     </a>
+                    @if (authApi.currentUser()?.role === 'reseller') {
+                      <a routerLink="/reseller" (click)="userDropOpen.set(false)" class="user-drop-item user-drop-item--reseller">
+                        <app-icon name="star-filled" [size]="16"/> Reseller Dashboard
+                      </a>
+                    }
                     <a routerLink="/wishlist" (click)="userDropOpen.set(false)" class="user-drop-item">
                       <app-icon name="heart" [size]="16"/> Wishlist
                       @if (wishlistService.count() > 0) {
@@ -948,6 +953,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 
       &:hover { background: rgba(201,168,76,0.06); color: #a07830; app-icon { color: #C9A84C; } }
       &--admin { color: #a07830; font-weight: 500; app-icon { color: #C9A84C; } }
+      &--reseller { color: #a07830; font-weight: 600; background: rgba(201,168,76,0.05); app-icon { color: #C9A84C; } }
       &--logout { color: #888; &:hover { background: rgba(26,26,26,0.04); color: #1A1A1A; } }
     }
 

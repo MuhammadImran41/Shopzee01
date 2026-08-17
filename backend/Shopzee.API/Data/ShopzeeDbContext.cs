@@ -5,16 +5,19 @@ namespace Shopzee.API.Data;
 
 public class ShopzeeDbContext(DbContextOptions<ShopzeeDbContext> options) : DbContext(options)
 {
-    public DbSet<User>         Users         { get; set; }
-    public DbSet<Category>     Categories    { get; set; }
-    public DbSet<Product>      Products      { get; set; }
-    public DbSet<Address>      Addresses     { get; set; }
-    public DbSet<Order>        Orders        { get; set; }
-    public DbSet<OrderItem>    OrderItems    { get; set; }
-    public DbSet<Cart>         Carts         { get; set; }
-    public DbSet<CartItem>     CartItems     { get; set; }
-    public DbSet<WishlistItem> WishlistItems { get; set; }
-    public DbSet<Review>       Reviews       { get; set; }
+    public DbSet<User>            Users           { get; set; }
+    public DbSet<Category>        Categories      { get; set; }
+    public DbSet<Product>         Products        { get; set; }
+    public DbSet<Address>         Addresses       { get; set; }
+    public DbSet<Order>           Orders          { get; set; }
+    public DbSet<OrderItem>       OrderItems      { get; set; }
+    public DbSet<Cart>            Carts           { get; set; }
+    public DbSet<CartItem>        CartItems       { get; set; }
+    public DbSet<WishlistItem>    WishlistItems   { get; set; }
+    public DbSet<Review>          Reviews         { get; set; }
+    public DbSet<ResellerProfile> ResellerProfiles { get; set; }
+    public DbSet<ResellerOrder>   ResellerOrders  { get; set; }
+    public DbSet<ResellerOrderItem> ResellerOrderItems { get; set; }
 
     protected override void OnModelCreating(ModelBuilder mb)
     {
@@ -57,6 +60,30 @@ public class ShopzeeDbContext(DbContextOptions<ShopzeeDbContext> options) : DbCo
         // LineTotal is computed — ignore in DB
         mb.Entity<OrderItem>()
           .Ignore(oi => oi.LineTotal);
+
+        // ── Reseller decimal precision ─────────────────────────
+        mb.Entity<ResellerProfile>()
+          .Property(r => r.TotalEarnings).HasColumnType("decimal(18,2)");
+        mb.Entity<ResellerProfile>()
+          .Property(r => r.PendingEarnings).HasColumnType("decimal(18,2)");
+        mb.Entity<ResellerProfile>()
+          .Property(r => r.WithdrawnAmount).HasColumnType("decimal(18,2)");
+
+        mb.Entity<ResellerOrder>()
+          .Property(r => r.SubTotal).HasColumnType("decimal(18,2)");
+        mb.Entity<ResellerOrder>()
+          .Property(r => r.ShippingCost).HasColumnType("decimal(18,2)");
+        mb.Entity<ResellerOrder>()
+          .Property(r => r.ResellerProfit).HasColumnType("decimal(18,2)");
+        mb.Entity<ResellerOrder>()
+          .Property(r => r.TotalAmount).HasColumnType("decimal(18,2)");
+
+        mb.Entity<ResellerOrderItem>()
+          .Property(r => r.BasePrice).HasColumnType("decimal(18,2)");
+        mb.Entity<ResellerOrderItem>()
+          .Property(r => r.ResellerPrice).HasColumnType("decimal(18,2)");
+        mb.Entity<ResellerOrderItem>()
+          .Property(r => r.Profit).HasColumnType("decimal(18,2)");
 
         // ── Seed Data ─────────────────────────────────────────
         SeedData(mb);
