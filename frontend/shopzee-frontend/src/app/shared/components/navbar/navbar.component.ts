@@ -46,7 +46,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
     ])
   ],
   template: `
-    <header class="navbar" [class.scrolled]="isScrolled()" role="banner">
+    <header class="navbar" [class.scrolled]="isScrolled() || !isHeroPage()" role="banner">
       <div class="navbar__inner container">
 
         <!-- Logo -->
@@ -1086,6 +1086,9 @@ export class NavbarComponent implements OnInit {
   userDropOpen   = signal(false);
   activeMega     = signal<string | null>(null);
   drawerAcc      = signal<string | null>(null);
+
+  // Hero page = only home '/' — all other pages get scrolled navbar
+  isHeroPage = computed(() => this.router.url === '/');
 
   private megaTimer: any;
 

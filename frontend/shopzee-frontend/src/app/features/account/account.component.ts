@@ -313,7 +313,6 @@ import { AuthModalComponent } from '../../shared/components/auth-modal/auth-moda
       @media (max-width: 768px) { padding: calc(90px + var(--space-6)) var(--space-5) var(--space-12); }
       @media (max-width: 480px) { padding: calc(85px + var(--space-4)) var(--space-4) var(--space-10); }
     }
-
     /* ── Not logged in ─────────────────────────────── */
     .not-logged-in {
       display: flex; flex-direction: column; align-items: center;
@@ -344,6 +343,7 @@ import { AuthModalComponent } from '../../shared/components/auth-modal/auth-moda
       gap: var(--space-8);
       min-width: 0;
       width: 100%;
+      align-items: start;
       @media (max-width: 900px) { grid-template-columns: 1fr; gap: var(--space-5); }
     }
 
@@ -352,8 +352,11 @@ import { AuthModalComponent } from '../../shared/components/auth-modal/auth-moda
       display: flex; flex-direction: column; gap: 0;
       background: var(--cream-light); border: 1px solid var(--gray-200);
       height: fit-content; overflow: hidden;
+      position: sticky;
+      top: 100px;
 
       @media (max-width: 900px) {
+        position: static;
         flex-direction: row; overflow-x: auto;
         border-radius: 8px; -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
