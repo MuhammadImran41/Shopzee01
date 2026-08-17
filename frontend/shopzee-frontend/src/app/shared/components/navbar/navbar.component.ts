@@ -52,7 +52,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
         <!-- Logo -->
         <a routerLink="/" class="navbar__logo" aria-label="STYLEMAKER Home">
           <div class="logo-wrap">
-            <svg viewBox="0 0 160 40" class="logo-svg" aria-hidden="true">
+            <svg viewBox="0 0 200 40" class="logo-svg" aria-hidden="true">
               <path d="M8 28L4 14l8 6 8-12 8 12 8-6-4 14H8z"
                 fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linejoin="round"/>
               <circle cx="4"  cy="14" r="2" fill="#C9A84C"/>
@@ -60,7 +60,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
               <circle cx="36" cy="14" r="2" fill="#C9A84C"/>
               <text x="46" y="26"
                 font-family="Cormorant Garamond, Georgia, serif"
-                font-size="19" font-weight="600" fill="#1A1A1A" letter-spacing="3">STYLEMAKER</text>
+                font-size="17" font-weight="600" fill="#1A1A1A" letter-spacing="2">STYLEMAKER</text>
             </svg>
           </div>
         </a>
@@ -516,8 +516,8 @@ import { trigger, transition, style, animate } from '@angular/animations';
     .navbar__logo { display: flex; align-items: center; text-decoration: none; }
     .logo-wrap    { display: flex; align-items: center; }
     .logo-svg {
-      width: 210px; height: 52px;
-      text { fill: #fff; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4)); }
+      width: 260px; height: 52px;
+      text { fill: #fff; filter: drop-shadow(0 1px 4px rgba(0,0,0,0.6)); }
     }
     .navbar.scrolled .logo-svg text { fill: #1A1A1A; filter: none; }
 

@@ -32,9 +32,9 @@ import { trigger, transition, style, animate } from '@angular/animations';
 
       <!-- Logo -->
       <div class="auth-modal__logo">
-        <svg viewBox="0 0 120 32" width="120" height="32" aria-hidden="true">
+        <svg viewBox="0 0 180 32" width="180" height="32" aria-hidden="true">
           <path d="M8 24L4 12l8 5 8-10 8 10 8-5-4 12H8z" fill="none" stroke="#C9A84C" stroke-width="1.5"/>
-          <text x="40" y="22" font-family="Cormorant Garamond,serif" font-size="16" font-weight="600" fill="#1A1A1A" letter-spacing="2">SHOPZEE</text>
+          <text x="40" y="22" font-family="Cormorant Garamond,serif" font-size="15" font-weight="600" fill="#1A1A1A" letter-spacing="2">STYLEMAKER</text>
         </svg>
       </div>
 
@@ -67,7 +67,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
             @if (loading()) { <span>Signing in...</span> } @else { <span>Sign In</span> }
           </button>
           <p class="auth-hint">
-            Demo: <strong>admin&#64;STYLEMAKER.pk</strong> / <strong>Admin&#64;123</strong><br/>
+            Demo: <strong>admin&#64;stylemaker.pk</strong> / <strong>Admin&#64;123</strong><br/>
             <small style="color:#aaa">Support: trendzyofficial.store&#64;gmail.com</small>
           </p>
         </form>
@@ -166,7 +166,7 @@ export class AuthModalComponent {
       this.registerForm.phone
     ).subscribe({
       next: () => {
-        this.toast.success('Account created! Welcome to STYLEMAKER.');
+        this.toast.success('Account created! Welcome to StyleMaker.');
         this.loading.set(false);
         this.loggedIn.emit();
         this.close.emit();
