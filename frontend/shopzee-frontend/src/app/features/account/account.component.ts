@@ -93,11 +93,11 @@ import { AuthModalComponent } from '../../shared/components/auth-modal/auth-moda
           </nav>
 
           <!-- Content area -->
-          <div class="account-content" style="min-width:0;overflow:hidden;width:100%;padding-right:0;">
+          <div class="account-content" style="min-width:0;overflow:hidden;width:100%;">
 
             <!-- ── Profile Tab ─────────────────────────────── -->
             @if (activeTab() === 'profile') {
-              <div class="tab-section" style="padding:2rem 2rem 2rem 2rem;box-sizing:border-box;width:100%;max-width:100%;">
+              <div class="tab-section" style="padding:2rem;box-sizing:border-box;width:100%;overflow:hidden;">
                 <h2 class="tab-title">Profile Information</h2>
 
                 <div class="profile-avatar">
@@ -161,7 +161,7 @@ import { AuthModalComponent } from '../../shared/components/auth-modal/auth-moda
 
             <!-- ── Orders Tab ──────────────────────────────── -->
             @if (activeTab() === 'orders') {
-              <div class="tab-section" style="padding:2rem 2rem 2rem 2rem;box-sizing:border-box;width:100%;max-width:100%;">
+              <div class="tab-section" style="padding:2rem;box-sizing:border-box;width:100%;overflow:hidden;">
                 <h2 class="tab-title">Order History</h2>
 
                 @if (loadingOrders()) {
@@ -237,7 +237,7 @@ import { AuthModalComponent } from '../../shared/components/auth-modal/auth-moda
 
             <!-- ── Addresses Tab ───────────────────────────── -->
             @if (activeTab() === 'addresses') {
-              <div class="tab-section" style="padding:2rem 2rem 2rem 2rem;box-sizing:border-box;width:100%;max-width:100%;">
+              <div class="tab-section" style="padding:2rem;box-sizing:border-box;width:100%;overflow:hidden;">
                 <h2 class="tab-title">Saved Addresses</h2>
                 <div class="empty-state">
                   <app-icon name="map-pin" [size]="48" class="empty-icon"/>
@@ -252,7 +252,7 @@ import { AuthModalComponent } from '../../shared/components/auth-modal/auth-moda
 
             <!-- ── Security Tab ────────────────────────────── -->
             @if (activeTab() === 'security') {
-              <div class="tab-section" style="padding:2rem 2rem 2rem 2rem;box-sizing:border-box;width:100%;max-width:100%;">
+              <div class="tab-section" style="padding:2rem;box-sizing:border-box;width:100%;overflow:hidden;">
                 <h2 class="tab-title">Change Password</h2>
 
                 <form class="form-grid" style="width:100%;box-sizing:border-box;" style="max-width:480px" (submit)="changePassword($event)">
