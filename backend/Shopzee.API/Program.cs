@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 // ── Railway: bind to PORT env variable ───────────────────────
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
 builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+Console.WriteLine($"Starting on port: {port}");
 
 // ── Services ──────────────────────────────────────────────────
 builder.Services.AddControllers();
