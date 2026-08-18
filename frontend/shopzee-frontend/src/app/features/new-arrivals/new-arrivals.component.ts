@@ -46,33 +46,6 @@ import { Product } from '../../core/models/product.model';
       <span>New Arrivals</span>
     </div>
 
-    <!-- Stats Strip -->
-    <div class="na-stats">
-      <div class="container">
-        <div class="na-stats__inner">
-          <div class="na-stat">
-            <span class="na-stat__num">{{ allNew().length }}</span>
-            <span class="na-stat__label">New Pieces</span>
-          </div>
-          <div class="na-stat__divider"></div>
-          <div class="na-stat">
-            <span class="na-stat__num">{{ womenNew().length }}</span>
-            <span class="na-stat__label">Women's</span>
-          </div>
-          <div class="na-stat__divider"></div>
-          <div class="na-stat">
-            <span class="na-stat__num">{{ menNew().length }}</span>
-            <span class="na-stat__label">Men's</span>
-          </div>
-          <div class="na-stat__divider"></div>
-          <div class="na-stat">
-            <span class="na-stat__num">2026</span>
-            <span class="na-stat__label">Season</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- Products -->
     <section class="na-section container">
 
