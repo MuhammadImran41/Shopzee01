@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Npgsql;
 using Shopzee.API.Data;
 using Shopzee.API.Helpers;
 
@@ -15,11 +16,12 @@ builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 // ── Services ──────────────────────────────────────────────────
 builder.Services.AddControllers();
 
-// EF Core — SQLite (production path writable on Railway)
-var dbPath = Environment.GetEnvironmentVariable("DATABASE_PATH")
-             ?? "Data Source=shopzee.db";
+// EF Core — PostgreSQL (Neon)
+var dbConn = Environment.GetEnvironmentVariable("DATABASE_URL")
+             ?? builder.Configuration.GetConnectionString("DefaultConnection")!;
+
 builder.Services.AddDbContext<ShopzeeDbContext>(opt =>
-    opt.UseSqlite(dbPath));
+    opt.UseNpgsql(dbConn));
 
 // JWT
 var jwtKey    = builder.Configuration["Jwt:Key"]
