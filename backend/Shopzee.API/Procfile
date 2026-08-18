@@ -1,1 +1,0 @@
-web: dotnet /app/publish/Shopzee.API.dll
