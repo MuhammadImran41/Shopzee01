@@ -52,7 +52,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
         <!-- Logo -->
         <a routerLink="/" class="navbar__logo" aria-label="StyleMaker Home">
           <div class="logo-wrap">
-            <svg viewBox="0 0 210 40" class="logo-svg" aria-hidden="true">
+            <svg viewBox="0 0 160 40" class="logo-svg" aria-hidden="true">
               <path d="M8 28L4 14l8 6 8-12 8 12 8-6-4 14H8z"
                 fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linejoin="round"/>
               <circle cx="4"  cy="14" r="2" fill="#C9A84C"/>
@@ -60,7 +60,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
               <circle cx="36" cy="14" r="2" fill="#C9A84C"/>
               <text x="46" y="26"
                 font-family="Cormorant Garamond, Georgia, serif"
-                font-size="17" font-weight="600" fill="#1A1A1A" letter-spacing="2">STYLEMAKER</text>
+                font-size="19" font-weight="600" fill="#1A1A1A" letter-spacing="3">StyleMaker</text>
             </svg>
           </div>
         </a>
@@ -86,7 +86,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
               <div class="mega-menu">
                 <div class="mega-promo-bar">
                   <span>✦ Free shipping on orders above PKR 5,000</span>
-                  <a routerLink="/new-arrivals">View New Arrivals →</a>
+                  <a routerLink="/women" [queryParams]="{tag:'new'}">View New Arrivals →</a>
                 </div>
                 <div class="mega-inner">
                   <div class="mega-col">
@@ -138,7 +138,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
                         <span class="mega-link-content"><strong>New Arrivals</strong></span>
                         <svg class="mega-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                       </a></li>
-                      <li><a routerLink="/sale" class="mega-link mega-link--sale">
+                      <li><a routerLink="/women" [queryParams]="{tag:'sale'}" class="mega-link mega-link--sale">
                         <span class="mega-badge mega-badge--sale">SALE</span>
                         <span class="mega-link-content"><strong>Sale</strong></span>
                         <svg class="mega-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -182,7 +182,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
               <div class="mega-menu">
                 <div class="mega-promo-bar">
                   <span>✦ New arrivals every week — stay updated</span>
-                  <a routerLink="/new-arrivals">Explore Men's →</a>
+                  <a routerLink="/men" [queryParams]="{tag:'new'}">Explore Men's →</a>
                 </div>
                 <div class="mega-inner">
                   <div class="mega-col">
@@ -234,7 +234,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
                         <span class="mega-link-content"><strong>New Arrivals</strong></span>
                         <svg class="mega-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                       </a></li>
-                      <li><a routerLink="/sale" class="mega-link mega-link--sale">
+                      <li><a routerLink="/men" [queryParams]="{tag:'sale'}" class="mega-link mega-link--sale">
                         <span class="mega-badge mega-badge--sale">SALE</span>
                         <span class="mega-link-content"><strong>Sale</strong></span>
                         <svg class="mega-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -269,12 +269,12 @@ import { trigger, transition, style, animate } from '@angular/animations';
 
             <!-- New Arrivals -->
             <li>
-              <a routerLink="/new-arrivals" routerLinkActive="active" class="nav-link">New Arrivals</a>
+              <a routerLink="/women" [queryParams]="{tag:'new'}" class="nav-link">New Arrivals</a>
             </li>
 
             <!-- Sale -->
             <li>
-              <a routerLink="/sale" class="nav-link nav-link--sale">Sale</a>
+              <a routerLink="/women" [queryParams]="{tag:'sale'}" class="nav-link nav-link--sale">Sale</a>
             </li>
 
           </ul>
@@ -385,7 +385,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
       <div class="mobile-overlay" [@overlayAnim] (click)="closeMobileMenu()" aria-hidden="true"></div>
       <nav class="mobile-drawer" [@drawerAnim] aria-label="Mobile navigation">
         <div class="drawer-header">
-          <span class="drawer-logo">STYLEMAKER</span>
+          <span class="drawer-logo">StyleMaker</span>
           <button class="action-btn" (click)="closeMobileMenu()" aria-label="Close menu">
             <app-icon name="close" [size]="24"/>
           </button>
@@ -408,7 +408,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
                 <li><a routerLink="/women" [queryParams]="{sub:'suits'}" (click)="closeMobileMenu()" class="drawer-sub-link">Embroidered Suits</a></li>
                 <li><a routerLink="/women" [queryParams]="{sub:'formal'}" (click)="closeMobileMenu()" class="drawer-sub-link">Formal Wear</a></li>
                 <li><a routerLink="/women" [queryParams]="{sub:'bridal'}" (click)="closeMobileMenu()" class="drawer-sub-link">Bridal Collection</a></li>
-                <li><a routerLink="/new-arrivals" (click)="closeMobileMenu()" class="drawer-sub-link drawer-sub-link--gold">New Arrivals</a></li>
+                <li><a routerLink="/women" [queryParams]="{tag:'new'}" (click)="closeMobileMenu()" class="drawer-sub-link drawer-sub-link--gold">New Arrivals</a></li>
                 <li><a routerLink="/women" [queryParams]="{tag:'sale'}" (click)="closeMobileMenu()" class="drawer-sub-link drawer-sub-link--red">Sale</a></li>
               </ul>
             }
@@ -428,14 +428,14 @@ import { trigger, transition, style, animate } from '@angular/animations';
                 <li><a routerLink="/men" [queryParams]="{sub:'shalwar'}" (click)="closeMobileMenu()" class="drawer-sub-link">Shalwar Kameez</a></li>
                 <li><a routerLink="/men" [queryParams]="{sub:'kurta'}" (click)="closeMobileMenu()" class="drawer-sub-link">Kurta Collection</a></li>
                 <li><a routerLink="/men" [queryParams]="{sub:'sherwani'}" (click)="closeMobileMenu()" class="drawer-sub-link">Sherwani</a></li>
-                <li><a routerLink="/new-arrivals" (click)="closeMobileMenu()" class="drawer-sub-link drawer-sub-link--gold">New Arrivals</a></li>
+                <li><a routerLink="/men" [queryParams]="{tag:'new'}" (click)="closeMobileMenu()" class="drawer-sub-link drawer-sub-link--gold">New Arrivals</a></li>
                 <li><a routerLink="/men" [queryParams]="{tag:'sale'}" (click)="closeMobileMenu()" class="drawer-sub-link drawer-sub-link--red">Sale</a></li>
               </ul>
             }
           </li>
 
-          <li><a routerLink="/new-arrivals" (click)="closeMobileMenu()" class="drawer-link">New Arrivals</a></li>
-          <li><a routerLink="/sale" (click)="closeMobileMenu()" class="drawer-link drawer-link--sale">Sale</a></li>
+          <li><a routerLink="/women" [queryParams]="{tag:'new'}" (click)="closeMobileMenu()" class="drawer-link">New Arrivals</a></li>
+          <li><a routerLink="/women" [queryParams]="{tag:'sale'}" (click)="closeMobileMenu()" class="drawer-link drawer-link--sale">Sale</a></li>
         </ul>
 
         <div class="drawer-actions">
@@ -519,8 +519,12 @@ import { trigger, transition, style, animate } from '@angular/animations';
     .navbar__logo { display: flex; align-items: center; text-decoration: none; }
     .logo-wrap    { display: flex; align-items: center; }
     .logo-svg {
-      width: 280px; height: 52px;
+      width: 210px; height: 52px;
       text { fill: #fff; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4)); }
+
+      @media (max-width: 400px) {
+        width: 160px; height: 40px;
+      }
     }
     .navbar.scrolled .logo-svg text { fill: #1A1A1A; filter: none; }
 
@@ -780,6 +784,11 @@ import { trigger, transition, style, animate } from '@angular/animations';
     /* ── ACTIONS ─────────────────────────────────────────── */
     .navbar__actions {
       display: flex; align-items: center; gap: 2px; flex-shrink: 0;
+
+      @media (max-width: 400px) {
+        gap: 0;
+        .action-btn { width: 36px; height: 36px; }
+      }
     }
 
     .action-btn {

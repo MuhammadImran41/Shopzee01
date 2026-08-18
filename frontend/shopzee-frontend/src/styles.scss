@@ -113,6 +113,7 @@ body {
   color: var(--black);
   line-height: 1.6;
   overflow-x: hidden;
+  max-width: 100vw;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -276,10 +277,18 @@ p { line-height: 1.7; }
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 var(--space-6);
+  padding: 0 1.5rem;
+
+  @media (max-width: 1024px) {
+    padding: 0 1.5rem;
+  }
 
   @media (max-width: 768px) {
-    padding: 0 var(--space-4);
+    padding: 0 1rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0 0.75rem;
   }
 }
 
