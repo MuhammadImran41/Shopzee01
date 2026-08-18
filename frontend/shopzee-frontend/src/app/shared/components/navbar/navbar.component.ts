@@ -50,7 +50,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
       <div class="navbar__inner container">
 
         <!-- Logo -->
-        <a routerLink="/" class="navbar__logo" aria-label="Trendzy Home">
+        <a routerLink="/" class="navbar__logo" aria-label="StyleMaker Home">
           <div class="logo-wrap">
             <svg viewBox="0 0 160 40" class="logo-svg" aria-hidden="true">
               <path d="M8 28L4 14l8 6 8-12 8 12 8-6-4 14H8z"
@@ -60,7 +60,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
               <circle cx="36" cy="14" r="2" fill="#C9A84C"/>
               <text x="46" y="26"
                 font-family="Cormorant Garamond, Georgia, serif"
-                font-size="19" font-weight="600" fill="#1A1A1A" letter-spacing="3">TRENDZY</text>
+                font-size="19" font-weight="600" fill="#1A1A1A" letter-spacing="3">STYLEMAKER</text>
             </svg>
           </div>
         </a>
@@ -138,7 +138,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
                         <span class="mega-link-content"><strong>New Arrivals</strong></span>
                         <svg class="mega-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                       </a></li>
-                      <li><a routerLink="/women" [queryParams]="{tag:'sale'}" class="mega-link mega-link--sale">
+                      <li><a routerLink="/sale" class="mega-link mega-link--sale">
                         <span class="mega-badge mega-badge--sale">SALE</span>
                         <span class="mega-link-content"><strong>Sale</strong></span>
                         <svg class="mega-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -234,7 +234,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
                         <span class="mega-link-content"><strong>New Arrivals</strong></span>
                         <svg class="mega-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                       </a></li>
-                      <li><a routerLink="/men" [queryParams]="{tag:'sale'}" class="mega-link mega-link--sale">
+                      <li><a routerLink="/sale" class="mega-link mega-link--sale">
                         <span class="mega-badge mega-badge--sale">SALE</span>
                         <span class="mega-link-content"><strong>Sale</strong></span>
                         <svg class="mega-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -274,7 +274,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 
             <!-- Sale -->
             <li>
-              <a routerLink="/women" [queryParams]="{tag:'sale'}" class="nav-link nav-link--sale">Sale</a>
+              <a routerLink="/sale" class="nav-link nav-link--sale">Sale</a>
             </li>
 
           </ul>
@@ -385,7 +385,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
       <div class="mobile-overlay" [@overlayAnim] (click)="closeMobileMenu()" aria-hidden="true"></div>
       <nav class="mobile-drawer" [@drawerAnim] aria-label="Mobile navigation">
         <div class="drawer-header">
-          <span class="drawer-logo">TRENDZY</span>
+          <span class="drawer-logo">STYLEMAKER</span>
           <button class="action-btn" (click)="closeMobileMenu()" aria-label="Close menu">
             <app-icon name="close" [size]="24"/>
           </button>
@@ -435,7 +435,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
           </li>
 
           <li><a routerLink="/women" [queryParams]="{tag:'new'}" (click)="closeMobileMenu()" class="drawer-link">New Arrivals</a></li>
-          <li><a routerLink="/women" [queryParams]="{tag:'sale'}" (click)="closeMobileMenu()" class="drawer-link drawer-link--sale">Sale</a></li>
+          <li><a routerLink="/sale" (click)="closeMobileMenu()" class="drawer-link drawer-link--sale">Sale</a></li>
         </ul>
 
         <div class="drawer-actions">

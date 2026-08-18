@@ -161,7 +161,7 @@ public class EmailService
 
                   <p style="margin-top:28px;color:#666;font-size:13px;line-height:1.7;">
                     We'll notify you when your order ships. For any questions, reply to this email or contact us at
-                    <a href="mailto:trendzyofficial.store@gmail.com" style="color:#b8963c;">trendzyofficial.store@gmail.com</a>
+                    <a href="mailto:STYLEMAKERofficial.store@gmail.com" style="color:#b8963c;">STYLEMAKERofficial.store@gmail.com</a>
                   </p>
                 </div>
 
