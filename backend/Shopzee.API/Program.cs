@@ -50,12 +50,18 @@ builder.Services.AddAuthorization();
 builder.Services.AddSingleton<JwtHelper>();
 builder.Services.AddScoped<EmailService>();
 
-// CORS — allow all origins in production (Railway + Vercel + custom domain)
+// CORS — allow all origins in production
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("ShopzeeCors", policy =>
     {
-        policy.SetIsOriginAllowed(_ => true)  // allow any frontend URL
+        policy.WithOrigins(
+                "http://localhost:4200",
+                "https://stylemaker.store",
+                "https://www.stylemaker.store",
+                "https://shopzee01-production.up.railway.app"
+              )
+              .SetIsOriginAllowedToAllowWildcardSubdomains()
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
