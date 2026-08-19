@@ -1,6 +1,3 @@
-[phases.setup]
-nixPkgs = ["dotnet-sdk"]
-
 [phases.install]
 cmds = ["dotnet restore Shopzee.API.csproj"]
 
