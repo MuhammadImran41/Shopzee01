@@ -1,5 +1,4 @@
-[providers]
-only = ["dotnet"]
+providers = ["dotnet"]
 
 [phases.build]
 cmds = ["dotnet publish Shopzee.API.csproj -c Release -o /app/publish"]
