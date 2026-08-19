@@ -1,7 +1,0 @@
-providers = ["dotnet"]
-
-[phases.build]
-cmds = ["dotnet publish Shopzee.API.csproj -c Release -o /app/publish"]
-
-[start]
-cmd = "dotnet /app/publish/Shopzee.API.dll"
