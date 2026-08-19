@@ -1,8 +1,5 @@
-[phases.install]
-cmds = ["dotnet restore Shopzee.API.csproj"]
-
 [phases.build]
-cmds = ["dotnet publish Shopzee.API.csproj -c Release -o /app/publish --no-restore"]
+cmds = ["dotnet publish Shopzee.API.csproj -c Release -o /app/publish"]
 
 [start]
 cmd = "dotnet /app/publish/Shopzee.API.dll"
