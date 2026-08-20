@@ -1,0 +1,32 @@
+{
+  "ServiceArn": "arn:aws:apprunner:ap-south-1:560615624909:service/stylemaker-api/8afe73d494394d2a933667ac79af80a4",
+  "SourceConfiguration": {
+    "CodeRepository": {
+      "CodeConfiguration": {
+        "ConfigurationSource": "API",
+        "CodeConfigurationValues": {
+          "Runtime": "DOTNET_8",
+          "BuildCommand": "dotnet publish Shopzee.API.csproj -c Release -o out",
+          "StartCommand": "dotnet out/Shopzee.API.dll",
+          "Port": "8080",
+          "RuntimeEnvironmentVariables": {
+            "DATABASE_URL": "Host=ep-wild-sky-axtcvc3f.c-4.us-east-2.aws.neon.tech;Database=neondb;Username=neondb_owner;Password=npg_k7eptKRz3LyU;SSL Mode=Require;Trust Server Certificate=true",
+            "Email__Password": "jnog ndip gpld wojg",
+            "JWT_KEY": "ShopzeeSecretKey_Change_In_Production_2026!AbCdEfGhIjKlMnOpQrStUvWxYz",
+            "ASPNETCORE_ENVIRONMENT": "Production",
+            "ASPNETCORE_URLS": "http://0.0.0.0:8080"
+          }
+        }
+      },
+      "RepositoryUrl": "https://github.com/MuhammadImran41/Shopzee01",
+      "SourceCodeVersion": {
+        "Type": "BRANCH",
+        "Value": "main"
+      }
+    },
+    "AutoDeploymentsEnabled": true,
+    "AuthenticationConfiguration": {
+      "ConnectionArn": "arn:aws:apprunner:ap-south-1:560615624909:connection/stylemaker-github/e20823522b474af5b1c5a0f3096c9d26"
+    }
+  }
+}

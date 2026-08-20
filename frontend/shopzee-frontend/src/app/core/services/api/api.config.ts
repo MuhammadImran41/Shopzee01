@@ -1,1 +1,1 @@
-export const API_BASE = 'https://resourceful-serenity-production-c0a9.up.railway.app/api';
+export const API_BASE = 'http://stylemaker-api-env.eba-xnzprf3n.ap-south-1.elasticbeanstalk.com/api';

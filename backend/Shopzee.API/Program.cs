@@ -9,8 +9,8 @@ using Shopzee.API.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ── Railway: bind to PORT env variable ───────────────────────
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+// ── Railway/EB: bind to PORT env variable ───────────────────────
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
 builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 Console.WriteLine($"[STARTUP] Listening on port: {port}");
 
@@ -60,7 +60,8 @@ builder.Services.AddCors(opt =>
                 "http://localhost:4200",
                 "https://stylemaker.store",
                 "https://www.stylemaker.store",
-                "https://shopzee01-production.up.railway.app"
+                "https://shopzee01-production.up.railway.app",
+                "https://main.d2xyz.amplifyapp.com"
               )
               .SetIsOriginAllowedToAllowWildcardSubdomains()
               .AllowAnyHeader()
@@ -123,7 +124,15 @@ app.MapGet("/", () => Results.Ok(new { status = "ok", app = "Shopzee API", versi
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ShopzeeDbContext>();
-    db.Database.Migrate();
+    try
+    {
+        db.Database.Migrate();
+    }
+    catch (Exception ex) when (ex.Message.Contains("already exists"))
+    {
+        // Tables already exist — skip migration, continue
+        Console.WriteLine("[STARTUP] Tables already exist, skipping migration.");
+    }
 }
 
 app.Run();
