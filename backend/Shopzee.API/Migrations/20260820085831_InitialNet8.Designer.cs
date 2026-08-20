@@ -12,15 +12,15 @@ using Shopzee.API.Data;
 namespace Shopzee.API.Migrations
 {
     [DbContext(typeof(ShopzeeDbContext))]
-    [Migration("20260818062634_InitialPostgres")]
-    partial class InitialPostgres
+    [Migration("20260820085831_InitialNet8")]
+    partial class InitialNet8
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.1")
+                .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
