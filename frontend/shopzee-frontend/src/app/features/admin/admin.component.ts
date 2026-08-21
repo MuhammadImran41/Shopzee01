@@ -1,7 +1,8 @@
 import { Component, signal, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet, Router } from '@angular/router';
 import { SvgIconsComponent } from '../../shared/components/svg-icons/svg-icons.component';
+import { AuthApiService } from '../../core/services/api/auth-api.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 interface Notification {
@@ -104,12 +105,16 @@ interface Notification {
                 </div>
               }
             </div>
-            <!-- Admin Avatar -->
-            <div class="admin-avatar">A</div>
+            <!-- Admin Avatar + Name + Logout -->
+            <div class="admin-avatar">{{ adminInitial() }}</div>
             <div class="admin-name hide-mobile">
-              <span>Admin</span>
+              <span>{{ authApi.currentUser()?.name || 'Admin' }}</span>
               <span class="admin-role">Super Admin</span>
             </div>
+            <button class="topbar-btn logout-btn" (click)="logout()" title="Logout" aria-label="Logout">
+              <app-icon name="close" [size]="18"/>
+              <span class="logout-text">Logout</span>
+            </button>
           </div>
         </header>
 
@@ -154,16 +159,33 @@ interface Notification {
     .notif-body { flex:1; }
     .notif-msg { font-size:0.8125rem; color:var(--black); line-height:1.4; margin-bottom:2px; }
     .notif-time { font-size:0.75rem; color:var(--gray-400); }
-    .admin-avatar { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,var(--gold),var(--gold-dark)); display:flex; align-items:center; justify-content:center; font-family:var(--font-heading); font-size:1.125rem; font-weight:600; color:var(--black); }
+    .admin-avatar { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,var(--gold),var(--gold-dark)); display:flex; align-items:center; justify-content:center; font-family:var(--font-heading); font-size:1.125rem; font-weight:600; color:var(--black); flex-shrink:0; }
     .admin-name { display:flex; flex-direction:column; gap:1px; span:first-child{font-size:0.875rem;font-weight:600;} }
     .admin-role { font-size:0.7rem; color:var(--gray-400); letter-spacing:0.08em; }
+    .logout-btn {
+      display:flex; align-items:center; gap:0.4rem; width:auto; padding:0 0.875rem;
+      border-radius:4px; font-size:0.75rem; font-weight:600; letter-spacing:0.06em;
+      text-transform:uppercase; color:#C62828; border:1px solid rgba(198,40,40,0.3);
+      background:rgba(198,40,40,0.06); height:36px;
+      &:hover { background:rgba(198,40,40,0.14); border-color:#C62828; color:#b71c1c; }
+      @media(max-width:600px) { .logout-text { display:none; } width:40px; padding:0; justify-content:center; }
+    }
     .admin-content { flex:1; overflow-y:auto; padding:1.5rem; background:var(--cream); }
   `]
 })
 export class AdminComponent implements OnInit, OnDestroy {
   sidebarCollapsed = signal(false);
-  notifOpen = signal(false);
+  notifOpen        = signal(false);
+  authApi          = inject(AuthApiService);
+  private router   = inject(Router);
   private notifTimer: ReturnType<typeof setInterval> | null = null;
+
+  adminInitial = () => (this.authApi.currentUser()?.name?.[0] ?? 'A').toUpperCase();
+
+  logout() {
+    this.authApi.logout();
+    this.router.navigate(['/']);
+  }
 
   navItems = [
     { path: '/admin/dashboard',  label: 'Dashboard',  icon: 'chart' },
