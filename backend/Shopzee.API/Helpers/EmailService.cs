@@ -27,6 +27,45 @@ public class EmailService
         _logger   = logger;
     }
 
+    // ── Forgot password email ─────────────────────────────
+    public async Task SendForgotPasswordAsync(string toEmail, string toName, string resetToken)
+    {
+        var subject = "Reset Your Password — STYLEMAKER";
+        var html = $"""
+            <!DOCTYPE html>
+            <html>
+            <head><meta charset="utf-8"/></head>
+            <body style="margin:0;padding:0;background:#f5f0e8;font-family:Inter,sans-serif;">
+              <div style="max-width:520px;margin:40px auto;background:#fff;border:1px solid #ede9e0;">
+                <div style="background:#1a1a1a;padding:28px 32px;text-align:center;">
+                  <h1 style="margin:0;color:#c9a84c;font-family:Georgia,serif;font-size:24px;letter-spacing:4px;">STYLEMAKER</h1>
+                </div>
+                <div style="padding:40px 32px;">
+                  <h2 style="font-family:Georgia,serif;font-size:20px;color:#1a1a1a;margin:0 0 12px;">Reset Your Password</h2>
+                  <p style="color:#666;margin:0 0 8px;">Hello {toName},</p>
+                  <p style="color:#666;margin:0 0 28px;line-height:1.7;">
+                    We received a request to reset your STYLEMAKER password. Use the OTP code below — it expires in <strong>15 minutes</strong>.
+                  </p>
+                  <div style="background:#faf7f2;border:2px solid #c9a84c;padding:24px;text-align:center;margin-bottom:28px;">
+                    <p style="margin:0 0 8px;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#888;">Your OTP Code</p>
+                    <p style="margin:0;font-size:40px;font-weight:700;letter-spacing:10px;color:#1a1a1a;font-family:monospace;">{resetToken}</p>
+                  </div>
+                  <p style="color:#999;font-size:13px;line-height:1.6;">
+                    If you didn't request this, please ignore this email. Your password will remain unchanged.
+                  </p>
+                </div>
+                <div style="background:#1a1a1a;padding:16px 32px;text-align:center;">
+                  <p style="margin:0;color:rgba(245,240,232,0.4);font-size:11px;letter-spacing:1px;">
+                    © {DateTime.UtcNow.Year} STYLEMAKER — Premium Pakistani Fashion
+                  </p>
+                </div>
+              </div>
+            </body>
+            </html>
+            """;
+        await SendAsync(toEmail, toName, subject, html);
+    }
+
     // ── Order confirmation to customer ───────────────────
     public async Task SendOrderConfirmationAsync(string toEmail, string toName, OrderDto order)
     {

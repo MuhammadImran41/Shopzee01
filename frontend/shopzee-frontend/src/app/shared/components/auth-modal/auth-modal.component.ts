@@ -43,9 +43,9 @@ import { API_BASE } from '../../../core/services/api/api.config';
 
       <!-- Tabs -->
       <div class="auth-modal__tabs">
-        <button class="auth-tab" [class.active]="mode() === 'login'"    (click)="mode.set('login')">Sign In</button>
-        <button class="auth-tab" [class.active]="mode() === 'register'" (click)="mode.set('register')">Register</button>
-        <button class="auth-tab auth-tab--reseller" [class.active]="mode() === 'reseller'" (click)="mode.set('reseller')">
+        <button class="auth-tab" [class.active]="mode() === 'login'"    (click)="mode.set('login'); resetForgot()">Sign In</button>
+        <button class="auth-tab" [class.active]="mode() === 'register'" (click)="mode.set('register'); resetForgot()">Register</button>
+        <button class="auth-tab auth-tab--reseller" [class.active]="mode() === 'reseller'" (click)="mode.set('reseller'); resetForgot()">
           ✦ Reseller
         </button>
       </div>
@@ -65,6 +65,9 @@ import { API_BASE } from '../../../core/services/api/api.config';
                 <app-icon [name]="showPass() ? 'eye' : 'eye'" [size]="16"/>
               </button>
             </div>
+            <div class="forgot-link-wrap">
+              <button type="button" class="forgot-link" (click)="mode.set('forgot')">Forgot password?</button>
+            </div>
           </div>
           @if (error()) { <p class="auth-error">{{ error() }}</p> }
           <button type="submit" class="btn btn-primary w-full auth-submit" [disabled]="loading()">
@@ -75,6 +78,64 @@ import { API_BASE } from '../../../core/services/api/api.config';
             <small style="color:#aaa">Support: stylemakerofficial.store&#64;gmail.com</small>
           </p>
         </form>
+      }
+
+      <!-- ── FORGOT PASSWORD FORM ────────────────────────── -->
+      @if (mode() === 'forgot') {
+
+        @if (!otpSent()) {
+          <!-- Step 1: Enter email -->
+          <form class="auth-form" (submit)="onForgotPassword($event)">
+            <div class="forgot-header">
+              <div class="forgot-icon">🔑</div>
+              <h3 class="forgot-title">Reset Password</h3>
+              <p class="forgot-desc">Enter your registered email — we'll send a 6-digit OTP code.</p>
+            </div>
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" [(ngModel)]="forgotEmail" name="fp_email" placeholder="your@email.com" required/>
+            </div>
+            @if (error()) { <p class="auth-error">{{ error() }}</p> }
+            @if (successMsg()) { <p class="auth-success">{{ successMsg() }}</p> }
+            <button type="submit" class="btn btn-primary w-full auth-submit" [disabled]="loading()">
+              @if (loading()) { <span>Sending OTP...</span> } @else { <span>Send OTP Code</span> }
+            </button>
+            <button type="button" class="back-to-login" (click)="backToLogin()">← Back to Sign In</button>
+          </form>
+        }
+
+        @if (otpSent()) {
+          <!-- Step 2: Enter OTP + new password -->
+          <form class="auth-form" (submit)="onResetPassword($event)">
+            <div class="forgot-header">
+              <div class="forgot-icon">✉️</div>
+              <h3 class="forgot-title">Check Your Email</h3>
+              <p class="forgot-desc">We sent a 6-digit OTP to <strong>{{ forgotEmail }}</strong>. Enter it below.</p>
+            </div>
+            <div class="form-group">
+              <label>OTP Code</label>
+              <input type="text" [(ngModel)]="resetOtp" name="otp"
+                placeholder="123456" maxlength="6" required
+                style="letter-spacing:0.3em;font-size:1.25rem;text-align:center;font-weight:700"/>
+            </div>
+            <div class="form-group">
+              <label>New Password</label>
+              <div class="password-wrap">
+                <input [type]="showPass() ? 'text' : 'password'" [(ngModel)]="resetNewPass" name="new_pass"
+                  placeholder="Min 6 characters" required minlength="6"/>
+                <button type="button" class="pass-toggle" (click)="togglePass()">
+                  <app-icon [name]="showPass() ? 'eye' : 'eye'" [size]="16"/>
+                </button>
+              </div>
+            </div>
+            @if (error()) { <p class="auth-error">{{ error() }}</p> }
+            @if (successMsg()) { <p class="auth-success">{{ successMsg() }}</p> }
+            <button type="submit" class="btn btn-primary w-full auth-submit" [disabled]="loading()">
+              @if (loading()) { <span>Resetting...</span> } @else { <span>Reset Password</span> }
+            </button>
+            <button type="button" class="back-to-login" (click)="otpSent.set(false)">← Try different email</button>
+          </form>
+        }
       }
 
       <!-- ── REGISTER FORM ───────────────────────────────── -->
@@ -350,8 +411,31 @@ import { API_BASE } from '../../../core/services/api/api.config';
     .password-wrap input { padding-right:2.5rem; }
     .pass-toggle { position:absolute; right:0.75rem; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--gray-400); display:flex; }
     .auth-error { color:#E53935; font-size:0.8125rem; margin:0.5rem 0; background:rgba(229,57,53,0.08); padding:0.5rem 0.75rem; }
+    .auth-success { color:#2e7d32; font-size:0.8125rem; margin:0.5rem 0; background:rgba(46,125,50,0.08); padding:0.5rem 0.75rem; border-left:3px solid #4caf50; }
     .auth-submit { margin-top:1rem; padding:0.9375rem; font-size:0.875rem; }
     .auth-hint { font-size:0.75rem; color:var(--gray-400); text-align:center; margin-top:0.75rem; }
+
+    /* Forgot password link */
+    .forgot-link-wrap { display:flex; justify-content:flex-end; margin-top:0.375rem; }
+    .forgot-link {
+      background:none; border:none; cursor:pointer; padding:0;
+      font-size:0.75rem; color:var(--gold-dark); font-weight:500;
+      text-decoration:underline; text-underline-offset:2px;
+      &:hover { color:var(--gold); }
+    }
+
+    /* Forgot password form */
+    .forgot-header { text-align:center; margin-bottom:1.5rem; }
+    .forgot-icon { font-size:2rem; margin-bottom:0.5rem; }
+    .forgot-title { font-family:var(--font-heading); font-size:1.5rem; font-weight:400; margin:0 0 0.5rem; }
+    .forgot-desc { font-size:0.8125rem; color:var(--gray-500); line-height:1.6; margin:0; }
+
+    .back-to-login {
+      background:none; border:none; cursor:pointer; margin-top:0.75rem;
+      font-size:0.8rem; color:var(--gray-400); text-align:center; width:100%;
+      padding:0.5rem; transition:color 0.2s;
+      &:hover { color:var(--black); }
+    }
 
     /* ── Reseller Steps ───────────────────────────── */
     .reseller-steps {
@@ -478,12 +562,19 @@ export class AuthModalComponent {
   private http    = inject(HttpClient);
   private router  = inject(Router);
 
-  mode          = signal<'login' | 'register' | 'reseller'>('login');
+  mode          = signal<'login' | 'register' | 'reseller' | 'forgot'>('login');
   loading       = signal(false);
   error         = signal('');
+  successMsg    = signal('');
   showPass      = signal(false);
   resellerStep  = signal(1);
   resellerSuccess = signal(false);
+  otpSent       = signal(false);
+
+  // Forgot password state
+  forgotEmail  = '';
+  resetOtp     = '';
+  resetNewPass = '';
 
   loginForm    = { email: '', password: '' };
   registerForm = { name: '', email: '', password: '', phone: '' };
@@ -516,6 +607,62 @@ export class AuthModalComponent {
   ];
 
   togglePass() { this.showPass.update(v => !v); }
+
+  backToLogin() {
+    this.resetForgot();
+    this.mode.set('login');
+  }
+
+  resetForgot() {
+    this.forgotEmail  = '';
+    this.resetOtp     = '';
+    this.resetNewPass = '';
+    this.otpSent.set(false);
+    this.error.set('');
+    this.successMsg.set('');
+  }
+
+  // ── Forgot Password ────────────────────────────────────
+  onForgotPassword(e: Event) {
+    e.preventDefault();
+    if (!this.forgotEmail) { this.error.set('Please enter your email.'); return; }
+    this.loading.set(true);
+    this.error.set('');
+    this.successMsg.set('');
+    this.http.post(`${API_BASE}/auth/forgot-password`, { email: this.forgotEmail }).subscribe({
+      next: () => {
+        this.loading.set(false);
+        this.otpSent.set(true);
+        this.successMsg.set('OTP sent! Check your email inbox (and spam folder).');
+      },
+      error: () => {
+        this.loading.set(false);
+        // Still show success to prevent email enumeration
+        this.otpSent.set(true);
+        this.successMsg.set('OTP sent! Check your email inbox (and spam folder).');
+      }
+    });
+  }
+
+  onResetPassword(e: Event) {
+    e.preventDefault();
+    if (!this.resetOtp || !this.resetNewPass) { this.error.set('Please fill all fields.'); return; }
+    if (this.resetNewPass.length < 6) { this.error.set('Password must be at least 6 characters.'); return; }
+    this.loading.set(true);
+    this.error.set('');
+    this.successMsg.set('');
+    this.http.post(`${API_BASE}/auth/reset-password`, { token: this.resetOtp, newPassword: this.resetNewPass }).subscribe({
+      next: () => {
+        this.loading.set(false);
+        this.successMsg.set('Password reset! You can now sign in.');
+        setTimeout(() => { this.backToLogin(); }, 2000);
+      },
+      error: err => {
+        this.error.set(err.error?.message || 'Invalid or expired OTP. Please try again.');
+        this.loading.set(false);
+      }
+    });
+  }
 
   // ── Login ──────────────────────────────────────────────────
   onLogin(e: Event) {

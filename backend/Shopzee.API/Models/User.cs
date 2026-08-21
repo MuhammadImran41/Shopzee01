@@ -11,6 +11,10 @@ public class User
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public bool IsActive { get; set; } = true;
 
+    // Password reset
+    public string? PasswordResetToken { get; set; }
+    public DateTime? PasswordResetExpiry { get; set; }
+
     // Navigation
     public ICollection<Order> Orders { get; set; } = [];
     public ICollection<Address> Addresses { get; set; } = [];

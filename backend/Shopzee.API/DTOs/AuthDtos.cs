@@ -29,3 +29,7 @@ public record ChangePasswordDto(
 public record UpdateProfileDto(
     string Name,
     string Phone);
+
+public record ForgotPasswordDto(string Email);
+
+public record ResetPasswordDto(string Token, string NewPassword);

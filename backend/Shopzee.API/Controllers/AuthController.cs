@@ -11,7 +11,7 @@ namespace Shopzee.API.Controllers;
 
 [ApiController]
 [Route("api/auth")]
-public class AuthController(ShopzeeDbContext db, JwtHelper jwt) : ControllerBase
+public class AuthController(ShopzeeDbContext db, JwtHelper jwt, EmailService emailService) : ControllerBase
 {
     // POST api/auth/register
     [HttpPost("register")]
@@ -95,5 +95,56 @@ public class AuthController(ShopzeeDbContext db, JwtHelper jwt) : ControllerBase
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
         await db.SaveChangesAsync();
         return Ok(new { message = "Password updated successfully." });
+    }
+
+    // POST api/auth/forgot-password
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordDto dto)
+    {
+        var user = await db.Users.FirstOrDefaultAsync(u => u.Email == dto.Email.ToLower().Trim());
+
+        // Always return success to prevent email enumeration
+        if (user is null)
+            return Ok(new { message = "If this email exists, an OTP has been sent." });
+
+        // Generate 6-digit OTP
+        var otp = new Random().Next(100000, 999999).ToString();
+        user.PasswordResetToken  = BCrypt.Net.BCrypt.HashPassword(otp);
+        user.PasswordResetExpiry = DateTime.UtcNow.AddMinutes(15);
+        await db.SaveChangesAsync();
+
+        // Send email (fire and forget — don't fail if email fails)
+        _ = emailService.SendForgotPasswordAsync(user.Email, user.Name, otp);
+
+        return Ok(new { message = "If this email exists, an OTP has been sent." });
+    }
+
+    // POST api/auth/reset-password
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword(ResetPasswordDto dto)
+    {
+        if (string.IsNullOrWhiteSpace(dto.Token) || string.IsNullOrWhiteSpace(dto.NewPassword))
+            return BadRequest(new { message = "OTP and new password are required." });
+
+        if (dto.NewPassword.Length < 6)
+            return BadRequest(new { message = "Password must be at least 6 characters." });
+
+        // Find users with a valid (non-expired) reset token
+        var users = await db.Users
+            .Where(u => u.PasswordResetToken != null && u.PasswordResetExpiry > DateTime.UtcNow)
+            .ToListAsync();
+
+        var user = users.FirstOrDefault(u =>
+            BCrypt.Net.BCrypt.Verify(dto.Token, u.PasswordResetToken!));
+
+        if (user is null)
+            return BadRequest(new { message = "Invalid or expired OTP. Please request a new one." });
+
+        user.PasswordHash        = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+        user.PasswordResetToken  = null;
+        user.PasswordResetExpiry = null;
+        await db.SaveChangesAsync();
+
+        return Ok(new { message = "Password reset successfully. You can now sign in." });
     }
 }
