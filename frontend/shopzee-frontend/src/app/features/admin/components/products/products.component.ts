@@ -402,11 +402,18 @@ export class AdminProductsComponent implements OnInit {
   toggleStock(product: ApiProduct) {
     this.productApi.toggleStock(product.id).subscribe({
       next: (res) => {
-        // Update product in list without full reload
-        this.products.update(list =>
-          list.map(p => p.id === product.id ? { ...p, isInStock: res.isInStock } : p)
+        // Force new array + new object reference for change detection
+        this.products.set(
+          this.products().map(p =>
+            p.id === product.id
+              ? { ...p, isInStock: res.isInStock }
+              : p
+          )
         );
-        this.toast.success(res.isInStock ? `"${product.name}" marked In Stock` : `"${product.name}" marked Out of Stock`);
+        this.toast.success(res.isInStock
+          ? `"${product.name}" marked In Stock ✓`
+          : `"${product.name}" marked Out of Stock`
+        );
       },
       error: () => this.toast.error('Failed to update stock status.')
     });
