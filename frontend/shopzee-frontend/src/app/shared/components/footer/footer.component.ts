@@ -125,9 +125,9 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
               &copy; {{ currentYear }} StyleMaker. All rights reserved. Crafted with elegance.
             </p>
             <div class="footer__bottom-links">
-              <a href="#">Privacy Policy</a>
-              <a href="#">Terms of Service</a>
-              <a routerLink="/admin">Admin</a>
+              <a routerLink="/privacy-policy">Privacy Policy</a>
+              <a routerLink="/terms-of-service">Terms of Service</a>
+              <a routerLink="/return-policy">Return Policy</a>
             </div>
           </div>
         </div>

@@ -83,6 +83,24 @@ export const routes: Routes = [
       import('./features/reseller/reseller-dashboard.component').then(m => m.ResellerDashboardComponent)
   },
   {
+    path: 'privacy-policy',
+    canActivate: [publicOnlyGuard],
+    loadComponent: () =>
+      import('./features/privacy-policy/privacy-policy.component').then(m => m.PrivacyPolicyComponent)
+  },
+  {
+    path: 'terms-of-service',
+    canActivate: [publicOnlyGuard],
+    loadComponent: () =>
+      import('./features/terms-of-service/terms-of-service.component').then(m => m.TermsOfServiceComponent)
+  },
+  {
+    path: 'return-policy',
+    canActivate: [publicOnlyGuard],
+    loadComponent: () =>
+      import('./features/return-policy/return-policy.component').then(m => m.ReturnPolicyComponent)
+  },
+  {
     path: 'admin',
     canActivate: [adminGuard],
     loadComponent: () =>
