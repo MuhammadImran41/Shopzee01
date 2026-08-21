@@ -179,6 +179,19 @@ import { Product } from '../../core/models/product.model';
                   }
                 </div>
               </div>
+              <!-- List view: right action column -->
+              @if (gridView() === 'list') {
+                <div class="list-actions">
+                  <button class="card-wishlist" [class.active]="wishlistService.isWishlisted(product.id)" (click)="toggleWishlist(product)" [attr.aria-label]="'Wishlist'">
+                    <app-icon [name]="wishlistService.isWishlisted(product.id) ? 'heart-filled' : 'heart'" [size]="18"/>
+                  </button>
+                  @if (product.isInStock !== false) {
+                    <button class="list-cart-btn" (click)="addToCart(product)" aria-label="Add to cart">
+                      <app-icon name="cart" [size]="18"/>
+                    </button>
+                  }
+                </div>
+              }
             </article>
           }
 
@@ -386,32 +399,117 @@ import { Product } from '../../core/models/product.model';
       @media (max-width: 480px)  { grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
       @media (max-width: 340px)  { grid-template-columns: 1fr; }
 
+      /* ── LIST VIEW ─────────────────────────────────── */
       &.list-view {
         grid-template-columns: 1fr;
-        gap: var(--space-3);
+        gap: 1px;
+        background: var(--gray-200);
+        border: 1px solid var(--gray-200);
 
         .product-card {
           display: grid;
-          grid-template-columns: 160px 1fr;
-          min-height: 160px;
+          grid-template-columns: 200px 1fr auto;
+          background: var(--cream-light);
+          box-shadow: none;
+          position: relative;
 
-          @media (max-width: 480px) { grid-template-columns: 120px 1fr; }
+          @media (max-width: 600px) { grid-template-columns: 140px 1fr; }
 
+          /* Image */
           .card-image-wrap {
             aspect-ratio: unset;
-            height: 100%;
-            min-height: 160px;
+            height: 220px;
+            background: var(--cream-dark);
+
+            @media (max-width: 600px) { height: 180px; }
+
+            img { object-position: top center; }
           }
 
+          /* Overlay hidden on list view */
+          .card-overlay { display: none; }
+
+          /* Body */
           .card-body {
+            padding: 1.5rem 1.75rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: var(--space-5);
+            gap: 0.375rem;
+            background: var(--cream-light);
+
+            @media (max-width: 600px) { padding: 1rem 1.25rem; }
+
+            .card-category {
+              font-size: 0.65rem;
+              letter-spacing: 0.25em;
+            }
+
+            .card-title {
+              font-family: var(--font-heading);
+              font-size: 1.375rem;
+              font-weight: 400;
+              color: var(--black);
+              margin-bottom: 0.25rem;
+
+              @media (max-width: 600px) { font-size: 1.125rem; }
+
+              a { color: var(--black); &:hover { color: var(--gold-dark); } }
+            }
+
+            .card-price { font-size: 1.125rem; }
           }
 
-          .card-wishlist { top: var(--space-2); right: var(--space-2); }
-          .card-badge    { left: var(--space-2); }
+          /* Right action column */
+          .list-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.875rem;
+            padding: 1.5rem;
+            border-left: 1px solid var(--gray-200);
+            background: var(--cream-light);
+            min-width: 80px;
+
+            @media (max-width: 600px) { display: none; }
+          }
+
+          /* Wishlist repositioned — hide the absolute one in list view */
+          .card-wishlist {
+            display: none; /* hidden — shown in .list-actions instead */
+          }
+
+          /* Re-show wishlist inside list-actions */
+          .list-actions .card-wishlist {
+            display: flex;
+            position: static;
+            width: 44px; height: 44px;
+            background: var(--cream-light);
+            border: 1px solid var(--gray-200);
+            border-radius: 50%;
+            &:hover { border-color: var(--gold); background: rgba(201,168,76,0.06); }
+          }
+
+          .card-badge {
+            top: var(--space-3);
+            left: var(--space-3);
+          }
+
+          /* Add to cart button in list */
+          .list-cart-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px; height: 44px;
+            background: var(--gold);
+            border: none;
+            cursor: pointer;
+            border-radius: 50%;
+            color: var(--black);
+            transition: all 0.2s;
+            &:hover { background: var(--gold-dark); transform: scale(1.08); }
+          }
         }
       }
     }
