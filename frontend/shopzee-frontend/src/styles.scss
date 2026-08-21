@@ -292,7 +292,8 @@ p { line-height: 1.7; }
   }
 }
 
-// Pages that need navbar clearance (not home hero)
+// Pages that need navbar clearance
+// 36px announcement slider + 16px navbar-top-gap + 68px navbar height = 120px
 .shop-layout,
 .cart-page,
 .checkout-page,
@@ -301,7 +302,15 @@ p { line-height: 1.7; }
 .contact-page,
 .about-hero,
 .shop-hero {
-  padding-top: 100px;
+  padding-top: 120px;
+
+  @media (max-width: 768px) {
+    padding-top: 110px;
+  }
+
+  @media (max-width: 480px) {
+    padding-top: 104px;
+  }
 }
 
 // Shop hero specifically

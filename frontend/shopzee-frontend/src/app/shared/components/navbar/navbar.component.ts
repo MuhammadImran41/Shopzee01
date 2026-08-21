@@ -821,7 +821,8 @@ import { trigger, transition, style, animate } from '@angular/animations';
     /* ── SEARCH BAR ──────────────────────────────────────── */
     .search-bar {
       position: fixed;
-      top: 96px; left: 24px; right: 24px;
+      /* 36px announcement + 16px navbar-top + 68px navbar height = 120px */
+      top: 120px; left: 24px; right: 24px;
       max-width: 1400px; margin: 0 auto;
       background: rgba(245,240,232,0.98);
       backdrop-filter: blur(20px);
