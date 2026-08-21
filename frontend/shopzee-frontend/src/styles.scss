@@ -196,13 +196,16 @@ p { line-height: 1.7; }
     content: '';
     position: absolute;
     inset: 0;
-    transform: translateX(-100%);
+    transform: translateX(-101%);
     transition: transform var(--transition-base);
+    z-index: 0;
   }
 
   &:hover::before {
     transform: translateX(0);
   }
+
+  > * { position: relative; z-index: 1; }
 
   // Primary - Gold filled
   &.btn-primary {
@@ -394,7 +397,7 @@ p { line-height: 1.7; }
 }
 
 .product-card {
-  background: var(--black);
+  background: #fff;
   position: relative;
   overflow: visible;
   min-width: 0;
@@ -459,7 +462,7 @@ p { line-height: 1.7; }
 
   .card-body {
     padding: var(--space-4);
-    background: var(--black);
+    background: #fff;
     flex: 1;
 
     @media (max-width: 480px) { padding: var(--space-3); }
@@ -477,10 +480,10 @@ p { line-height: 1.7; }
       font-family: var(--font-heading);
       font-size: var(--text-xl);
       font-weight: 400;
-      color: var(--cream);
+      color: var(--black);
       margin-bottom: var(--space-2);
 
-      a { color: var(--cream); text-decoration: none; &:hover { color: var(--gold-light); } }
+      a { color: var(--black); text-decoration: none; &:hover { color: var(--gold-dark); } }
 
       @media (max-width: 480px) { font-size: var(--text-lg); }
     }
