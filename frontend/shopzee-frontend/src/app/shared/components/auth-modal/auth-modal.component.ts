@@ -673,10 +673,17 @@ export class AuthModalComponent {
       next: (res) => {
         this.loading.set(false);
         if (res.user.role === 'admin') {
-          // Admin: navigate first, modal will be destroyed with route change
           this.loggedIn.emit();
           this.close.emit();
           this.router.navigate(['/admin']);
+        } else if (res.user.role === 'reseller' || res.user.role === 'reseller_pending') {
+          // Reseller/pending: go to reseller dashboard
+          this.loggedIn.emit();
+          this.close.emit();
+          this.router.navigate(['/reseller']);
+          if (res.user.role === 'reseller') {
+            this.toast.success(`Welcome back, ${res.user.name.split(' ')[0]}! 🎉`);
+          }
         } else {
           this.loggedIn.emit();
           this.close.emit();

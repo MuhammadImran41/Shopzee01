@@ -1,8 +1,10 @@
 import { Component, signal, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterOutlet, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { SvgIconsComponent } from '../../shared/components/svg-icons/svg-icons.component';
 import { AuthApiService } from '../../core/services/api/auth-api.service';
+import { API_BASE } from '../../core/services/api/api.config';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 interface Notification {
@@ -788,10 +790,11 @@ interface Notification {
   `]
 })
 export class AdminComponent implements OnInit, OnDestroy {
-  sidebarCollapsed = signal(true);   // default collapsed — mobile opens via hamburger
+  sidebarCollapsed = signal(true);
   notifOpen        = signal(false);
   authApi          = inject(AuthApiService);
   private router   = inject(Router);
+  private http     = inject(HttpClient);
   private notifTimer: ReturnType<typeof setInterval> | null = null;
 
   adminInitial = () => (this.authApi.currentUser()?.name?.[0] ?? 'A').toUpperCase();
@@ -821,33 +824,64 @@ export class AdminComponent implements OnInit, OnDestroy {
     { path: '/admin/settings',   label: 'Settings',   icon: 'settings'    },
   ];
 
-  notifications = signal<Notification[]>([
-    { id: 1, message: 'New order #SZ45930 received for PKR 22,500', time: '2 min ago', read: false, type: 'order' },
-    { id: 2, message: 'New customer registered: sara.malik@email.com', time: '15 min ago', read: false, type: 'user' },
-    { id: 3, message: 'Product "Ivory Gold Bridal" is low in stock', time: '1 hr ago', read: true, type: 'system' },
-    { id: 4, message: 'New order #SZ45929 received for PKR 8,500', time: '2 hr ago', read: true, type: 'order' }
-  ]);
+  notifications = signal<Notification[]>([]);
 
   unreadCount = () => this.notifications().filter(n => !n.read).length;
 
   ngOnInit() {
-    // Desktop: sidebar open by default
-    // Mobile: stays collapsed (opens via hamburger)
+    // Desktop: sidebar open, mobile: collapsed
     if (typeof window !== 'undefined' && window.innerWidth > 768) {
       this.sidebarCollapsed.set(false);
     }
+    // Load real notifications from backend
+    this.loadNotifications();
+    // Refresh every 60 seconds
+    this.notifTimer = setInterval(() => this.loadNotifications(), 60000);
+  }
 
-    // Simulate real-time notifications
-    this.notifTimer = setInterval(() => {
-      const newNotif: Notification = {
-        id: Date.now(),
-        message: `New order #SZ${Math.floor(Math.random() * 90000 + 10000)} received!`,
-        time: 'just now',
-        read: false,
-        type: 'order'
-      };
-      this.notifications.update(n => [newNotif, ...n].slice(0, 8));
-    }, 30000);
+  private loadNotifications() {
+    this.http.get<any>(`${API_BASE}/admin/dashboard`).subscribe({
+      next: (data) => {
+        const notifs: Notification[] = [];
+        // Recent orders as notifications
+        if (data.recentOrders) {
+          data.recentOrders.forEach((o: any, i: number) => {
+            notifs.push({
+              id: o.id || i,
+              message: `New order #${o.orderNumber} — PKR ${(o.total || 0).toLocaleString('en-PK')} from ${o.customerName || 'Customer'}`,
+              time: this.timeAgo(o.createdAt),
+              read: false,
+              type: 'order'
+            });
+          });
+        }
+        // Low stock products
+        if (data.lowStockCount > 0) {
+          notifs.push({
+            id: 9999,
+            message: `${data.lowStockCount} product${data.lowStockCount > 1 ? 's are' : ' is'} low in stock`,
+            time: 'Now',
+            read: false,
+            type: 'system'
+          });
+        }
+        if (notifs.length > 0) this.notifications.set(notifs.slice(0, 8));
+      },
+      error: () => {
+        // Keep existing or empty
+      }
+    });
+  }
+
+  private timeAgo(dateStr: string): string {
+    if (!dateStr) return '';
+    const diff = Date.now() - new Date(dateStr).getTime();
+    const mins = Math.floor(diff / 60000);
+    if (mins < 1)  return 'Just now';
+    if (mins < 60) return `${mins} min ago`;
+    const hrs = Math.floor(mins / 60);
+    if (hrs < 24)  return `${hrs} hr ago`;
+    return `${Math.floor(hrs / 24)} day ago`;
   }
 
   ngOnDestroy() {

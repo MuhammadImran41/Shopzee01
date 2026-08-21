@@ -307,6 +307,12 @@ import { trigger, transition, style, animate } from '@angular/animations';
                 [attr.aria-expanded]="userDropOpen()" aria-label="Account menu">
                 <div class="user-avatar-sm">{{ userInitial() }}</div>
                 <span class="user-name-sm hide-mobile">{{ authApi.currentUser()!.name.split(' ')[0] }}</span>
+                @if (authApi.currentUser()?.role === 'reseller') {
+                  <span class="reseller-badge">Reseller</span>
+                }
+                @if (authApi.currentUser()?.role === 'reseller_pending') {
+                  <span class="reseller-badge reseller-badge--pending">Pending</span>
+                }
                 <app-icon name="chevron-down" [size]="12" class="user-chevron hide-mobile" [class.rotated]="userDropOpen()"/>
               </button>
 
@@ -336,6 +342,12 @@ import { trigger, transition, style, animate } from '@angular/animations';
                         <span class="drop-badge">{{ wishlistService.count() }}</span>
                       }
                     </a>
+                    @if (authApi.currentUser()?.role === 'reseller' || authApi.currentUser()?.role === 'reseller_pending') {
+                      <div class="user-drop-divider"></div>
+                      <a routerLink="/reseller" (click)="userDropOpen.set(false)" class="user-drop-item user-drop-item--reseller">
+                        <app-icon name="star-filled" [size]="16"/> Reseller Dashboard
+                      </a>
+                    }
                     @if (authApi.isAdmin()) {
                       <div class="user-drop-divider"></div>
                       <a routerLink="/admin" (click)="userDropOpen.set(false)" class="user-drop-item user-drop-item--admin">
@@ -1008,6 +1020,13 @@ import { trigger, transition, style, animate } from '@angular/animations';
     }
 
     .user-drop-divider { height: 1px; background: #eee; margin: 0.25rem 0; }
+
+    .reseller-badge {
+      font-size: 0.55rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+      background: linear-gradient(135deg, #7b1fa2, #9c27b0); color: #fff;
+      padding: 2px 6px; border-radius: 3px; flex-shrink: 0;
+      &--pending { background: linear-gradient(135deg, #e65100, #f57c00); }
+    }
 
     /* ── MOBILE OVERLAY ──────────────────────────────────── */
     .mobile-overlay {

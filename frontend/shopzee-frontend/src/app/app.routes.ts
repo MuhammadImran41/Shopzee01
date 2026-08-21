@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard, adminGuard, publicOnlyGuard } from './core/guards/auth.guard';
+import { authGuard, adminGuard, publicOnlyGuard, resellerGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -78,7 +78,7 @@ export const routes: Routes = [
   },
   {
     path: 'reseller',
-    canActivate: [publicOnlyGuard],
+    canActivate: [resellerGuard],
     loadComponent: () =>
       import('./features/reseller/reseller-dashboard.component').then(m => m.ResellerDashboardComponent)
   },

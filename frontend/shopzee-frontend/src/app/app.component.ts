@@ -19,8 +19,8 @@ import { filter } from 'rxjs/operators';
       <router-outlet/>
     }
 
-    <!-- Public layout: only for non-admin users -->
-    @if (!isAdminRoute() && !isAdminUser()) {
+    <!-- Public layout: only for non-admin, non-reseller users -->
+    @if (!isAdminRoute() && !isAdminUser() && !isResellerUser()) {
       <app-navbar/>
       <main class="main-content" id="main-content">
         <router-outlet/>
@@ -51,7 +51,11 @@ export class AppComponent implements OnInit {
   private imagesService = inject(SiteImagesService);
 
   isAdminRoute = signal(false);
-  isAdminUser  = () => this.authApi.currentUser()?.role === 'admin';
+  isAdminUser    = () => this.authApi.currentUser()?.role === 'admin';
+  isResellerUser = () => {
+    const r = this.authApi.currentUser()?.role;
+    return r === 'reseller' || r === 'reseller_pending';
+  };
 
   ngOnInit() {
     if (!isPlatformBrowser(this.platformId)) return;
@@ -69,6 +73,11 @@ export class AppComponent implements OnInit {
         // If admin is logged in and on any non-admin route, redirect to admin
         if (this.authApi.currentUser()?.role === 'admin' && !url.startsWith('/admin')) {
           this.router.navigate(['/admin']);
+        }
+        // If reseller is on public route (not /reseller), redirect to reseller
+        const role = this.authApi.currentUser()?.role;
+        if ((role === 'reseller' || role === 'reseller_pending') && !url.startsWith('/reseller')) {
+          this.router.navigate(['/reseller']);
         }
       });
 
