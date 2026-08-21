@@ -100,9 +100,8 @@
 }
 
 html {
-  scroll-behavior: smooth;
   font-size: 16px;
-  /* Prevent layout shift when scrollbar appears/disappears */
+  /* scroll-behavior: smooth; -- disabled: conflicts with Angular scrollPositionRestoration */
   overflow-y: scroll;
   scrollbar-gutter: stable;
 }

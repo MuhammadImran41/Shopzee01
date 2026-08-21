@@ -6,268 +6,238 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [RouterLink],
   template: `
-    <div class="policy-page">
-      <!-- Hero -->
-      <div class="policy-hero">
+    <article class="policy-page">
+
+      <!-- ── HERO ───────────────────────────────────────── -->
+      <header class="policy-hero">
         <div class="container">
-          <p class="policy-label">Legal</p>
-          <h1 class="policy-title">Privacy Policy</h1>
-          <p class="policy-updated">Last updated: August 21, 2026</p>
+          <div class="policy-hero__inner">
+            <div class="policy-hero__badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Privacy & Security
+            </div>
+            <h1>Privacy Policy</h1>
+            <p class="policy-hero__sub">How we collect, use, and protect your personal information</p>
+            <div class="policy-hero__meta">
+              <span>Last updated: August 21, 2026</span>
+              <span class="dot">·</span>
+              <span>Effective immediately</span>
+            </div>
+          </div>
         </div>
-      </div>
+      </header>
 
+      <!-- ── BODY ───────────────────────────────────────── -->
       <div class="container">
-        <div class="policy-layout">
+        <div class="policy-wrap">
 
-          <!-- Sidebar TOC -->
+          <!-- Sidebar -->
           <aside class="policy-toc">
-            <p class="toc-title">Contents</p>
-            <ul>
-              <li><a href="#info-collect">Information We Collect</a></li>
-              <li><a href="#how-use">How We Use Your Information</a></li>
-              <li><a href="#sharing">Information Sharing</a></li>
-              <li><a href="#cookies">Cookies & Tracking</a></li>
-              <li><a href="#security">Data Security</a></li>
-              <li><a href="#rights">Your Rights</a></li>
-              <li><a href="#retention">Data Retention</a></li>
-              <li><a href="#children">Children's Privacy</a></li>
-              <li><a href="#changes">Policy Changes</a></li>
-              <li><a href="#contact">Contact Us</a></li>
-            </ul>
+            <div class="toc-card">
+              <p class="toc-heading">On this page</p>
+              <nav>
+                <a href="#collect">1. Information We Collect</a>
+                <a href="#use">2. How We Use It</a>
+                <a href="#sharing">3. Information Sharing</a>
+                <a href="#cookies">4. Cookies</a>
+                <a href="#security">5. Data Security</a>
+                <a href="#rights">6. Your Rights</a>
+                <a href="#retention">7. Data Retention</a>
+                <a href="#children">8. Children's Privacy</a>
+                <a href="#changes">9. Policy Changes</a>
+                <a href="#pp-contact">10. Contact Us</a>
+              </nav>
+            </div>
+            <div class="toc-other-links">
+              <p>Related Policies</p>
+              <a routerLink="/terms-of-service">Terms of Service</a>
+              <a routerLink="/return-policy">Return &amp; Exchange</a>
+            </div>
           </aside>
 
           <!-- Content -->
           <main class="policy-content">
 
-            <div class="policy-intro">
-              <p>
-                At <strong>STYLEMAKER</strong>, we take your privacy seriously. This Privacy Policy explains how we collect,
-                use, disclose, and safeguard your information when you visit our website
-                <strong>stylemaker.store</strong> or make a purchase with us. Please read this policy carefully.
-                By using our services, you agree to the practices described here.
-              </p>
+            <div class="intro-box">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <p>At <strong>STYLEMAKER</strong>, your privacy matters. This policy explains how we handle your data when you shop at <strong>stylemaker.store</strong>. By using our services, you agree to the practices described here.</p>
             </div>
 
-            <section id="info-collect" class="policy-section">
-              <h2>1. Information We Collect</h2>
-
-              <h3>Personal Information You Provide</h3>
-              <p>When you register, place an order, or contact us, we may collect:</p>
+            <section id="collect">
+              <div class="section-label">Section 01</div>
+              <h2>Information We Collect</h2>
+              <h3>What you give us</h3>
+              <p>When you create an account, place an order, or contact us:</p>
               <ul>
-                <li><strong>Identity information:</strong> Full name, username, date of birth</li>
-                <li><strong>Contact information:</strong> Email address, phone number, postal address</li>
-                <li><strong>Payment information:</strong> Credit/debit card details, JazzCash or EasyPaisa account numbers (processed securely — we do not store full card numbers)</li>
-                <li><strong>Order information:</strong> Products purchased, order history, delivery preferences</li>
-                <li><strong>Account credentials:</strong> Password (stored in encrypted form, never in plain text)</li>
+                <li><strong>Identity:</strong> Full name, date of birth</li>
+                <li><strong>Contact:</strong> Email address, phone number, delivery address</li>
+                <li><strong>Payment:</strong> JazzCash / EasyPaisa numbers, bank details (never full card data)</li>
+                <li><strong>Orders:</strong> Products purchased, order history, delivery preferences</li>
+                <li><strong>Credentials:</strong> Password (BCrypt-encrypted — never readable)</li>
               </ul>
-
-              <h3>Information Collected Automatically</h3>
-              <p>When you browse our website, we automatically collect:</p>
+              <h3>What we collect automatically</h3>
               <ul>
-                <li><strong>Device information:</strong> IP address, browser type and version, operating system</li>
-                <li><strong>Usage data:</strong> Pages visited, time spent on pages, links clicked, search queries</li>
-                <li><strong>Location data:</strong> Approximate geographic location based on IP address</li>
-                <li><strong>Cookie data:</strong> As described in our Cookies section below</li>
+                <li><strong>Device:</strong> IP address, browser type, operating system</li>
+                <li><strong>Usage:</strong> Pages visited, time on site, links clicked, search queries</li>
+                <li><strong>Location:</strong> Approximate location from IP address</li>
+                <li><strong>Cookies:</strong> As described in Section 4</li>
               </ul>
             </section>
 
-            <section id="how-use" class="policy-section">
-              <h2>2. How We Use Your Information</h2>
-              <p>We use the information we collect for the following purposes:</p>
+            <section id="use">
+              <div class="section-label">Section 02</div>
+              <h2>How We Use Your Information</h2>
               <ul>
-                <li><strong>Order fulfillment:</strong> Processing and delivering your orders, sending order confirmations and tracking updates</li>
-                <li><strong>Account management:</strong> Creating and managing your account, authenticating your identity</li>
-                <li><strong>Customer support:</strong> Responding to your inquiries, resolving disputes, troubleshooting issues</li>
-                <li><strong>Personalization:</strong> Tailoring product recommendations and promotional content to your interests</li>
-                <li><strong>Communications:</strong> Sending transactional emails (order confirmations, shipping updates) and, with your consent, marketing emails</li>
-                <li><strong>Security:</strong> Detecting and preventing fraud, unauthorized access, and other illegal activities</li>
-                <li><strong>Legal compliance:</strong> Meeting our legal and regulatory obligations</li>
-                <li><strong>Business improvement:</strong> Analyzing usage patterns to improve our website, products, and services</li>
+                <li><strong>Order fulfillment:</strong> Processing, packing, shipping, and delivery of your orders</li>
+                <li><strong>Account management:</strong> Creating and maintaining your account securely</li>
+                <li><strong>Customer support:</strong> Responding to queries and resolving issues</li>
+                <li><strong>Personalization:</strong> Tailoring product recommendations to your taste</li>
+                <li><strong>Emails:</strong> Order confirmations, shipping updates, and (with consent) promotions</li>
+                <li><strong>Security:</strong> Detecting fraud and preventing unauthorized access</li>
+                <li><strong>Legal:</strong> Meeting regulatory and compliance obligations</li>
+                <li><strong>Improvement:</strong> Analyzing usage to improve our platform</li>
               </ul>
             </section>
 
-            <section id="sharing" class="policy-section">
-              <h2>3. Information Sharing</h2>
-              <p>We do <strong>not sell, rent, or trade</strong> your personal information to third parties. We may share your information only in the following circumstances:</p>
-              <ul>
-                <li><strong>Service providers:</strong> Trusted third-party vendors who assist us in operating our website, processing payments, and delivering orders (e.g., courier companies, payment gateways). These partners are bound by confidentiality agreements.</li>
-                <li><strong>Delivery partners:</strong> Your name, phone number, and delivery address are shared with our courier partners solely to fulfill your order.</li>
-                <li><strong>Legal requirements:</strong> We may disclose information when required by law, court order, or government regulation.</li>
-                <li><strong>Business transfers:</strong> In the event of a merger, acquisition, or sale of assets, your information may be transferred as part of that transaction.</li>
-                <li><strong>Safety:</strong> To protect the rights, property, or safety of STYLEMAKER, our customers, or others.</li>
-              </ul>
-            </section>
-
-            <section id="cookies" class="policy-section">
-              <h2>4. Cookies & Tracking</h2>
-              <p>We use cookies and similar tracking technologies to enhance your experience on our website.</p>
-
-              <h3>Types of Cookies We Use</h3>
-              <ul>
-                <li><strong>Essential cookies:</strong> Required for the website to function properly (e.g., shopping cart, login session). Cannot be disabled.</li>
-                <li><strong>Performance cookies:</strong> Help us understand how visitors interact with our site (e.g., pages visited, errors encountered).</li>
-                <li><strong>Preference cookies:</strong> Remember your preferences such as language and region settings.</li>
-                <li><strong>Marketing cookies:</strong> Used to deliver relevant advertisements and track the effectiveness of our campaigns.</li>
-              </ul>
-              <p>You can manage cookie preferences through your browser settings. Note that disabling certain cookies may affect website functionality.</p>
-            </section>
-
-            <section id="security" class="policy-section">
-              <h2>5. Data Security</h2>
-              <p>We implement industry-standard security measures to protect your personal information:</p>
-              <ul>
-                <li>All data transmitted between your browser and our servers is encrypted using <strong>SSL/TLS (HTTPS)</strong></li>
-                <li>Passwords are hashed using <strong>BCrypt</strong> — never stored in plain text</li>
-                <li>Payment card data is processed through PCI-DSS compliant payment gateways</li>
-                <li>Access to customer data is restricted to authorized personnel only</li>
-                <li>Regular security audits and vulnerability assessments are conducted</li>
-              </ul>
-              <p>While we take all reasonable precautions, no method of internet transmission is 100% secure. We cannot guarantee absolute security of your information.</p>
-            </section>
-
-            <section id="rights" class="policy-section">
-              <h2>6. Your Rights</h2>
-              <p>You have the following rights regarding your personal data:</p>
-              <ul>
-                <li><strong>Access:</strong> Request a copy of the personal information we hold about you</li>
-                <li><strong>Correction:</strong> Request correction of inaccurate or incomplete information</li>
-                <li><strong>Deletion:</strong> Request deletion of your personal data (subject to legal obligations)</li>
-                <li><strong>Portability:</strong> Request transfer of your data in a structured, machine-readable format</li>
-                <li><strong>Opt-out:</strong> Unsubscribe from marketing communications at any time via the unsubscribe link in emails</li>
-                <li><strong>Objection:</strong> Object to processing of your data for direct marketing purposes</li>
-              </ul>
-              <p>To exercise any of these rights, contact us at <strong>trendzyofficial.store&#64;gmail.com</strong></p>
-            </section>
-
-            <section id="retention" class="policy-section">
-              <h2>7. Data Retention</h2>
-              <p>We retain your personal information for as long as necessary to:</p>
-              <ul>
-                <li>Maintain your account and provide our services</li>
-                <li>Comply with legal, tax, and accounting requirements</li>
-                <li>Resolve disputes and enforce our agreements</li>
-              </ul>
-              <p>Order records are typically retained for <strong>7 years</strong> for accounting and legal purposes. Account data is deleted within <strong>30 days</strong> of account closure upon request.</p>
-            </section>
-
-            <section id="children" class="policy-section">
-              <h2>8. Children's Privacy</h2>
-              <p>Our website and services are not directed to individuals under the age of <strong>13 years</strong>. We do not knowingly collect personal information from children. If we become aware that a child has provided us with personal information, we will delete it immediately. If you believe a child has submitted personal information to us, please contact us.</p>
-            </section>
-
-            <section id="changes" class="policy-section">
-              <h2>9. Policy Changes</h2>
-              <p>We may update this Privacy Policy periodically to reflect changes in our practices or for legal, regulatory, or operational reasons. When we make material changes, we will:</p>
-              <ul>
-                <li>Update the "Last updated" date at the top of this page</li>
-                <li>Notify registered users via email for significant changes</li>
-                <li>Display a notice on our website</li>
-              </ul>
-              <p>We encourage you to review this policy periodically.</p>
-            </section>
-
-            <section id="contact" class="policy-section">
-              <h2>10. Contact Us</h2>
-              <p>If you have questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us:</p>
-              <div class="contact-card">
-                <p><strong>STYLEMAKER</strong></p>
-                <p>📧 Email: <a href="mailto:trendzyofficial.store@gmail.com">trendzyofficial.store&#64;gmail.com</a></p>
-                <p>🌐 Website: <a href="https://stylemaker.store">stylemaker.store</a></p>
-                <p>📍 Pakistan</p>
+            <section id="sharing">
+              <div class="section-label">Section 03</div>
+              <h2>Information Sharing</h2>
+              <div class="callout callout--green">
+                <strong>We never sell your data.</strong> STYLEMAKER does not sell, rent, or trade your personal information to any third party.
               </div>
-              <p style="margin-top:1rem">We will respond to all privacy-related inquiries within <strong>7 business days</strong>.</p>
+              <p>We only share data in these specific circumstances:</p>
+              <ul>
+                <li><strong>Courier partners:</strong> Your name, phone, and address — solely to deliver your order</li>
+                <li><strong>Payment processors:</strong> Secure transaction processing (JazzCash, EasyPaisa, banks)</li>
+                <li><strong>Legal requirements:</strong> When required by court order or Pakistani law</li>
+                <li><strong>Business transfers:</strong> In the event of a merger or acquisition</li>
+                <li><strong>Safety:</strong> To protect rights, property, or safety of STYLEMAKER or customers</li>
+              </ul>
             </section>
 
-            <div class="policy-nav">
-              <a routerLink="/terms-of-service" class="btn btn-outline">Terms of Service →</a>
-              <a routerLink="/return-policy" class="btn btn-outline">Return Policy →</a>
+            <section id="cookies">
+              <div class="section-label">Section 04</div>
+              <h2>Cookies &amp; Tracking</h2>
+              <div class="cookies-grid">
+                <div class="cookie-item">
+                  <span class="cookie-badge essential">Essential</span>
+                  <p>Required for core functions — cart, login, checkout. Cannot be disabled.</p>
+                </div>
+                <div class="cookie-item">
+                  <span class="cookie-badge performance">Performance</span>
+                  <p>Help us understand site usage — pages visited, errors encountered.</p>
+                </div>
+                <div class="cookie-item">
+                  <span class="cookie-badge preference">Preference</span>
+                  <p>Remember your preferences like language and region settings.</p>
+                </div>
+                <div class="cookie-item">
+                  <span class="cookie-badge marketing">Marketing</span>
+                  <p>Deliver relevant ads and track campaign effectiveness.</p>
+                </div>
+              </div>
+              <p>Manage cookies through your browser settings. Disabling some may affect site functionality.</p>
+            </section>
+
+            <section id="security">
+              <div class="section-label">Section 05</div>
+              <h2>Data Security</h2>
+              <div class="security-grid">
+                <div class="security-item">
+                  <div class="si-icon">🔒</div>
+                  <div><strong>SSL/TLS Encryption</strong><p>All data transmitted via HTTPS</p></div>
+                </div>
+                <div class="security-item">
+                  <div class="si-icon">🔑</div>
+                  <div><strong>BCrypt Hashing</strong><p>Passwords never stored in plain text</p></div>
+                </div>
+                <div class="security-item">
+                  <div class="si-icon">🛡️</div>
+                  <div><strong>PCI-DSS Payments</strong><p>Compliant payment processing</p></div>
+                </div>
+                <div class="security-item">
+                  <div class="si-icon">👤</div>
+                  <div><strong>Access Control</strong><p>Data accessible to authorized staff only</p></div>
+                </div>
+              </div>
+              <p>No internet transmission is 100% secure. We cannot guarantee absolute security, but we follow industry best practices.</p>
+            </section>
+
+            <section id="rights">
+              <div class="section-label">Section 06</div>
+              <h2>Your Rights</h2>
+              <div class="rights-list">
+                <div class="right-item"><span class="right-tag">Access</span><p>Request a copy of your personal data we hold</p></div>
+                <div class="right-item"><span class="right-tag">Correct</span><p>Request correction of inaccurate information</p></div>
+                <div class="right-item"><span class="right-tag">Delete</span><p>Request deletion of your data (subject to legal obligations)</p></div>
+                <div class="right-item"><span class="right-tag">Portability</span><p>Receive your data in a machine-readable format</p></div>
+                <div class="right-item"><span class="right-tag">Opt-Out</span><p>Unsubscribe from marketing emails at any time</p></div>
+                <div class="right-item"><span class="right-tag">Object</span><p>Object to processing for direct marketing</p></div>
+              </div>
+              <p>To exercise any right, email us at <a href="mailto:trendzyofficial.store@gmail.com">trendzyofficial.store&#64;gmail.com</a></p>
+            </section>
+
+            <section id="retention">
+              <div class="section-label">Section 07</div>
+              <h2>Data Retention</h2>
+              <p>We retain your data only as long as necessary:</p>
+              <ul>
+                <li>Order records: <strong>7 years</strong> (legal/accounting requirements)</li>
+                <li>Account data: Deleted within <strong>30 days</strong> of account closure on request</li>
+                <li>Marketing data: Until you opt out</li>
+                <li>Legal compliance data: As required by Pakistani law</li>
+              </ul>
+            </section>
+
+            <section id="children">
+              <div class="section-label">Section 08</div>
+              <h2>Children's Privacy</h2>
+              <p>Our platform is not directed to children under <strong>13 years</strong> of age. We do not knowingly collect data from children. If you believe a child has submitted information to us, please contact us immediately and we will delete it.</p>
+            </section>
+
+            <section id="changes">
+              <div class="section-label">Section 09</div>
+              <h2>Policy Changes</h2>
+              <p>We may update this policy periodically. When we do:</p>
+              <ul>
+                <li>The "Last updated" date will be revised</li>
+                <li>Registered users will be notified via email for major changes</li>
+                <li>A notice will appear on our website</li>
+              </ul>
+              <p>We encourage you to review this policy from time to time.</p>
+            </section>
+
+            <section id="pp-contact">
+              <div class="section-label">Section 10</div>
+              <h2>Contact Us</h2>
+              <p>Questions about this Privacy Policy? Reach out anytime:</p>
+              <div class="contact-block">
+                <div class="cb-row"><span class="cb-icon">✉️</span><div><strong>Email</strong><a href="mailto:trendzyofficial.store@gmail.com">trendzyofficial.store&#64;gmail.com</a></div></div>
+                <div class="cb-row"><span class="cb-icon">🌐</span><div><strong>Website</strong><a href="https://stylemaker.store">stylemaker.store</a></div></div>
+                <div class="cb-row"><span class="cb-icon">📍</span><div><strong>Location</strong><span>Pakistan</span></div></div>
+                <div class="cb-row"><span class="cb-icon">⏱️</span><div><strong>Response time</strong><span>Within 7 business days</span></div></div>
+              </div>
+            </section>
+
+            <!-- Related pages nav -->
+            <div class="related-nav">
+              <a routerLink="/terms-of-service" class="related-card">
+                <div class="rc-icon">📋</div>
+                <div><strong>Terms of Service</strong><span>Usage rules and agreements</span></div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+              <a routerLink="/return-policy" class="related-card">
+                <div class="rc-icon">🔄</div>
+                <div><strong>Return &amp; Exchange</strong><span>Returns, refunds, exchanges</span></div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
             </div>
 
           </main>
         </div>
       </div>
-    </div>
+    </article>
   `,
-  styles: [`
-    .policy-page { background: var(--cream); min-height: 100vh; }
-
-    .policy-hero {
-      background: var(--black);
-      padding: 100px 0 48px;
-      .policy-label {
-        font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
-        color: var(--gold); margin-bottom: 0.75rem; display: block;
-      }
-      .policy-title {
-        font-family: var(--font-heading); font-size: clamp(2.5rem, 5vw, 4rem);
-        font-weight: 400; color: var(--cream); margin-bottom: 0.75rem;
-      }
-      .policy-updated { font-size: 0.875rem; color: rgba(245,240,232,0.45); }
-    }
-
-    .policy-layout {
-      display: grid;
-      grid-template-columns: 220px 1fr;
-      gap: 4rem;
-      padding: 3rem 0 5rem;
-      @media (max-width: 900px) { grid-template-columns: 1fr; }
-    }
-
-    .policy-toc {
-      position: sticky; top: 100px; height: fit-content;
-      @media (max-width: 900px) { display: none; }
-      .toc-title {
-        font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
-        color: var(--gold); font-weight: 700; margin-bottom: 1rem;
-      }
-      ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.25rem; }
-      a {
-        font-size: 0.8125rem; color: var(--gray-500); text-decoration: none;
-        display: block; padding: 0.35rem 0.75rem;
-        border-left: 2px solid var(--gray-200);
-        transition: all 0.2s;
-        &:hover { color: var(--gold-dark); border-left-color: var(--gold); }
-      }
-    }
-
-    .policy-intro {
-      background: var(--cream-light); border-left: 3px solid var(--gold);
-      padding: 1.25rem 1.5rem; margin-bottom: 2.5rem;
-      p { font-size: 0.9375rem; line-height: 1.8; color: var(--black-soft); margin: 0; }
-    }
-
-    .policy-section {
-      margin-bottom: 2.5rem; padding-bottom: 2.5rem;
-      border-bottom: 1px solid var(--gray-200);
-      &:last-of-type { border-bottom: none; }
-
-      h2 {
-        font-family: var(--font-heading); font-size: 1.5rem; font-weight: 500;
-        color: var(--black); margin-bottom: 1rem;
-        padding-bottom: 0.5rem; border-bottom: 1px solid var(--gray-200);
-      }
-      h3 { font-size: 0.875rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-dark); margin: 1.25rem 0 0.5rem; }
-      p { font-size: 0.9375rem; line-height: 1.8; color: var(--gray-500); margin-bottom: 0.875rem; }
-      ul { padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 0.875rem;
-        li { font-size: 0.9375rem; line-height: 1.7; color: var(--gray-500); padding-left: 1.25rem; position: relative;
-          &::before { content: '—'; position: absolute; left: 0; color: var(--gold); font-size: 0.75rem; top: 0.35rem; }
-          strong { color: var(--black-soft); }
-        }
-      }
-    }
-
-    .contact-card {
-      background: var(--black); padding: 1.5rem 2rem; margin: 1rem 0;
-      p { color: rgba(245,240,232,0.75); margin-bottom: 0.5rem; font-size: 0.9rem; line-height: 1.6;
-        strong { color: var(--gold-light); }
-        a { color: var(--gold); text-decoration: none; &:hover { text-decoration: underline; } }
-      }
-    }
-
-    .policy-nav {
-      display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 3rem;
-      padding-top: 2rem; border-top: 1px solid var(--gray-200);
-    }
-  `]
+  styleUrls: ['./privacy-policy.component.scss']
 })
 export class PrivacyPolicyComponent {}

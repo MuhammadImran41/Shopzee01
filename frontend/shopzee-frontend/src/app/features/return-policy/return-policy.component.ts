@@ -6,318 +6,248 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [RouterLink],
   template: `
-    <div class="policy-page">
-      <div class="policy-hero">
+    <article class="policy-page">
+
+      <header class="policy-hero">
         <div class="container">
-          <p class="policy-label">Customer Care</p>
-          <h1 class="policy-title">Return & Exchange Policy</h1>
-          <p class="policy-updated">Last updated: August 21, 2026</p>
+          <div class="policy-hero__inner">
+            <div class="policy-hero__badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2" stroke-linecap="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+              Customer Care
+            </div>
+            <h1>Return &amp; Exchange Policy</h1>
+            <p class="policy-hero__sub">Easy returns, smooth exchanges — because your satisfaction comes first</p>
+            <div class="policy-hero__meta">
+              <span>Last updated: August 21, 2026</span>
+              <span class="dot">·</span>
+              <span>7-day return window</span>
+            </div>
+          </div>
         </div>
-      </div>
+      </header>
 
       <div class="container">
-        <div class="policy-layout">
+        <div class="policy-wrap">
 
           <aside class="policy-toc">
-            <p class="toc-title">Contents</p>
-            <ul>
-              <li><a href="#overview">Overview</a></li>
-              <li><a href="#eligible">What Can Be Returned</a></li>
-              <li><a href="#not-eligible">Non-Returnable Items</a></li>
-              <li><a href="#process">Return Process</a></li>
-              <li><a href="#exchange">Exchange Policy</a></li>
-              <li><a href="#refunds">Refund Methods</a></li>
-              <li><a href="#defective">Defective Items</a></li>
-              <li><a href="#shipping-cost">Return Shipping</a></li>
-              <li><a href="#contact">Contact Us</a></li>
-            </ul>
+            <div class="toc-card">
+              <p class="toc-heading">On this page</p>
+              <nav>
+                <a href="#overview">1. Overview</a>
+                <a href="#eligible">2. Eligible Returns</a>
+                <a href="#not-eligible">3. Non-Returnable Items</a>
+                <a href="#process">4. Return Process</a>
+                <a href="#exchange">5. Exchange Policy</a>
+                <a href="#refunds">6. Refund Methods</a>
+                <a href="#defective">7. Defective Items</a>
+                <a href="#shipping-cost">8. Shipping Costs</a>
+                <a href="#rp-contact">9. Contact Us</a>
+              </nav>
+            </div>
+            <div class="toc-other-links">
+              <p>Related Policies</p>
+              <a routerLink="/privacy-policy">Privacy Policy</a>
+              <a routerLink="/terms-of-service">Terms of Service</a>
+            </div>
           </aside>
 
           <main class="policy-content">
 
-            <div class="policy-intro">
-              <p>
-                At <strong>STYLEMAKER</strong>, customer satisfaction is our highest priority. If you are not completely
-                satisfied with your purchase, we're here to help. Please read our Return &amp; Exchange Policy carefully
-                before initiating a return.
-              </p>
+            <div class="intro-box">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+              <p>At <strong>STYLEMAKER</strong>, your satisfaction is everything. If your order isn't right, we'll make it right — quickly, fairly, and without unnecessary hassle.</p>
             </div>
 
-            <!-- Quick Summary Cards -->
+            <!-- Quick Stats -->
             <div class="summary-cards">
               <div class="summary-card">
-                <div class="card-icon">📦</div>
-                <div class="card-text">
-                  <strong>7 Days</strong>
-                  <span>Return window from delivery date</span>
-                </div>
+                <div class="sc-icon">📦</div>
+                <strong>7 Days</strong>
+                <span>Return window from delivery date</span>
               </div>
               <div class="summary-card">
-                <div class="card-icon">🔄</div>
-                <div class="card-text">
-                  <strong>Free Exchange</strong>
-                  <span>Size or color exchange available</span>
-                </div>
+                <div class="sc-icon">🔄</div>
+                <strong>Free Exchange</strong>
+                <span>Size or color swap available</span>
               </div>
               <div class="summary-card">
-                <div class="card-icon">💰</div>
-                <div class="card-text">
-                  <strong>5–10 Days</strong>
-                  <span>Refund processing time</span>
-                </div>
+                <div class="sc-icon">💰</div>
+                <strong>5–10 Days</strong>
+                <span>Refund processing timeline</span>
               </div>
               <div class="summary-card">
-                <div class="card-icon">✅</div>
-                <div class="card-text">
-                  <strong>Original Condition</strong>
-                  <span>Items must be unworn & unaltered</span>
-                </div>
+                <div class="sc-icon">✅</div>
+                <strong>Original Condition</strong>
+                <span>Unworn, tags intact required</span>
               </div>
             </div>
 
-            <section id="overview" class="policy-section">
-              <h2>1. Overview</h2>
-              <p>We accept returns and exchanges within <strong>7 calendar days</strong> of the delivery date. All return requests must be initiated by contacting our customer support team via email or WhatsApp. Items sent back without prior authorization will not be accepted.</p>
-              <div class="highlight-box">
-                <p>⚡ <strong>Important:</strong> To qualify for a return, please contact us within 7 days of receiving your order. Returns requested after this period will not be accepted under any circumstances.</p>
+            <section id="overview">
+              <div class="section-label">Section 01</div>
+              <h2>Overview</h2>
+              <p>We accept returns and exchanges within <strong>7 calendar days</strong> of the delivery date. All return requests must be initiated by contacting our customer support team before shipping anything back.</p>
+              <div class="callout callout--gold">
+                <strong>⚡ Important:</strong> Items sent back without prior authorization will not be accepted. Always contact us first.
               </div>
             </section>
 
-            <section id="eligible" class="policy-section">
-              <h2>2. What Can Be Returned</h2>
-              <p>To be eligible for a return or exchange, the following conditions <strong>must all be met</strong>:</p>
+            <section id="eligible">
+              <div class="section-label">Section 02</div>
+              <h2>Eligible Returns</h2>
+              <p>To be eligible for a return or exchange, <strong>all of the following</strong> must be true:</p>
               <ul>
-                <li>Item must be returned within <strong>7 days</strong> of delivery</li>
-                <li>Item must be in its <strong>original, unused condition</strong> — unworn, unwashed, and unaltered</li>
-                <li>All original <strong>tags, labels, and packaging</strong> must be intact and attached</li>
-                <li>Item must not have any <strong>stains, tears, odors, or signs of use</strong></li>
-                <li>A valid <strong>order number</strong> must be provided</li>
-                <li>Item must have been purchased at <strong>full price</strong> (see non-returnable items below)</li>
+                <li>Returned within <strong>7 days</strong> of the delivery date</li>
+                <li>Item is <strong>unused, unworn, and unwashed</strong></li>
+                <li>All <strong>original tags, labels, and packaging</strong> are intact and attached</li>
+                <li>No <strong>stains, odors, tears, or signs of use</strong></li>
+                <li>Valid <strong>order number</strong> is provided</li>
+                <li>Item was purchased at <strong>full price</strong> (not on sale)</li>
               </ul>
             </section>
 
-            <section id="not-eligible" class="policy-section">
-              <h2>3. Non-Returnable Items</h2>
-              <p>The following items <strong>cannot be returned or exchanged</strong>:</p>
-              <ul>
-                <li><strong>Sale & discounted items</strong> — All sale purchases are final (unless the item is defective or wrongly delivered)</li>
-                <li><strong>Custom/tailored items</strong> — Items made to specific measurements or customized at customer request</li>
-                <li><strong>Intimate apparel</strong> — For hygiene reasons</li>
-                <li><strong>Items marked "Final Sale"</strong> at time of purchase</li>
-                <li>Items that have been <strong>worn, washed, altered, or damaged</strong> by the customer</li>
-                <li>Items returned <strong>after 7 days</strong> of delivery</li>
-                <li>Items without <strong>original tags and packaging</strong></li>
-                <li>Gift cards</li>
-              </ul>
+            <section id="not-eligible">
+              <div class="section-label">Section 03</div>
+              <h2>Non-Returnable Items</h2>
+              <div class="not-eligible-box">
+                <h4>⛔ Cannot be returned or exchanged</h4>
+                <ul>
+                  <li>Sale &amp; discounted items — all sale purchases are final (unless defective)</li>
+                  <li>Custom or tailored items made to specific measurements</li>
+                  <li>Items marked "Final Sale" at time of purchase</li>
+                  <li>Worn, washed, altered, or customer-damaged items</li>
+                  <li>Items returned after 7 days of delivery</li>
+                  <li>Items missing original tags and packaging</li>
+                  <li>Gift cards and digital vouchers</li>
+                </ul>
+              </div>
             </section>
 
-            <section id="process" class="policy-section">
-              <h2>4. Return Process</h2>
-              <p>Follow these steps to initiate a return:</p>
-
-              <div class="steps">
-                <div class="step-item">
+            <section id="process">
+              <div class="section-label">Section 04</div>
+              <h2>Return Process</h2>
+              <p>Follow these 4 steps to initiate a return:</p>
+              <div class="steps-list">
+                <div class="step-row">
                   <div class="step-num">1</div>
                   <div class="step-body">
-                    <h4>Contact Us</h4>
-                    <p>Email us at <a href="mailto:trendzyofficial.store@gmail.com">trendzyofficial.store&#64;gmail.com</a> with your order number, the item(s) you wish to return, and the reason for return. Include clear photographs if the item is defective.</p>
+                    <h4>Contact Us First</h4>
+                    <p>Email <a href="mailto:trendzyofficial.store@gmail.com">trendzyofficial.store&#64;gmail.com</a> with your order number, item(s) to return, and reason. Include photos if the item is defective.</p>
                   </div>
                 </div>
-                <div class="step-item">
+                <div class="step-row">
                   <div class="step-num">2</div>
                   <div class="step-body">
-                    <h4>Await Authorization</h4>
-                    <p>Our team will review your request and respond within <strong>2 business days</strong> with either approval or the reason for denial. Do not ship items before receiving authorization.</p>
+                    <h4>Wait for Authorization</h4>
+                    <p>We'll respond within <strong>2 business days</strong> with approval or explanation. Do not ship items before receiving our go-ahead.</p>
                   </div>
                 </div>
-                <div class="step-item">
+                <div class="step-row">
                   <div class="step-num">3</div>
                   <div class="step-body">
-                    <h4>Pack & Ship</h4>
-                    <p>Once approved, securely pack the item in its original packaging. Ship to the address provided in our authorization email. We recommend using a tracked courier service.</p>
+                    <h4>Pack &amp; Ship</h4>
+                    <p>Securely pack the item in its original packaging. Ship to the address in our approval email. We recommend using a <strong>tracked courier service</strong>.</p>
                   </div>
                 </div>
-                <div class="step-item">
+                <div class="step-row">
                   <div class="step-num">4</div>
                   <div class="step-body">
-                    <h4>Inspection & Processing</h4>
-                    <p>Upon receiving the returned item, our quality team will inspect it within <strong>2–3 business days</strong>. If approved, your refund or exchange will be processed.</p>
+                    <h4>Inspection &amp; Processing</h4>
+                    <p>We inspect returned items within <strong>2–3 business days</strong> of receipt. Approved returns are processed for refund or exchange immediately.</p>
                   </div>
                 </div>
               </div>
             </section>
 
-            <section id="exchange" class="policy-section">
-              <h2>5. Exchange Policy</h2>
-              <p>We offer free exchanges for a <strong>different size or color</strong> of the same product, subject to availability. For exchanges:</p>
+            <section id="exchange">
+              <div class="section-label">Section 05</div>
+              <h2>Exchange Policy</h2>
+              <p>We offer free exchanges for a <strong>different size or color</strong> of the same product, subject to availability:</p>
               <ul>
                 <li>Follow the same return process (steps 1–4 above)</li>
-                <li>Specify in your email that you want an exchange and mention the desired size/color</li>
-                <li>If the requested size or color is unavailable, we will offer a refund</li>
-                <li>Exchange shipping costs are borne by STYLEMAKER for the first exchange</li>
-                <li>Subsequent exchanges on the same order may incur shipping charges</li>
+                <li>Specify your desired size/color in the email</li>
+                <li>If the requested variant is unavailable, a full refund will be issued</li>
+                <li>STYLEMAKER covers shipping on the <strong>first exchange</strong> per order</li>
+                <li>Subsequent exchanges may incur a shipping fee</li>
               </ul>
             </section>
 
-            <section id="refunds" class="policy-section">
-              <h2>6. Refund Methods</h2>
-              <p>Once your return is approved and inspected, refunds will be processed as follows:</p>
-
-              <div class="refund-table">
-                <div class="refund-row header">
-                  <span>Payment Method</span>
-                  <span>Refund Method</span>
-                  <span>Processing Time</span>
-                </div>
-                <div class="refund-row">
-                  <span>Cash on Delivery</span>
-                  <span>Bank transfer or EasyPaisa/JazzCash</span>
-                  <span>5–7 business days</span>
-                </div>
-                <div class="refund-row">
-                  <span>EasyPaisa</span>
-                  <span>EasyPaisa wallet</span>
-                  <span>3–5 business days</span>
-                </div>
-                <div class="refund-row">
-                  <span>JazzCash</span>
-                  <span>JazzCash wallet</span>
-                  <span>3–5 business days</span>
-                </div>
-                <div class="refund-row">
-                  <span>Bank Transfer</span>
-                  <span>Original bank account</span>
-                  <span>5–10 business days</span>
-                </div>
-              </div>
-
-              <p style="margin-top:1rem">Original shipping charges are <strong>non-refundable</strong> unless the return is due to our error (wrong or defective item).</p>
+            <section id="refunds">
+              <div class="section-label">Section 06</div>
+              <h2>Refund Methods</h2>
+              <p>After inspection and approval, refunds are processed as follows:</p>
+              <table class="refund-table">
+                <thead>
+                  <tr>
+                    <th>Payment Method</th>
+                    <th>Refund To</th>
+                    <th>Timeline</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>Cash on Delivery</strong></td><td>Bank transfer / EasyPaisa / JazzCash</td><td>5–7 business days</td></tr>
+                  <tr><td><strong>EasyPaisa</strong></td><td>EasyPaisa wallet</td><td>3–5 business days</td></tr>
+                  <tr><td><strong>JazzCash</strong></td><td>JazzCash wallet</td><td>3–5 business days</td></tr>
+                  <tr><td><strong>Bank Transfer</strong></td><td>Original bank account</td><td>5–10 business days</td></tr>
+                </tbody>
+              </table>
+              <p>Original shipping charges are <strong>non-refundable</strong> unless the return is due to our error.</p>
             </section>
 
-            <section id="defective" class="policy-section">
-              <h2>7. Defective or Wrong Items</h2>
-              <p>If you received a <strong>defective, damaged, or incorrect item</strong>, we sincerely apologize. In such cases:</p>
+            <section id="defective">
+              <div class="section-label">Section 07</div>
+              <h2>Defective or Wrong Items</h2>
+              <p>We sincerely apologize if you received a damaged or incorrect item. In such cases:</p>
               <ul>
-                <li>Contact us within <strong>48 hours</strong> of delivery with photographs of the issue</li>
+                <li>Contact us within <strong>48 hours</strong> of delivery with clear photographs</li>
                 <li>We will arrange a <strong>free pickup</strong> from your address</li>
-                <li>You will receive a <strong>full refund</strong> including original shipping cost, or a replacement at no additional charge</li>
-                <li>No return shipping cost will be charged for defective/wrong items</li>
+                <li>You will receive a <strong>full refund</strong> (including original shipping) or a replacement</li>
+                <li>Zero return shipping cost for defective or incorrectly sent items</li>
               </ul>
-              <div class="highlight-box">
-                <p>📸 <strong>Tip:</strong> Always photograph your package upon receiving it, especially if packaging appears damaged during transit. This helps us process your claim faster.</p>
+              <div class="callout callout--gold">
+                📸 <strong>Tip:</strong> Always photograph your unboxing, especially if packaging appears damaged. This helps us process claims faster.
               </div>
             </section>
 
-            <section id="shipping-cost" class="policy-section">
-              <h2>8. Return Shipping Costs</h2>
+            <section id="shipping-cost">
+              <div class="section-label">Section 08</div>
+              <h2>Return Shipping Costs</h2>
               <ul>
-                <li><strong>Customer-initiated returns</strong> (change of mind, size issue): Return shipping cost is borne by the customer</li>
-                <li><strong>Defective or wrong item:</strong> STYLEMAKER covers all return shipping costs</li>
+                <li><strong>Customer-initiated return</strong> (size issue, change of mind): Customer pays return shipping</li>
+                <li><strong>Defective or wrong item:</strong> STYLEMAKER covers 100% of return shipping</li>
                 <li><strong>Exchange:</strong> STYLEMAKER covers outbound shipping for the replacement item</li>
               </ul>
-              <p>We recommend using a reliable courier with tracking. STYLEMAKER is not responsible for return packages lost in transit without a tracking number.</p>
+              <p>We recommend using a courier with package tracking. STYLEMAKER is not liable for return packages lost in transit without a tracking number.</p>
             </section>
 
-            <section id="contact" class="policy-section">
-              <h2>9. Contact Us</h2>
-              <p>Our customer care team is available to help you with returns and exchanges:</p>
-              <div class="contact-card">
-                <p><strong>STYLEMAKER Customer Care</strong></p>
-                <p>📧 Email: <a href="mailto:trendzyofficial.store@gmail.com">trendzyofficial.store&#64;gmail.com</a></p>
-                <p>🌐 Website: <a href="https://stylemaker.store">stylemaker.store</a></p>
-                <p>🕐 Response time: Within 24–48 hours (business days)</p>
+            <section id="rp-contact">
+              <div class="section-label">Section 09</div>
+              <h2>Contact Us</h2>
+              <p>Our customer care team is ready to help:</p>
+              <div class="contact-block">
+                <div class="cb-row"><span class="cb-icon">✉️</span><div><strong>Email</strong><a href="mailto:trendzyofficial.store@gmail.com">trendzyofficial.store&#64;gmail.com</a></div></div>
+                <div class="cb-row"><span class="cb-icon">🌐</span><div><strong>Website</strong><a href="https://stylemaker.store">stylemaker.store</a></div></div>
+                <div class="cb-row"><span class="cb-icon">⏱️</span><div><strong>Response time</strong><span>24–48 hours (business days)</span></div></div>
               </div>
             </section>
 
-            <div class="policy-nav">
-              <a routerLink="/privacy-policy" class="btn btn-outline">← Privacy Policy</a>
-              <a routerLink="/terms-of-service" class="btn btn-outline">← Terms of Service</a>
+            <div class="related-nav">
+              <a routerLink="/privacy-policy" class="related-card">
+                <div class="rc-icon">🔒</div>
+                <div><strong>Privacy Policy</strong><span>How we protect your data</span></div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+              <a routerLink="/terms-of-service" class="related-card">
+                <div class="rc-icon">📋</div>
+                <div><strong>Terms of Service</strong><span>Usage rules and agreements</span></div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
             </div>
 
           </main>
         </div>
       </div>
-    </div>
+    </article>
   `,
-  styles: [`
-    .policy-page { background: var(--cream); min-height: 100vh; }
-    .policy-hero {
-      background: var(--black); padding: 100px 0 48px;
-      .policy-label { font-size:0.7rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); margin-bottom:0.75rem; display:block; }
-      .policy-title { font-family:var(--font-heading); font-size:clamp(2.5rem,5vw,4rem); font-weight:400; color:var(--cream); margin-bottom:0.75rem; }
-      .policy-updated { font-size:0.875rem; color:rgba(245,240,232,0.45); }
-    }
-    .policy-layout {
-      display:grid; grid-template-columns:220px 1fr; gap:4rem; padding:3rem 0 5rem;
-      @media(max-width:900px) { grid-template-columns:1fr; }
-    }
-    .policy-toc {
-      position:sticky; top:100px; height:fit-content;
-      @media(max-width:900px) { display:none; }
-      .toc-title { font-size:0.65rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold); font-weight:700; margin-bottom:1rem; }
-      ul { list-style:none; padding:0; display:flex; flex-direction:column; gap:0.25rem; }
-      a { font-size:0.8125rem; color:var(--gray-500); text-decoration:none; display:block; padding:0.35rem 0.75rem; border-left:2px solid var(--gray-200); transition:all 0.2s; &:hover{color:var(--gold-dark);border-left-color:var(--gold);} }
-    }
-    .policy-intro { background:var(--cream-light); border-left:3px solid var(--gold); padding:1.25rem 1.5rem; margin-bottom:2rem; p{font-size:0.9375rem;line-height:1.8;color:var(--black-soft);margin:0;} }
-
-    /* Summary Cards */
-    .summary-cards {
-      display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:2.5rem;
-      @media(max-width:768px) { grid-template-columns:repeat(2,1fr); }
-      @media(max-width:480px) { grid-template-columns:1fr 1fr; }
-    }
-    .summary-card {
-      background:var(--black); padding:1.25rem; display:flex; align-items:center; gap:0.875rem;
-      .card-icon { font-size:1.5rem; flex-shrink:0; }
-      .card-text { display:flex; flex-direction:column; gap:2px;
-        strong { font-size:0.875rem; font-weight:700; color:var(--gold-light); }
-        span { font-size:0.7rem; color:rgba(245,240,232,0.5); line-height:1.4; }
-      }
-    }
-
-    .policy-section {
-      margin-bottom:2.5rem; padding-bottom:2.5rem; border-bottom:1px solid var(--gray-200); &:last-of-type{border-bottom:none;}
-      h2 { font-family:var(--font-heading); font-size:1.5rem; font-weight:500; color:var(--black); margin-bottom:1rem; padding-bottom:0.5rem; border-bottom:1px solid var(--gray-200); }
-      h4 { font-size:0.9rem; font-weight:700; color:var(--black); margin-bottom:0.375rem; }
-      p { font-size:0.9375rem; line-height:1.8; color:var(--gray-500); margin-bottom:0.875rem; a{color:var(--gold);text-decoration:none;&:hover{text-decoration:underline;}} }
-      ul { padding-left:0; list-style:none; display:flex; flex-direction:column; gap:0.5rem; margin-bottom:0.875rem;
-        li { font-size:0.9375rem; line-height:1.7; color:var(--gray-500); padding-left:1.25rem; position:relative; &::before{content:'—';position:absolute;left:0;color:var(--gold);font-size:0.75rem;top:0.35rem;} strong{color:var(--black-soft);} }
-      }
-    }
-
-    .highlight-box {
-      background:rgba(201,168,76,0.06); border:1px solid rgba(201,168,76,0.25);
-      padding:1rem 1.25rem; margin:1rem 0;
-      p { margin:0; font-size:0.875rem; color:var(--black-soft); }
-    }
-
-    /* Steps */
-    .steps { display:flex; flex-direction:column; gap:0; }
-    .step-item {
-      display:flex; gap:1.25rem; padding:1.25rem 0;
-      border-bottom:1px solid var(--gray-200); &:last-child{border-bottom:none;}
-      .step-num {
-        width:36px; height:36px; border-radius:50%; background:var(--gold); color:var(--black);
-        display:flex; align-items:center; justify-content:center;
-        font-weight:700; font-size:0.875rem; flex-shrink:0; margin-top:2px;
-      }
-      .step-body { flex:1; }
-      h4 { font-size:0.9375rem; font-weight:700; color:var(--black); margin-bottom:0.25rem; }
-      p { font-size:0.875rem; color:var(--gray-500); line-height:1.7; margin:0; a{color:var(--gold);} }
-    }
-
-    /* Refund Table */
-    .refund-table { border:1px solid var(--gray-200); overflow:hidden; }
-    .refund-row {
-      display:grid; grid-template-columns:1fr 1.5fr 1fr;
-      gap:0; border-bottom:1px solid var(--gray-200); &:last-child{border-bottom:none;}
-      &.header { background:var(--black); span{color:var(--gold-light);font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;} }
-      span { padding:0.75rem 1rem; font-size:0.8125rem; color:var(--gray-500); border-right:1px solid var(--gray-200); &:last-child{border-right:none;} }
-      &:not(.header):hover { background:var(--cream-light); }
-    }
-
-    .contact-card { background:var(--black); padding:1.5rem 2rem; margin:1rem 0; p{color:rgba(245,240,232,0.75);margin-bottom:0.5rem;font-size:0.9rem;line-height:1.6; strong{color:var(--gold-light);} a{color:var(--gold);text-decoration:none;&:hover{text-decoration:underline;}} } }
-    .policy-nav { display:flex; gap:1rem; flex-wrap:wrap; margin-top:3rem; padding-top:2rem; border-top:1px solid var(--gray-200); }
-  `]
+  styleUrls: ['./return-policy.component.scss']
 })
 export class ReturnPolicyComponent {}
