@@ -12,18 +12,18 @@ import { filter } from 'rxjs/operators';
   standalone: true,
   imports: [CommonModule, RouterOutlet, NavbarComponent, FooterComponent, ToastComponent],
   template: `
-    <!-- Public layout: navbar + content + footer -->
-    @if (!isAdminRoute()) {
+    <!-- Admin layout: full screen, no navbar/footer -->
+    @if (isAdminRoute()) {
+      <router-outlet/>
+    }
+
+    <!-- Public layout: only for non-admin users -->
+    @if (!isAdminRoute() && !isAdminUser()) {
       <app-navbar/>
       <main class="main-content" id="main-content">
         <router-outlet/>
       </main>
       <app-footer/>
-    }
-
-    <!-- Admin layout: router-outlet only (admin component has its own shell) -->
-    @if (isAdminRoute()) {
-      <router-outlet/>
     }
 
     <!-- Toast always visible -->
@@ -47,6 +47,7 @@ export class AppComponent implements OnInit {
   private authApi    = inject(AuthApiService);
 
   isAdminRoute = signal(false);
+  isAdminUser  = () => this.authApi.currentUser()?.role === 'admin';
 
   ngOnInit() {
     if (!isPlatformBrowser(this.platformId)) return;
@@ -54,12 +55,18 @@ export class AppComponent implements OnInit {
     this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe((e: NavigationEnd) => {
-        this.isAdminRoute.set(e.urlAfterRedirects.startsWith('/admin'));
+        const url = e.urlAfterRedirects;
+        this.isAdminRoute.set(url.startsWith('/admin'));
+
+        // If admin is logged in and on any non-admin route, redirect to admin
+        if (this.authApi.currentUser()?.role === 'admin' && !url.startsWith('/admin')) {
+          this.router.navigate(['/admin']);
+        }
       });
 
     this.isAdminRoute.set(this.router.url.startsWith('/admin'));
 
-    // If admin is already logged in and not on admin route, redirect immediately
+    // On app load: if admin already logged in, go to admin panel immediately
     if (this.authApi.currentUser()?.role === 'admin' && !this.router.url.startsWith('/admin')) {
       this.router.navigate(['/admin']);
     }

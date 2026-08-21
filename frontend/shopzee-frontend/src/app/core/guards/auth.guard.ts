@@ -32,7 +32,9 @@ export const publicOnlyGuard: CanActivateFn = () => {
   const auth   = inject(AuthApiService);
   const router = inject(Router);
 
-  if (auth.isAdmin()) {
+  // Check both signal and localStorage directly for reliability
+  const user = auth.currentUser();
+  if (user?.role === 'admin') {
     router.navigate(['/admin']);
     return false;
   }

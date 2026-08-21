@@ -10,66 +10,77 @@ export const routes: Routes = [
   },
   {
     path: 'women',
+    canActivate: [publicOnlyGuard],
     loadComponent: () =>
       import('./features/shop/shop.component').then(m => m.ShopComponent),
     data: { category: 'women' }
   },
   {
     path: 'men',
+    canActivate: [publicOnlyGuard],
     loadComponent: () =>
       import('./features/shop/shop.component').then(m => m.ShopComponent),
     data: { category: 'men' }
   },
   {
     path: 'new-arrivals',
+    canActivate: [publicOnlyGuard],
     loadComponent: () =>
       import('./features/new-arrivals/new-arrivals.component').then(m => m.NewArrivalsComponent)
   },
   {
     path: 'sale',
+    canActivate: [publicOnlyGuard],
     loadComponent: () =>
       import('./features/sale/sale.component').then(m => m.SaleComponent)
   },
   {
-    path: 'reseller',
-    loadComponent: () =>
-      import('./features/reseller/reseller-dashboard.component').then(m => m.ResellerDashboardComponent)
-  },
-  {
     path: 'product/:id',
+    canActivate: [publicOnlyGuard],
     loadComponent: () =>
       import('./features/product-detail/product-detail.component').then(m => m.ProductDetailComponent)
   },
   {
     path: 'cart',
+    canActivate: [publicOnlyGuard],
     loadComponent: () =>
       import('./features/cart/cart.component').then(m => m.CartComponent)
   },
   {
     path: 'checkout',
-    canActivate: [authGuard],
+    canActivate: [publicOnlyGuard, authGuard],
     loadComponent: () =>
       import('./features/checkout/checkout.component').then(m => m.CheckoutComponent)
   },
   {
     path: 'wishlist',
+    canActivate: [publicOnlyGuard],
     loadComponent: () =>
       import('./features/wishlist/wishlist.component').then(m => m.WishlistComponent)
   },
   {
     path: 'account',
+    canActivate: [publicOnlyGuard],
     loadComponent: () =>
       import('./features/account/account.component').then(m => m.AccountComponent)
   },
   {
     path: 'about',
+    canActivate: [publicOnlyGuard],
     loadComponent: () =>
       import('./features/about/about.component').then(m => m.AboutComponent)
   },
   {
     path: 'contact',
+    canActivate: [publicOnlyGuard],
     loadComponent: () =>
       import('./features/contact/contact.component').then(m => m.ContactComponent)
+  },
+  {
+    path: 'reseller',
+    canActivate: [publicOnlyGuard],
+    loadComponent: () =>
+      import('./features/reseller/reseller-dashboard.component').then(m => m.ResellerDashboardComponent)
   },
   {
     path: 'admin',
