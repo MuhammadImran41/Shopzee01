@@ -58,10 +58,18 @@ interface Notification {
         </nav>
 
         <div class="sidebar-footer">
-          <a routerLink="/" class="nav-item" title="Go to Store">
+          <a routerLink="/" class="nav-item nav-item--store" [attr.title]="sidebarCollapsed() ? 'View Store' : null">
             <app-icon name="globe" [size]="20"/>
             @if (!sidebarCollapsed()) { <span>View Store</span> }
           </a>
+          <button class="nav-item nav-item--logout" (click)="logout()" [attr.title]="sidebarCollapsed() ? 'Logout' : null">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+              <polyline points="16 17 21 12 16 7"/>
+              <line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+            @if (!sidebarCollapsed()) { <span>Logout</span> }
+          </button>
         </div>
       </aside>
 
@@ -105,16 +113,12 @@ interface Notification {
                 </div>
               }
             </div>
-            <!-- Admin Avatar + Name + Logout -->
+            <!-- Admin Avatar + Name -->
             <div class="admin-avatar">{{ adminInitial() }}</div>
             <div class="admin-name hide-mobile">
               <span>{{ authApi.currentUser()?.name || 'Admin' }}</span>
               <span class="admin-role">Super Admin</span>
             </div>
-            <button class="topbar-btn logout-btn" (click)="logout()" title="Logout" aria-label="Logout">
-              <app-icon name="close" [size]="18"/>
-              <span class="logout-text">Logout</span>
-            </button>
           </div>
         </header>
 
@@ -141,7 +145,24 @@ interface Notification {
     .sidebar-brand { padding:1.5rem 1.25rem; border-bottom:1px solid rgba(201,168,76,0.12); display:flex; flex-direction:column; gap:2px; .brand-text{font-family:var(--font-heading);font-size:1.25rem;color:var(--cream);letter-spacing:0.15em;} .brand-sub{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);} .brand-icon{color:var(--gold);} }
     .sidebar-nav { flex:1; padding:1rem 0; overflow-y:auto; overflow-x:hidden; }
     .nav-item { display:flex; align-items:center; gap:0.875rem; padding:0.75rem 1.25rem; color:rgba(245,240,232,0.55); text-decoration:none; font-size:0.8125rem; font-weight:500; letter-spacing:0.04em; transition:all 0.2s; white-space:nowrap; &:hover{color:var(--gold-light);background:rgba(201,168,76,0.06);} &.active{color:var(--gold);background:rgba(201,168,76,0.1);border-left:2px solid var(--gold);} app-icon{flex-shrink:0;} }
-    .sidebar-footer { padding:1rem 0; border-top:1px solid rgba(201,168,76,0.1); }
+    .sidebar-footer {
+      padding:0.75rem 0;
+      border-top:1px solid rgba(201,168,76,0.1);
+      display:flex; flex-direction:column; gap:2px;
+    }
+    .nav-item--store {
+      color:rgba(245,240,232,0.4);
+      &:hover { color:var(--gold-light); background:rgba(201,168,76,0.06); }
+    }
+    .nav-item--logout {
+      width:100%; background:none; border:none; cursor:pointer; text-align:left;
+      display:flex; align-items:center; gap:0.875rem;
+      padding:0.75rem 1.25rem;
+      font-size:0.8125rem; font-weight:500; letter-spacing:0.04em;
+      color:rgba(229,57,53,0.7); transition:all 0.2s; white-space:nowrap;
+      &:hover { color:#ef5350; background:rgba(229,57,53,0.08); }
+      svg { flex-shrink:0; }
+    }
     .admin-main { flex:1; display:flex; flex-direction:column; overflow:hidden; }
     .admin-topbar { height:64px; background:var(--cream-light); border-bottom:1px solid var(--gray-200); display:flex; align-items:center; justify-content:space-between; padding:0 1.5rem; flex-shrink:0; }
     .topbar-left { display:flex; align-items:center; gap:1rem; }
@@ -162,14 +183,6 @@ interface Notification {
     .admin-avatar { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,var(--gold),var(--gold-dark)); display:flex; align-items:center; justify-content:center; font-family:var(--font-heading); font-size:1.125rem; font-weight:600; color:var(--black); flex-shrink:0; }
     .admin-name { display:flex; flex-direction:column; gap:1px; span:first-child{font-size:0.875rem;font-weight:600;} }
     .admin-role { font-size:0.7rem; color:var(--gray-400); letter-spacing:0.08em; }
-    .logout-btn {
-      display:flex; align-items:center; gap:0.4rem; width:auto; padding:0 0.875rem;
-      border-radius:4px; font-size:0.75rem; font-weight:600; letter-spacing:0.06em;
-      text-transform:uppercase; color:#C62828; border:1px solid rgba(198,40,40,0.3);
-      background:rgba(198,40,40,0.06); height:36px;
-      &:hover { background:rgba(198,40,40,0.14); border-color:#C62828; color:#b71c1c; }
-      @media(max-width:600px) { .logout-text { display:none; } width:40px; padding:0; justify-content:center; }
-    }
     .admin-content { flex:1; overflow-y:auto; padding:1.5rem; background:var(--cream); }
   `]
 })
@@ -188,14 +201,14 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   navItems = [
-    { path: '/admin/dashboard',  label: 'Dashboard',  icon: 'chart' },
-    { path: '/admin/products',   label: 'Products',   icon: 'package' },
-    { path: '/admin/orders',     label: 'Orders',     icon: 'bag' },
-    { path: '/admin/customers',  label: 'Customers',  icon: 'users' },
-    { path: '/admin/resellers',  label: 'Resellers',  icon: 'star-filled' },
-    { path: '/admin/analytics',  label: 'Analytics',  icon: 'chart' },
-    { path: '/admin/seo',        label: 'SEO',        icon: 'globe' },
-    { path: '/admin/dashboard',  label: 'Settings',   icon: 'settings' }
+    { path: '/admin/dashboard',  label: 'Dashboard',  icon: 'chart'        },
+    { path: '/admin/products',   label: 'Products',   icon: 'package'      },
+    { path: '/admin/orders',     label: 'Orders',     icon: 'bag'          },
+    { path: '/admin/customers',  label: 'Customers',  icon: 'users'        },
+    { path: '/admin/resellers',  label: 'Resellers',  icon: 'star-filled'  },
+    { path: '/admin/analytics',  label: 'Analytics',  icon: 'chart'        },
+    { path: '/admin/seo',        label: 'SEO',        icon: 'globe'        },
+    { path: '/admin/dashboard',  label: 'Settings',   icon: 'settings'     }
   ];
 
   notifications = signal<Notification[]>([
