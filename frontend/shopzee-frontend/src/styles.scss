@@ -116,8 +116,6 @@ body {
   max-width: 100vw;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Push content below fixed announcement bar (36px) */
-  padding-top: 36px;
 }
 
 img, video {
@@ -295,7 +293,7 @@ p { line-height: 1.7; }
 }
 
 // Pages that need navbar clearance
-// body padding-top 36px + 10px gap + 68px navbar = 114px + some breathing room
+// 16px navbar-top + 68px navbar height = 84px + breathing room
 .shop-layout,
 .cart-page,
 .checkout-page,
@@ -304,14 +302,14 @@ p { line-height: 1.7; }
 .contact-page,
 .about-hero,
 .shop-hero {
-  padding-top: 130px;
+  padding-top: 100px;
 
   @media (max-width: 768px) {
-    padding-top: 120px;
+    padding-top: 90px;
   }
 
   @media (max-width: 480px) {
-    padding-top: 114px;
+    padding-top: 84px;
   }
 }
 

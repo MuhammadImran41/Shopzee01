@@ -60,19 +60,17 @@
     position: relative;
     z-index: 1;
     width: 100%;
-    // body has 36px padding-top for announcement bar
-    // navbar at top:46px with 68px height = 114px from page top
-    // add 30px breathing room = 144px
-    padding-top: 144px;
+    // 16px navbar-top + 68px navbar + 36px breathing = 120px
+    padding-top: 120px;
     padding-bottom: 60px;
 
     @media (max-width: 768px) {
-      padding-top: 130px;
+      padding-top: 110px;
       padding-bottom: 40px;
     }
 
     @media (max-width: 600px) {
-      padding-top: 120px;
+      padding-top: 100px;
       padding-bottom: 40px;
     }
   }

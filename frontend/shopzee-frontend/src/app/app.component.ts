@@ -14,29 +14,6 @@ import { filter } from 'rxjs/operators';
   template: `
     <!-- Public layout: navbar + content + footer -->
     @if (!isAdminRoute()) {
-      <!-- Announcement Slider — top of page -->
-      <div class="announcement-slider" aria-label="Announcements">
-        <div class="announcement-track">
-          <div class="announcement-inner">
-            <span class="announcement-item">🚚 Free Home Delivery on orders above PKR 5,000</span>
-            <span class="announcement-sep">✦</span>
-            <span class="announcement-item">🔄 7 Days Easy Returns &amp; Exchange</span>
-            <span class="announcement-sep">✦</span>
-            <span class="announcement-item">🛡️ 100% Secure Payment</span>
-            <span class="announcement-sep">✦</span>
-            <span class="announcement-item">⭐ Premium Quality Fabrics &amp; Craftsmanship</span>
-            <span class="announcement-sep">✦</span>
-            <span class="announcement-item">🚚 Free Home Delivery on orders above PKR 5,000</span>
-            <span class="announcement-sep">✦</span>
-            <span class="announcement-item">🔄 7 Days Easy Returns &amp; Exchange</span>
-            <span class="announcement-sep">✦</span>
-            <span class="announcement-item">🛡️ 100% Secure Payment</span>
-            <span class="announcement-sep">✦</span>
-            <span class="announcement-item">⭐ Premium Quality Fabrics &amp; Craftsmanship</span>
-            <span class="announcement-sep">✦</span>
-          </div>
-        </div>
-      </div>
       <app-navbar/>
       <main class="main-content" id="main-content">
         <router-outlet/>
@@ -61,54 +38,6 @@ import { filter } from 'rxjs/operators';
     .main-content {
       flex: 1;
       padding-top: 0;
-    }
-
-    /* ── ANNOUNCEMENT SLIDER — fixed at very top ─────────── */
-    .announcement-slider {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      background: var(--black);
-      overflow: hidden;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      border-bottom: 1px solid rgba(201,168,76,0.2);
-      z-index: 202;
-    }
-
-    .announcement-track { width: 100%; overflow: hidden; }
-
-    .announcement-inner {
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-      white-space: nowrap;
-      animation: announcement-scroll 28s linear infinite;
-      width: max-content;
-    }
-
-    .announcement-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #F5F0E8;
-    }
-
-    .announcement-sep {
-      color: #C9A84C;
-      font-size: 0.55rem;
-      flex-shrink: 0;
-    }
-
-    @keyframes announcement-scroll {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
     }
   `]
 })
