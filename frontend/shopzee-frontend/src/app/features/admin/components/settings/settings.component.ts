@@ -9,9 +9,13 @@ import { ToastService } from '../../../../core/services/toast.service';
 import { API_BASE } from '../../../../core/services/api/api.config';
 
 interface ImageSection {
-  key:   keyof HomeImages;
-  label: string;
-  desc:  string;
+  key:         keyof HomeImages;
+  label:       string;
+  desc:        string;
+  badge:       string;
+  type:        string;
+  size:        string;
+  aspectRatio: 'wide' | 'tall' | 'square';
 }
 
 @Component({
@@ -139,42 +143,62 @@ interface ImageSection {
         <div class="settings-card">
           <div class="sc-header">
             <h2>Image Changer</h2>
-            <p>Replace any home page image. Upload a new image to replace it — same size and responsiveness is maintained automatically.</p>
+            <p>Upload a new image for any home page section. Image is applied instantly with the same size and responsiveness.</p>
           </div>
           <div class="sc-body">
-            <div class="images-grid">
+
+            <div class="img-sections-list">
               @for (section of imageSections; track section.key) {
-                <div class="image-section-card" [class.uploading]="uploadingKey() === section.key">
-                  <div class="isc-preview">
-                    <img [src]="siteImages.getImage(section.key)" [alt]="section.label" loading="lazy"/>
-                    <div class="isc-overlay">
-                      <label class="isc-upload-btn" [for]="'img-upload-' + section.key">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                        Upload
-                      </label>
-                      <button class="isc-reset-btn" (click)="resetImage(section.key)" title="Reset to original">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
-                      </button>
+                <div class="img-section-row" [class.img-uploading]="uploadingKey() === section.key">
+
+                  <!-- Left: Preview -->
+                  <div class="isr-preview-wrap">
+                    <div class="isr-preview" [class.isr-wide]="section.aspectRatio === 'wide'" [class.isr-tall]="section.aspectRatio === 'tall'">
+                      <img [src]="siteImages.getImage(section.key)" [alt]="section.label" loading="lazy"/>
+                      @if (uploadingKey() === section.key) {
+                        <div class="isr-loading"><div class="spinner"></div></div>
+                      }
+                      @if (uploadedKeys().includes(section.key)) {
+                        <div class="isr-done">
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                      }
                     </div>
-                    @if (uploadingKey() === section.key) {
-                      <div class="isc-loading"><div class="spinner"></div></div>
-                    }
-                    @if (uploadedKeys().includes(section.key)) {
-                      <div class="isc-done">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-                      </div>
-                    }
                   </div>
-                  <div class="isc-info">
-                    <span class="isc-label">{{ section.label }}</span>
-                    <span class="isc-desc">{{ section.desc }}</span>
+
+                  <!-- Right: Info + Actions -->
+                  <div class="isr-info">
+                    <div class="isr-badge">{{ section.badge }}</div>
+                    <h3 class="isr-title">{{ section.label }}</h3>
+                    <p class="isr-desc">{{ section.desc }}</p>
+                    <div class="isr-meta">
+                      <span class="isr-tag">{{ section.type }}</span>
+                      <span class="isr-size">{{ section.size }}</span>
+                    </div>
+                    <div class="isr-actions">
+                      <label class="btn btn-primary isr-upload-btn" [for]="'img-' + section.key">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        Upload New Image
+                      </label>
+                      @if (uploadedKeys().includes(section.key) || !section.key.includes('default')) {
+                        <button class="btn btn-ghost isr-reset-btn" (click)="resetImage(section.key)">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+                          Reset
+                        </button>
+                      }
+                    </div>
                   </div>
-                  <input type="file" [id]="'img-upload-' + section.key" accept="image/*" class="hidden-input" (change)="onImageUpload($event, section.key)"/>
+
+                  <input type="file" [id]="'img-' + section.key" accept="image/*" class="hidden-input" (change)="onImageUpload($event, section.key)"/>
                 </div>
               }
             </div>
-            <div class="image-actions">
-              <button class="btn btn-ghost" (click)="resetAllImages()">Reset All Images to Default</button>
+
+            <div class="image-actions" style="margin-top:1.5rem">
+              <button class="btn btn-ghost" (click)="resetAllImages()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+                Reset All Images to Default
+              </button>
             </div>
           </div>
         </div>
@@ -237,20 +261,57 @@ interface ImageSection {
     .cf-desc { font-size:0.7rem; color:var(--gray-400); line-height:1.4; }
     .theme-actions { display:flex; gap:0.875rem; align-items:center; flex-wrap:wrap; }
 
-    /* Images Grid */
-    .images-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:1.5rem; @media(max-width:1100px){grid-template-columns:repeat(3,1fr);} @media(max-width:768px){grid-template-columns:repeat(2,1fr);} @media(max-width:480px){grid-template-columns:1fr 1fr;} }
-    .image-section-card { border:1px solid var(--gray-200); background:var(--cream); overflow:hidden; }
-    .isc-preview { position:relative; aspect-ratio:4/5; overflow:hidden; background:var(--cream-dark); img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;transition:transform 0.3s;} &:hover img{transform:scale(1.04);} }
-    .isc-overlay { position:absolute; inset:0; background:rgba(26,26,26,0); transition:background 0.25s; display:flex; align-items:center; justify-content:center; gap:0.5rem; opacity:0; .image-section-card:hover & { background:rgba(26,26,26,0.55); opacity:1; } }
-    .isc-upload-btn { display:flex; flex-direction:column; align-items:center; gap:0.375rem; cursor:pointer; background:var(--gold); color:var(--black); padding:0.625rem 1rem; font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; &:hover{background:var(--gold-dark);} }
-    .isc-reset-btn { background:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.4); cursor:pointer; padding:0.5rem; color:#fff; display:flex; align-items:center; justify-content:center; &:hover{background:rgba(255,255,255,0.35);} }
-    .isc-loading { position:absolute; inset:0; background:rgba(26,26,26,0.6); display:flex; align-items:center; justify-content:center; }
-    .isc-done { position:absolute; top:0.5rem; right:0.5rem; width:28px; height:28px; border-radius:50%; background:#4CAF50; display:flex; align-items:center; justify-content:center; }
+    /* Images List — row layout */
+    .img-sections-list { display:flex; flex-direction:column; gap:1px; background:var(--gray-200); border:1px solid var(--gray-200); }
+
+    .img-section-row {
+      display:grid; grid-template-columns:280px 1fr; gap:0;
+      background:var(--cream-light); transition:background 0.2s;
+      &:hover { background:var(--cream); }
+      @media(max-width:700px) { grid-template-columns:160px 1fr; }
+      @media(max-width:480px) { grid-template-columns:1fr; }
+    }
+
+    .isr-preview-wrap { overflow:hidden; background:var(--cream-dark); }
+
+    .isr-preview {
+      position:relative; width:100%; height:180px; overflow:hidden;
+      img { width:100%; height:100%; object-fit:cover; object-position:center top; display:block; }
+      &.isr-wide img { object-position:center center; }
+      &.isr-tall img { object-position:top center; }
+      @media(max-width:480px) { height:220px; }
+    }
+
+    .isr-loading { position:absolute; inset:0; background:rgba(26,26,26,0.6); display:flex; align-items:center; justify-content:center; }
+    .isr-done { position:absolute; top:0.5rem; right:0.5rem; width:28px; height:28px; border-radius:50%; background:#4CAF50; display:flex; align-items:center; justify-content:center; }
+
     .spinner { width:32px; height:32px; border:3px solid rgba(255,255,255,0.3); border-top-color:#fff; border-radius:50%; animation:spin 0.7s linear infinite; }
     @keyframes spin { to{transform:rotate(360deg);} }
-    .isc-info { padding:0.75rem; }
-    .isc-label { display:block; font-size:0.8rem; font-weight:700; color:var(--black); margin-bottom:2px; }
-    .isc-desc { font-size:0.7rem; color:var(--gray-400); }
+
+    .isr-info {
+      padding:1.25rem 1.5rem; display:flex; flex-direction:column; justify-content:center; gap:0.5rem;
+      border-left:1px solid var(--gray-200);
+      @media(max-width:480px) { border-left:none; border-top:1px solid var(--gray-200); }
+    }
+
+    .isr-badge {
+      display:inline-block; font-size:0.6rem; font-weight:800; letter-spacing:0.2em;
+      text-transform:uppercase; color:var(--black); background:var(--gold);
+      padding:0.2rem 0.625rem; align-self:flex-start;
+    }
+
+    .isr-title { font-family:var(--font-heading); font-size:1.0625rem; font-weight:500; color:var(--black); }
+    .isr-desc { font-size:0.8125rem; color:var(--gray-500); line-height:1.6; }
+
+    .isr-meta { display:flex; gap:0.625rem; flex-wrap:wrap; }
+    .isr-tag { font-size:0.65rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; background:var(--black); color:var(--gold); padding:0.2rem 0.625rem; }
+    .isr-size { font-size:0.7rem; color:var(--gray-400); padding:0.2rem 0; }
+
+    .isr-actions { display:flex; gap:0.625rem; flex-wrap:wrap; margin-top:0.25rem; }
+    .isr-upload-btn { display:inline-flex; align-items:center; gap:0.4rem; font-size:0.75rem; padding:0.6rem 1rem; cursor:pointer; }
+    .isr-reset-btn { display:inline-flex; align-items:center; gap:0.35rem; font-size:0.75rem; padding:0.6rem 0.875rem; }
+
+    .img-uploading { opacity:0.7; pointer-events:none; }
     .hidden-input { display:none; }
     .image-actions { border-top:1px solid var(--gray-200); padding-top:1rem; }
   `]
@@ -334,18 +395,42 @@ export class AdminSettingsComponent {
   uploadedKeys = signal<string[]>([]);
 
   imageSections: ImageSection[] = [
-    { key: 'hero-bg',  label: 'Hero Background',     desc: 'Main banner on home page' },
-    { key: 'women-1',  label: 'Women Image 1',        desc: 'Women section card 1' },
-    { key: 'women-2',  label: 'Women Image 2',        desc: 'Women section card 2' },
-    { key: 'women-3',  label: 'Women Image 3',        desc: 'Women mosaic main' },
-    { key: 'women-4',  label: 'Women Image 4',        desc: 'Women section card 4' },
-    { key: 'women-5',  label: 'Women Image 5',        desc: 'Women mosaic top' },
-    { key: 'women-6',  label: 'Women Image 6',        desc: 'Women mosaic mid' },
-    { key: 'women-7',  label: 'Women Image 7',        desc: 'Video banner background' },
-    { key: 'men-1',    label: 'Men Image 1',           desc: 'Men section card 1' },
-    { key: 'men-2',    label: 'Men Image 2',           desc: 'Men section feature' },
-    { key: 'men-3',    label: 'Men Image 3',           desc: 'Men section card 3' },
-    { key: 'men-4',    label: 'Men Image 4',           desc: 'Men section card 4' },
+    {
+      key: 'hero-bg',
+      label: 'Hero Section — Background',
+      desc: 'Full-page background of the home page hero. "Timeless Elegance" section.',
+      badge: 'Section 1 — Hero',
+      type: 'Section Background',
+      size: 'Recommended: 1920×1080px or wider',
+      aspectRatio: 'wide'
+    },
+    {
+      key: 'women-3',
+      label: 'Women\'s Collection — Feature Image',
+      desc: 'Left photo in "Her Story Begins Here" split section.',
+      badge: 'Section 2 — Women Feature',
+      type: 'Section Feature Image (Left Side)',
+      size: 'Recommended: 800×1000px (portrait)',
+      aspectRatio: 'tall'
+    },
+    {
+      key: 'men-2',
+      label: 'Men\'s Collection — Feature Image',
+      desc: 'Left photo in "Crafted for the Modern Man" split section.',
+      badge: 'Section 3 — Men Feature',
+      type: 'Section Feature Image (Left Side)',
+      size: 'Recommended: 800×1000px (portrait)',
+      aspectRatio: 'tall'
+    },
+    {
+      key: 'women-7',
+      label: 'Full-Width Banner — Background',
+      desc: 'Large banner showing "New Collection 2026" between Men\'s Picks and Newsletter.',
+      badge: 'Section 4 — Banner',
+      type: 'Banner Background (Full Width)',
+      size: 'Recommended: 1920×700px (landscape)',
+      aspectRatio: 'wide'
+    },
   ];
 
   onImageUpload(event: Event, key: keyof HomeImages) {
