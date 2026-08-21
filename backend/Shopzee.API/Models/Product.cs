@@ -30,6 +30,7 @@ public class Product
     public bool IsNew { get; set; } = false;
     public bool IsFeatured { get; set; } = false;
     public bool IsActive { get; set; } = true;
+    public bool IsInStock { get; set; } = true;  // false = Out of Stock (admin toggle)
 
     // SEO
     public string? SeoTitle { get; set; }

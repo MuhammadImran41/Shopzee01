@@ -66,6 +66,7 @@ export function apiToProduct(p: ApiProduct): Product {
     stock:         p.stock,
     isNew:         p.isNew,
     isFeatured:    p.isFeatured,
+    isInStock:     p.isInStock ?? true,
     tags:          p.tags || [],
     sku:           p.sku,
     seoTitle:      p.seoTitle,

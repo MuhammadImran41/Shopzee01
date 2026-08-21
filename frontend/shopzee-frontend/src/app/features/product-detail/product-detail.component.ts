@@ -130,9 +130,15 @@ import { Product } from '../../core/models/product.model';
 
             <!-- Actions -->
             <div class="pd-actions">
-              <button class="btn btn-primary pd-add-btn" (click)="addToCart()">
-                <app-icon name="cart" [size]="18"/> Add to Cart
-              </button>
+              @if (product()!.isInStock !== false) {
+                <button class="btn btn-primary pd-add-btn" (click)="addToCart()">
+                  <app-icon name="cart" [size]="18"/> Add to Cart
+                </button>
+              } @else {
+                <button class="btn pd-add-btn pd-stockout-btn" disabled>
+                  Out of Stock
+                </button>
+              }
               <button
                 class="btn btn-outline pd-wish-btn"
                 [class.wishlisted]="wishlistService.isWishlisted(product()!.id)"
@@ -143,9 +149,14 @@ import { Product } from '../../core/models/product.model';
             </div>
 
             <!-- Stock Info -->
-            <div class="pd-stock">
-              <app-icon name="check-circle" [size]="16" class="stock-icon"/>
-              <span>{{ product()!.stock > 10 ? 'In Stock' : 'Only ' + product()!.stock + ' left!' }}</span>
+            <div class="pd-stock" [class.pd-stock--out]="product()!.isInStock === false">
+              @if (product()!.isInStock === false) {
+                <app-icon name="close" [size]="16" class="stock-icon-out"/>
+                <span>Currently Out of Stock</span>
+              } @else {
+                <app-icon name="check-circle" [size]="16" class="stock-icon"/>
+                <span>{{ product()!.stock > 10 ? 'In Stock' : 'Only ' + product()!.stock + ' left!' }}</span>
+              }
             </div>
 
             <!-- Description Accordion -->
@@ -343,7 +354,14 @@ import { Product } from '../../core/models/product.model';
     .pd-add-btn { flex: 1; padding: var(--space-4); font-size: var(--text-base); }
     .pd-wish-btn { width: 56px; padding: 0; &.wishlisted { border-color: var(--gold); color: var(--gold); } }
 
+    .pd-stockout-btn {
+      flex: 1; background: #C62828 !important; color: #fff !important;
+      border-color: #C62828 !important; opacity: 0.85; cursor: not-allowed;
+      letter-spacing: 0.12em;
+    }
+
     .pd-stock { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-sm); color: var(--gray-400); margin-bottom: var(--space-5); .stock-icon { color: #4CAF50; } }
+    .pd-stock--out { color: #C62828; .stock-icon-out { color: #C62828; } }
 
     .pd-accordion { border-bottom: 1px solid var(--gray-200); }
     .accordion-btn {
@@ -437,6 +455,7 @@ export class ProductDetailComponent implements OnInit {
   addToCart() {
     const p = this.product();
     if (!p) return;
+    if (p.isInStock === false) { this.toast.error('This product is currently out of stock.'); return; }
     this.cartService.addItem(p, this.selectedSize(), this.selectedColor(), this.qty());
     this.toast.cart(`${p.name} added to cart`);
   }

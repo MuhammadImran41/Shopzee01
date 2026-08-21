@@ -146,6 +146,9 @@ import { Product } from '../../core/models/product.model';
               @if (product.discount) {
                 <span class="card-badge badge-sale" [style.top]="product.isNew ? 'calc(var(--space-3) + 30px)' : 'var(--space-3)'">-{{ product.discount }}%</span>
               }
+              @if (product.isInStock === false) {
+                <span class="card-badge badge-stockout">Out of Stock</span>
+              }
               <button
                 class="card-wishlist"
                 [class.active]="wishlistService.isWishlisted(product.id)"
@@ -157,9 +160,13 @@ import { Product } from '../../core/models/product.model';
               <a [routerLink]="['/product', product.id]" class="card-image-wrap">
                 <img [src]="product.images[0]" [alt]="product.name" loading="lazy"/>
                 <div class="card-overlay">
-                  <button class="btn btn-primary w-full" (click)="$event.preventDefault(); addToCart(product)">
-                    <app-icon name="cart" [size]="16"/> Quick Add
-                  </button>
+                  @if (product.isInStock !== false) {
+                    <button class="btn btn-primary w-full" (click)="$event.preventDefault(); addToCart(product)">
+                      <app-icon name="cart" [size]="16"/> Quick Add
+                    </button>
+                  } @else {
+                    <div class="card-stockout-overlay">Out of Stock</div>
+                  }
                 </div>
               </a>
               <div class="card-body">

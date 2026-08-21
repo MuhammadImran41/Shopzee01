@@ -441,6 +441,23 @@ p { line-height: 1.7; }
     opacity: 1;
   }
 
+  // Out of stock — dim image + red overlay text
+  &:has(.badge-stockout) .card-image-wrap img {
+    filter: brightness(0.65) grayscale(0.35);
+  }
+
+  .card-stockout-overlay {
+    width: 100%;
+    background: rgba(198,40,40,0.88);
+    color: #fff;
+    text-align: center;
+    padding: var(--space-3);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
   .card-body {
     padding: var(--space-4);
     background: var(--black);
@@ -535,6 +552,13 @@ p { line-height: 1.7; }
       top: var(--space-3);
       background: var(--black);
       color: var(--gold);
+    }
+
+    &.badge-stockout {
+      top: var(--space-3);
+      background: #C62828;
+      color: #fff;
+      letter-spacing: 0.05em;
     }
 
     /* When both badges exist, push sale below new */

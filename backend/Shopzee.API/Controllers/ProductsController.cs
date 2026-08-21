@@ -203,6 +203,7 @@ public class ProductsController(ShopzeeDbContext db) : ControllerBase
         product.IsNew          = dto.IsNew;
         product.IsFeatured     = dto.IsFeatured;
         product.IsActive       = dto.IsActive;
+        product.IsInStock      = dto.IsInStock;
         product.SeoTitle       = dto.SeoTitle;
         product.SeoDescription = dto.SeoDescription;
         product.SeoKeywords    = dto.SeoKeywords;
@@ -226,6 +227,21 @@ public class ProductsController(ShopzeeDbContext db) : ControllerBase
         product.UpdatedAt = DateTime.UtcNow;
         await db.SaveChangesAsync();
         return NoContent();
+    }
+
+    // PATCH api/products/{id}/stock-toggle  [Admin]
+    [Authorize(Roles = "admin")]
+    [HttpPatch("{id:int}/stock-toggle")]
+    public async Task<IActionResult> ToggleStock(int id)
+    {
+        var product = await db.Products.FindAsync(id);
+        if (product is null) return NotFound();
+
+        product.IsInStock = !product.IsInStock;
+        product.UpdatedAt = DateTime.UtcNow;
+        await db.SaveChangesAsync();
+
+        return Ok(new { id = product.Id, isInStock = product.IsInStock });
     }
 
     // PUT api/products/{id}/seo  [Admin]

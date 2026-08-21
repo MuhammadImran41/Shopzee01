@@ -160,6 +160,9 @@
           @if (product.discount) {
             <span class="card-badge badge-sale" style="top:2.5rem">-{{ product.discount }}%</span>
           }
+          @if (product.isInStock === false) {
+            <span class="card-badge badge-stockout">Out of Stock</span>
+          }
           <button
             class="card-wishlist"
             [class.active]="isWishlisted(product.id)"
@@ -176,9 +179,13 @@
               decoding="async"
             />
             <div class="card-overlay">
-              <button class="btn btn-primary w-full" (click)="$event.preventDefault(); addToCart(product)">
-                <app-icon name="cart" [size]="16"/> Quick Add
-              </button>
+              @if (product.isInStock !== false) {
+                <button class="btn btn-primary w-full" (click)="$event.preventDefault(); addToCart(product)">
+                  <app-icon name="cart" [size]="16"/> Quick Add
+                </button>
+              } @else {
+                <div class="card-stockout-overlay">Out of Stock</div>
+              }
             </div>
           </a>
           <div class="card-body">
@@ -260,6 +267,9 @@
           @if (product.isNew) {
             <span class="card-badge badge-new">New</span>
           }
+          @if (product.isInStock === false) {
+            <span class="card-badge badge-stockout">Out of Stock</span>
+          }
           <button
             class="card-wishlist"
             [class.active]="isWishlisted(product.id)"
@@ -271,9 +281,13 @@
           <a [routerLink]="['/product', product.id]" class="card-image-wrap">
             <img [src]="product.images[0]" [alt]="product.name" loading="lazy" decoding="async"/>
             <div class="card-overlay">
-              <button class="btn btn-primary w-full" (click)="$event.preventDefault(); addToCart(product)">
-                <app-icon name="cart" [size]="16"/> Quick Add
-              </button>
+              @if (product.isInStock !== false) {
+                <button class="btn btn-primary w-full" (click)="$event.preventDefault(); addToCart(product)">
+                  <app-icon name="cart" [size]="16"/> Quick Add
+                </button>
+              } @else {
+                <div class="card-stockout-overlay">Out of Stock</div>
+              }
             </div>
           </a>
           <div class="card-body">

@@ -125,6 +125,16 @@ import { trigger, transition, style, animate } from '@angular/animations';
                         <button class="icon-btn" (click)="editProduct(product)" aria-label="Edit">
                           <app-icon name="edit" [size]="16"/>
                         </button>
+                        <button
+                          class="icon-btn stock-toggle-btn"
+                          [class.stock-toggle-btn--out]="!product.isInStock"
+                          (click)="toggleStock(product)"
+                          [attr.aria-label]="product.isInStock ? 'Mark out of stock' : 'Mark in stock'"
+                          [title]="product.isInStock ? 'Mark Out of Stock' : 'Mark In Stock'"
+                        >
+                          <app-icon [name]="product.isInStock ? 'check' : 'close'" [size]="14"/>
+                          <span class="stock-btn-label">{{ product.isInStock ? 'In Stock' : 'Out of Stock' }}</span>
+                        </button>
                         <button class="icon-btn icon-btn--danger" (click)="deleteProduct(product.id)" aria-label="Delete">
                           <app-icon name="trash" [size]="16"/>
                         </button>
@@ -264,8 +274,19 @@ import { trigger, transition, style, animate } from '@angular/animations';
     .stock-low{background:rgba(255,152,0,0.15);color:#E65100;}
     .stock-out{background:rgba(229,57,53,0.12);color:#C62828;}
     .status-dot { font-size:0.75rem; font-weight:600; display:flex; align-items:center; gap:0.35rem; &::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;} &.status-active{color:#388E3C;} &.status-inactive{color:#C62828;} }
-    .action-btns { display:flex; gap:0.375rem; }
+    .action-btns { display:flex; gap:0.375rem; align-items:center; flex-wrap:wrap; }
     .icon-btn { width:32px; height:32px; display:flex; align-items:center; justify-content:center; background:none; border:1px solid var(--gray-200); cursor:pointer; color:var(--gray-400); transition:all 0.2s; &:hover{border-color:var(--gold);color:var(--gold);} &--danger:hover{border-color:var(--black);color:var(--black);} }
+    .stock-toggle-btn {
+      width: auto; padding: 0 0.625rem; gap: 0.3rem; font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      background: rgba(76,175,80,0.1); border-color: rgba(76,175,80,0.4); color: #388E3C;
+      &:hover { background: rgba(76,175,80,0.18); border-color: #4CAF50; color: #2e7d32; }
+      &--out {
+        background: rgba(229,57,53,0.1); border-color: rgba(229,57,53,0.4); color: #C62828;
+        &:hover { background: rgba(229,57,53,0.18); border-color: #E53935; color: #b71c1c; }
+      }
+    }
+    .stock-btn-label { white-space: nowrap; }
     .empty-row { text-align:center; padding:2rem; color:var(--gray-400); }
     .table-footer { padding:0.75rem 1rem; border-top:1px solid var(--gray-200); font-size:0.8125rem; color:var(--gray-400); }
     .total-count {}
@@ -377,6 +398,19 @@ export class AdminProductsComponent implements OnInit {
   }
 
   deleteProduct(id: number) { this.deleteId.set(id); }
+
+  toggleStock(product: ApiProduct) {
+    this.productApi.toggleStock(product.id).subscribe({
+      next: (res) => {
+        // Update product in list without full reload
+        this.products.update(list =>
+          list.map(p => p.id === product.id ? { ...p, isInStock: res.isInStock } : p)
+        );
+        this.toast.success(res.isInStock ? `"${product.name}" marked In Stock` : `"${product.name}" marked Out of Stock`);
+      },
+      error: () => this.toast.error('Failed to update stock status.')
+    });
+  }
 
   confirmDelete() {
     const id = this.deleteId();

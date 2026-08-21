@@ -23,6 +23,7 @@ public class ProductDto
     public bool IsNew { get; set; }
     public bool IsFeatured { get; set; }
     public bool IsActive { get; set; }
+    public bool IsInStock { get; set; }
     public string? SeoTitle { get; set; }
     public string? SeoDescription { get; set; }
     public string? SeoKeywords { get; set; }
@@ -53,6 +54,7 @@ public class CreateProductDto
 public class UpdateProductDto : CreateProductDto
 {
     public bool IsActive { get; set; } = true;
+    public bool IsInStock { get; set; } = true;
 }
 
 public class ProductFilterDto

@@ -25,6 +25,7 @@ export interface ApiProduct {
   isNew: boolean;
   isFeatured: boolean;
   isActive: boolean;
+  isInStock: boolean;
   seoTitle?: string;
   seoDescription?: string;
   seoKeywords?: string;
@@ -101,5 +102,9 @@ export class ProductApiService {
 
   updateSeo(id: number, data: { seoTitle?: string; seoDescription?: string; seoKeywords?: string }): Observable<any> {
     return this.http.put(`${API_BASE}/products/${id}/seo`, data);
+  }
+
+  toggleStock(id: number): Observable<{ id: number; isInStock: boolean }> {
+    return this.http.patch<{ id: number; isInStock: boolean }>(`${API_BASE}/products/${id}/stock-toggle`, {});
   }
 }

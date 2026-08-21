@@ -29,6 +29,7 @@ public static class MappingHelper
         IsNew          = p.IsNew,
         IsFeatured     = p.IsFeatured,
         IsActive       = p.IsActive,
+        IsInStock      = p.IsInStock,
         SeoTitle       = p.SeoTitle,
         SeoDescription = p.SeoDescription,
         SeoKeywords    = p.SeoKeywords,
