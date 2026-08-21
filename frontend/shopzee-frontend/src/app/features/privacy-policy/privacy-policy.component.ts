@@ -142,24 +142,33 @@ import { RouterLink } from '@angular/router';
             <section id="security">
               <div class="section-label">Section 05</div>
               <h2>Data Security</h2>
-              <div class="security-grid">
-                <div class="security-item">
-                  <div class="si-icon">🔒</div>
-                  <div><strong>SSL/TLS Encryption</strong><p>All data transmitted via HTTPS</p></div>
+              <!-- Security SVG icons -->
+            <div class="security-grid">
+              <div class="security-item">
+                <div class="si-icon">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
                 </div>
-                <div class="security-item">
-                  <div class="si-icon">🔑</div>
-                  <div><strong>BCrypt Hashing</strong><p>Passwords never stored in plain text</p></div>
-                </div>
-                <div class="security-item">
-                  <div class="si-icon">🛡️</div>
-                  <div><strong>PCI-DSS Payments</strong><p>Compliant payment processing</p></div>
-                </div>
-                <div class="security-item">
-                  <div class="si-icon">👤</div>
-                  <div><strong>Access Control</strong><p>Data accessible to authorized staff only</p></div>
-                </div>
+                <div><strong>SSL/TLS Encryption</strong><p>All data transmitted via HTTPS</p></div>
               </div>
+              <div class="security-item">
+                <div class="si-icon">
+                  <svg viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+                </div>
+                <div><strong>BCrypt Hashing</strong><p>Passwords never stored in plain text</p></div>
+              </div>
+              <div class="security-item">
+                <div class="si-icon">
+                  <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <div><strong>PCI-DSS Payments</strong><p>Compliant payment processing</p></div>
+              </div>
+              <div class="security-item">
+                <div class="si-icon">
+                  <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <div><strong>Access Control</strong><p>Data accessible to authorized staff only</p></div>
+              </div>
+            </div>
               <p>No internet transmission is 100% secure. We cannot guarantee absolute security, but we follow industry best practices.</p>
             </section>
 
@@ -212,24 +221,36 @@ import { RouterLink } from '@angular/router';
               <h2>Contact Us</h2>
               <p>Questions about this Privacy Policy? Reach out anytime:</p>
               <div class="contact-block">
-                <div class="cb-row"><span class="cb-icon">✉️</span><div><strong>Email</strong><a href="mailto:trendzyofficial.store@gmail.com">trendzyofficial.store&#64;gmail.com</a></div></div>
-                <div class="cb-row"><span class="cb-icon">🌐</span><div><strong>Website</strong><a href="https://stylemaker.store">stylemaker.store</a></div></div>
-                <div class="cb-row"><span class="cb-icon">📍</span><div><strong>Location</strong><span>Pakistan</span></div></div>
-                <div class="cb-row"><span class="cb-icon">⏱️</span><div><strong>Response time</strong><span>Within 7 business days</span></div></div>
+                <div class="cb-row">
+                  <div class="cb-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                  <div><strong>Email</strong><a href="mailto:trendzyofficial.store@gmail.com">trendzyofficial.store&#64;gmail.com</a></div>
+                </div>
+                <div class="cb-row">
+                  <div class="cb-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
+                  <div><strong>Website</strong><a href="https://stylemaker.store">stylemaker.store</a></div>
+                </div>
+                <div class="cb-row">
+                  <div class="cb-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+                  <div><strong>Location</strong><span>Pakistan</span></div>
+                </div>
+                <div class="cb-row">
+                  <div class="cb-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+                  <div><strong>Response time</strong><span>Within 7 business days</span></div>
+                </div>
               </div>
             </section>
 
             <!-- Related pages nav -->
             <div class="related-nav">
               <a routerLink="/terms-of-service" class="related-card">
-                <div class="rc-icon">📋</div>
+                <div class="rc-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
                 <div><strong>Terms of Service</strong><span>Usage rules and agreements</span></div>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                <svg class="rc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
               <a routerLink="/return-policy" class="related-card">
-                <div class="rc-icon">🔄</div>
+                <div class="rc-icon"><svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg></div>
                 <div><strong>Return &amp; Exchange</strong><span>Returns, refunds, exchanges</span></div>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                <svg class="rc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
             </div>
 
