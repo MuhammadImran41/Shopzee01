@@ -1,5 +1,5 @@
-import { Component, inject, signal, OnInit, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, signal, OnInit, OnDestroy, computed, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -134,11 +134,11 @@ import { API_BASE } from '../../core/services/api/api.config';
 
             <!-- Actions -->
             <div class="pd-actions">
-              @if (product()!.isInStock !== false) {
+              @if (product() && product()?.isInStock !== false) {
                 <button class="btn btn-primary pd-add-btn" (click)="addToCart()">
                   <app-icon name="cart" [size]="18"/> Add to Cart
                 </button>
-              } @else {
+              } @else if (product()) {
                 <button class="btn pd-add-btn pd-stockout-btn" disabled>
                   Out of Stock
                 </button>
@@ -153,11 +153,11 @@ import { API_BASE } from '../../core/services/api/api.config';
             </div>
 
             <!-- Stock Info -->
-            <div class="pd-stock" [class.pd-stock--out]="product()!.isInStock === false">
-              @if (product()!.isInStock === false) {
+            <div class="pd-stock" [class.pd-stock--out]="product() && product()?.isInStock === false">
+              @if (product() && product()?.isInStock === false) {
                 <app-icon name="close" [size]="16" class="stock-icon-out"/>
                 <span>Currently Out of Stock</span>
-              } @else {
+              } @else if (product()) {
                 <app-icon name="check-circle" [size]="16" class="stock-icon"/>
                 <span>{{ product()!.stock > 10 ? 'In Stock' : 'Only ' + product()!.stock + ' left!' }}</span>
               }
@@ -569,7 +569,7 @@ import { API_BASE } from '../../core/services/api/api.config';
     .no-reviews { padding: 2rem; text-align: center; color: var(--gray-400); font-size: 0.9rem; border: 1px dashed var(--gray-300); }
   `]
 })
-export class ProductDetailComponent implements OnInit {
+export class ProductDetailComponent implements OnInit, OnDestroy {
   private productService  = inject(ProductService);
   cartService    = inject(CartService);
   wishlistService= inject(WishlistService);
@@ -577,6 +577,7 @@ export class ProductDetailComponent implements OnInit {
   private route  = inject(ActivatedRoute);
   authApi        = inject(AuthApiService);
   private http   = inject(HttpClient);
+  private platformId = inject(PLATFORM_ID);
 
   product      = signal<Product | undefined>(undefined);
   activeImage  = signal(0);
@@ -603,6 +604,9 @@ export class ProductDetailComponent implements OnInit {
   });
 
   ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      document.body.classList.add('navbar-dark-mode');
+    }
     this.route.params.subscribe(params => {
       const id = +params['id'];
       this.productService.getByIdFromApi(id).subscribe({
@@ -662,6 +666,12 @@ export class ProductDetailComponent implements OnInit {
 
   incQty() { this.qty.update(q => q + 1); }
   decQty() { this.qty.update(q => Math.max(1, q - 1)); }
+
+  ngOnDestroy() {
+    if (isPlatformBrowser(this.platformId)) {
+      document.body.classList.remove('navbar-dark-mode');
+    }
+  }
 
   addToCart() {
     const p = this.product();

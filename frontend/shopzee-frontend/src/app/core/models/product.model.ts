@@ -15,7 +15,7 @@ export interface Product {
   stock: number;
   isNew?: boolean;
   isFeatured?: boolean;
-  isInStock?: boolean;  // false = Out of Stock
+  isInStock?: boolean;  // Optional: false = Out of Stock, undefined/true = In Stock
   tags?: string[];
   sku?: string;
   seoTitle?: string;
