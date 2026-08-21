@@ -374,6 +374,48 @@ import { Product } from '../../core/models/product.model';
 
     .card-price-wrap { display: flex; align-items: baseline; gap: var(--space-2); flex-wrap: wrap; }
 
+    /* ── Grid vs List view ──────────────────────────── */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-5);
+      width: 100%;
+
+      @media (max-width: 1200px) { grid-template-columns: repeat(3, 1fr); }
+      @media (max-width: 900px)  { grid-template-columns: repeat(2, 1fr); gap: var(--space-4); }
+      @media (max-width: 480px)  { grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
+      @media (max-width: 340px)  { grid-template-columns: 1fr; }
+
+      &.list-view {
+        grid-template-columns: 1fr;
+        gap: var(--space-3);
+
+        .product-card {
+          display: grid;
+          grid-template-columns: 160px 1fr;
+          min-height: 160px;
+
+          @media (max-width: 480px) { grid-template-columns: 120px 1fr; }
+
+          .card-image-wrap {
+            aspect-ratio: unset;
+            height: 100%;
+            min-height: 160px;
+          }
+
+          .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: var(--space-5);
+          }
+
+          .card-wishlist { top: var(--space-2); right: var(--space-2); }
+          .card-badge    { left: var(--space-2); }
+        }
+      }
+    }
+
     .no-results {
       grid-column: 1/-1; text-align: center;
       padding: var(--space-20) var(--space-6);
