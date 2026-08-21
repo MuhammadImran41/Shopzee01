@@ -476,7 +476,8 @@ import { trigger, transition, style, animate } from '@angular/animations';
     /* ── NAVBAR BASE ─────────────────────────────────────── */
     .navbar {
       position: fixed;
-      top: 16px; left: 24px; right: 24px;
+      /* 36px announcement bar + 10px gap */
+      top: 46px; left: 24px; right: 24px;
       width: auto; max-width: 1400px;
       margin: 0 auto;
       z-index: 200;
@@ -511,7 +512,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
       }
 
       @media (max-width: 768px) {
-        top: 10px; left: 12px; right: 12px; border-radius: 12px;
+        top: 44px; left: 12px; right: 12px; border-radius: 12px;
       }
     }
 
@@ -821,8 +822,8 @@ import { trigger, transition, style, animate } from '@angular/animations';
     /* ── SEARCH BAR ──────────────────────────────────────── */
     .search-bar {
       position: fixed;
-      /* 36px announcement + 16px navbar-top + 68px navbar height = 120px */
-      top: 120px; left: 24px; right: 24px;
+      /* 36px announcement + 46px navbar-top + 68px navbar height + 4px gap = 154px */
+      top: 154px; left: 24px; right: 24px;
       max-width: 1400px; margin: 0 auto;
       background: rgba(245,240,232,0.98);
       backdrop-filter: blur(20px);

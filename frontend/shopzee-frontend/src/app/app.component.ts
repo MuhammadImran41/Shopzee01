@@ -54,8 +54,7 @@ import { filter } from 'rxjs/operators';
   `,
   styles: [`
     :host {
-      display: flex;
-      flex-direction: column;
+      display: block;
       min-height: 100vh;
     }
 
@@ -64,17 +63,19 @@ import { filter } from 'rxjs/operators';
       padding-top: 0;
     }
 
-    /* ── ANNOUNCEMENT SLIDER ─────────────────────────────── */
+    /* ── ANNOUNCEMENT SLIDER — fixed at very top ─────────── */
     .announcement-slider {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
       background: var(--black);
       overflow: hidden;
       height: 36px;
       display: flex;
       align-items: center;
       border-bottom: 1px solid rgba(201,168,76,0.2);
-      position: relative;
-      z-index: 201;
-      flex-shrink: 0;
+      z-index: 202;
     }
 
     .announcement-track { width: 100%; overflow: hidden; }

@@ -60,17 +60,19 @@
     position: relative;
     z-index: 1;
     width: 100%;
-    // 36px slider + 72px navbar = 108px, add extra breathing room
-    padding-top: 160px;
+    // body has 36px padding-top for announcement bar
+    // navbar at top:46px with 68px height = 114px from page top
+    // add 30px breathing room = 144px
+    padding-top: 144px;
     padding-bottom: 60px;
 
     @media (max-width: 768px) {
-      padding-top: 140px;
+      padding-top: 130px;
       padding-bottom: 40px;
     }
 
     @media (max-width: 600px) {
-      padding-top: 130px;
+      padding-top: 120px;
       padding-bottom: 40px;
     }
   }
