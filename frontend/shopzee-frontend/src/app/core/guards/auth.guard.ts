@@ -26,3 +26,15 @@ export const adminGuard: CanActivateFn = () => {
   router.navigate(['/']);
   return false;
 };
+
+// Redirect admin users away from public pages to /admin
+export const publicOnlyGuard: CanActivateFn = () => {
+  const auth   = inject(AuthApiService);
+  const router = inject(Router);
+
+  if (auth.isAdmin()) {
+    router.navigate(['/admin']);
+    return false;
+  }
+  return true;
+};

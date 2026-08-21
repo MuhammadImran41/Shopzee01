@@ -672,11 +672,14 @@ export class AuthModalComponent {
     this.authApi.login(this.loginForm.email, this.loginForm.password).subscribe({
       next: (res) => {
         this.loading.set(false);
-        this.loggedIn.emit();
-        this.close.emit();
         if (res.user.role === 'admin') {
+          // Admin: navigate first, modal will be destroyed with route change
+          this.loggedIn.emit();
+          this.close.emit();
           this.router.navigate(['/admin']);
         } else {
+          this.loggedIn.emit();
+          this.close.emit();
           this.toast.success('Welcome back!');
         }
       },

@@ -51,11 +51,6 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     if (!isPlatformBrowser(this.platformId)) return;
 
-    // Auto-redirect admin users to /admin panel
-    if (this.authApi.currentUser()?.role === 'admin' && !this.router.url.startsWith('/admin')) {
-      this.router.navigate(['/admin']);
-    }
-
     this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe((e: NavigationEnd) => {
@@ -63,5 +58,10 @@ export class AppComponent implements OnInit {
       });
 
     this.isAdminRoute.set(this.router.url.startsWith('/admin'));
+
+    // If admin is already logged in and not on admin route, redirect immediately
+    if (this.authApi.currentUser()?.role === 'admin' && !this.router.url.startsWith('/admin')) {
+      this.router.navigate(['/admin']);
+    }
   }
 }
