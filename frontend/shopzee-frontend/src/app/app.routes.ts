@@ -83,6 +83,18 @@ export const routes: Routes = [
       import('./features/reseller/reseller-dashboard.component').then(m => m.ResellerDashboardComponent)
   },
   {
+    path: 'search',
+    canActivate: [publicOnlyGuard],
+    loadComponent: () =>
+      import('./features/search/search.component').then(m => m.SearchComponent)
+  },
+  {
+    path: 'size-guide',
+    canActivate: [publicOnlyGuard],
+    loadComponent: () =>
+      import('./features/size-guide/size-guide.component').then(m => m.SizeGuideComponent)
+  },
+  {
     path: 'privacy-policy',
     canActivate: [publicOnlyGuard],
     loadComponent: () =>

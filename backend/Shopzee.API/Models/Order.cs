@@ -18,6 +18,8 @@ public class Order
     public string ShippingPhone { get; set; } = string.Empty;
 
     public decimal SubTotal { get; set; }
+    public decimal DiscountAmount { get; set; } = 0;
+    public string? CouponCode { get; set; }
     public decimal ShippingCost { get; set; }
     public decimal Total { get; set; }
 

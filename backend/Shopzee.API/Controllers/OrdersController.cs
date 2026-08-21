@@ -53,6 +53,27 @@ public class OrdersController(ShopzeeDbContext db, EmailService emailService) : 
         var shipping = subTotal >= freeShipping ? 0m : 300m;
         var orderNumber = $"SZ{DateTimeOffset.UtcNow.ToUnixTimeSeconds() % 100000:D5}";
 
+        // Apply coupon if provided
+        decimal discount = 0;
+        string? couponCode = null;
+        if (!string.IsNullOrWhiteSpace(dto.CouponCode))
+        {
+            var coupon = await db.Coupons.FirstOrDefaultAsync(c =>
+                c.Code == dto.CouponCode.Trim().ToUpper() && c.IsActive);
+            if (coupon is not null
+                && !(coupon.ExpiresAt.HasValue && coupon.ExpiresAt < DateTime.UtcNow)
+                && !(coupon.MaxUses.HasValue && coupon.UsedCount >= coupon.MaxUses)
+                && !(coupon.MinOrderAmount.HasValue && subTotal < coupon.MinOrderAmount))
+            {
+                discount = coupon.Type == "percent"
+                    ? Math.Round(subTotal * coupon.Value / 100, 0)
+                    : coupon.Value;
+                discount = Math.Min(discount, subTotal);
+                coupon.UsedCount++;
+                couponCode = coupon.Code;
+            }
+        }
+
         var order = new Order
         {
             OrderNumber    = orderNumber,
@@ -64,8 +85,10 @@ public class OrdersController(ShopzeeDbContext db, EmailService emailService) : 
             ShippingState  = dto.State,
             ShippingPhone  = dto.Phone,
             SubTotal       = subTotal,
+            DiscountAmount = discount,
+            CouponCode     = couponCode,
             ShippingCost   = shipping,
-            Total          = subTotal + shipping,
+            Total          = subTotal - discount + shipping,
             PaymentMethod  = dto.PaymentMethod,
             Status         = "processing",
             Items          = orderItems

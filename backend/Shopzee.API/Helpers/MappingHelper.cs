@@ -48,6 +48,8 @@ public static class MappingHelper
         PaymentMethod  = o.PaymentMethod,
         PaymentStatus  = o.PaymentStatus,
         SubTotal       = o.SubTotal,
+        DiscountAmount = o.DiscountAmount,
+        CouponCode     = o.CouponCode,
         ShippingCost   = o.ShippingCost,
         Total          = o.Total,
         ShippingName   = o.ShippingName,

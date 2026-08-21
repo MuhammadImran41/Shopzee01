@@ -19,6 +19,8 @@ public class ShopzeeDbContext(DbContextOptions<ShopzeeDbContext> options) : DbCo
     public DbSet<ResellerOrder>   ResellerOrders  { get; set; }
     public DbSet<ResellerOrderItem> ResellerOrderItems { get; set; }
     public DbSet<ResellerPayment> ResellerPayments { get; set; }
+    public DbSet<Coupon>          Coupons         { get; set; }
+    public DbSet<NewsletterSubscriber> NewsletterSubscribers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder mb)
     {
@@ -44,6 +46,10 @@ public class ShopzeeDbContext(DbContextOptions<ShopzeeDbContext> options) : DbCo
 
         mb.Entity<Order>()
           .Property(o => o.SubTotal)
+          .HasColumnType("decimal(18,2)");
+
+        mb.Entity<Order>()
+          .Property(o => o.DiscountAmount)
           .HasColumnType("decimal(18,2)");
 
         mb.Entity<Order>()
@@ -88,6 +94,13 @@ public class ShopzeeDbContext(DbContextOptions<ShopzeeDbContext> options) : DbCo
 
         mb.Entity<ResellerPayment>()
           .Property(r => r.Amount).HasColumnType("decimal(18,2)");
+
+        mb.Entity<Coupon>()
+          .HasIndex(c => c.Code).IsUnique();
+        mb.Entity<Coupon>()
+          .Property(c => c.Value).HasColumnType("decimal(18,2)");
+        mb.Entity<Coupon>()
+          .Property(c => c.MinOrderAmount).HasColumnType("decimal(18,2)");
 
         // ── Seed Data ─────────────────────────────────────────
         SeedData(mb);

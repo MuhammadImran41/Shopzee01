@@ -2,11 +2,13 @@ import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { CartService } from '../../core/services/cart.service';
 import { ToastService } from '../../core/services/toast.service';
 import { SvgIconsComponent } from '../../shared/components/svg-icons/svg-icons.component';
 import { OrderApiService } from '../../core/services/api/order-api.service';
 import { AuthApiService } from '../../core/services/api/auth-api.service';
+import { API_BASE } from '../../core/services/api/api.config';
 
 @Component({
   selector: 'app-checkout',
@@ -111,7 +113,31 @@ import { AuthApiService } from '../../core/services/api/auth-api.service';
             <div class="summary-totals">
               <div class="summary-row"><span>Subtotal</span><span>PKR {{ cartService.subtotal() | number }}</span></div>
               <div class="summary-row"><span>Shipping</span><span>{{ cartService.shipping() === 0 ? 'Free' : 'PKR ' + (cartService.shipping() | number) }}</span></div>
-              <div class="summary-total"><span>Total</span><span>PKR {{ cartService.total() | number }}</span></div>
+
+              <!-- Coupon Box -->
+              @if (!couponApplied()) {
+                <div class="coupon-box">
+                  <input type="text" [(ngModel)]="couponCode" placeholder="Coupon code" class="coupon-input" (keydown.enter)="applyCoupon()"/>
+                  <button class="btn btn-ghost coupon-btn" (click)="applyCoupon()" [disabled]="couponLoading()">
+                    {{ couponLoading() ? '...' : 'Apply' }}
+                  </button>
+                </div>
+                @if (couponError()) {
+                  <p class="coupon-error">{{ couponError() }}</p>
+                }
+              } @else {
+                <div class="coupon-applied">
+                  <span class="coupon-tag">{{ couponApplied()!.code }}</span>
+                  <span class="coupon-save">-PKR {{ couponApplied()!.discount | number }}</span>
+                  <button class="coupon-remove" (click)="removeCoupon()" aria-label="Remove coupon">✕</button>
+                </div>
+                <p class="coupon-msg">{{ couponApplied()!.message }}</p>
+              }
+
+              @if (couponApplied()) {
+                <div class="summary-row discount-row"><span>Discount</span><span>-PKR {{ couponApplied()!.discount | number }}</span></div>
+              }
+              <div class="summary-total"><span>Total</span><span>PKR {{ finalTotal | number }}</span></div>
             </div>
           </aside>
         </div>
@@ -247,6 +273,27 @@ import { AuthApiService } from '../../core/services/api/auth-api.service';
     .summary-totals { border-top: 1px solid var(--gray-200); padding-top: var(--space-4); }
     .summary-row { display: flex; justify-content: space-between; font-size: var(--text-sm); color: var(--gray-500); margin-bottom: var(--space-2); }
     .summary-total { display: flex; justify-content: space-between; font-size: var(--text-lg); font-weight: 700; font-family: var(--font-heading); padding-top: var(--space-3); border-top: 1px solid var(--gray-200); margin-top: var(--space-2); }
+    .discount-row { color: #2e7d32 !important; }
+
+    /* Coupon */
+    .coupon-box { display:flex; gap:0; margin: var(--space-3) 0 var(--space-1); }
+    .coupon-input {
+      flex:1; padding: 0.6rem 0.875rem; border:1px solid var(--gray-300); border-right:none;
+      background:var(--cream); font-size:var(--text-sm); outline:none; text-transform:uppercase;
+      letter-spacing:0.05em;
+      &:focus { border-color:var(--gold); }
+      &::placeholder { text-transform:none; letter-spacing:0; color:var(--gray-400); }
+    }
+    .coupon-btn { border-radius:0; padding:0.6rem 1rem; font-size:var(--text-xs); flex-shrink:0; border:1px solid var(--gray-300); }
+    .coupon-error { font-size:0.75rem; color:#E53935; margin-bottom:var(--space-2); }
+    .coupon-applied {
+      display:flex; align-items:center; gap:0.5rem; background:rgba(46,125,50,0.07);
+      border:1px solid rgba(46,125,50,0.25); padding:0.5rem 0.75rem; margin:var(--space-3) 0 var(--space-1);
+      .coupon-tag { font-size:0.75rem; font-weight:700; letter-spacing:0.1em; color:#2e7d32; flex:1; }
+      .coupon-save { font-size:0.8125rem; font-weight:700; color:#2e7d32; }
+      .coupon-remove { background:none; border:none; cursor:pointer; color:#999; font-size:0.75rem; padding:0 0.25rem; &:hover{color:#333;} }
+    }
+    .coupon-msg { font-size:0.75rem; color:#2e7d32; margin-bottom:var(--space-2); }
 
     .order-success {
       display: flex; flex-direction: column; align-items: center;
@@ -263,11 +310,12 @@ import { AuthApiService } from '../../core/services/api/auth-api.service';
   `]
 })
 export class CheckoutComponent {
-  cartService  = inject(CartService);
+  cartService        = inject(CartService);
   private toast      = inject(ToastService);
   private orderApi   = inject(OrderApiService);
   private authApi    = inject(AuthApiService);
   private router     = inject(Router);
+  private http       = inject(HttpClient);
 
   currentStep = signal(1);
   orderPlaced = signal(false);
@@ -281,6 +329,42 @@ export class CheckoutComponent {
     address1: '', address2: '', city: '', state: '',
     payment: 'cod'
   };
+
+  couponCode    = '';
+  couponApplied = signal<{ code: string; discount: number; message: string } | null>(null);
+  couponLoading = signal(false);
+  couponError   = signal('');
+
+  applyCoupon() {
+    if (!this.couponCode.trim()) return;
+    this.couponLoading.set(true);
+    this.couponError.set('');
+    this.http.post<any>(`${API_BASE}/coupons/validate`, {
+      code: this.couponCode.trim(),
+      orderAmount: this.cartService.subtotal()
+    }).subscribe({
+      next: (res) => {
+        this.couponApplied.set({ code: res.code, discount: res.discount, message: res.message });
+        this.couponLoading.set(false);
+        this.couponError.set('');
+      },
+      error: (err) => {
+        this.couponError.set(err.error?.message || 'Invalid coupon code.');
+        this.couponApplied.set(null);
+        this.couponLoading.set(false);
+      }
+    });
+  }
+
+  removeCoupon() {
+    this.couponApplied.set(null);
+    this.couponCode = '';
+    this.couponError.set('');
+  }
+
+  get finalTotal() {
+    return this.cartService.subtotal() + this.cartService.shipping() - (this.couponApplied()?.discount || 0);
+  }
 
   placeOrder() {
     if (this.isSubmitting()) return;
@@ -296,6 +380,7 @@ export class CheckoutComponent {
       city:          this.form.city,
       state:         this.form.state,
       paymentMethod: this.form.payment,
+      couponCode:    this.couponApplied()?.code || null,
       items: this.cartService.items().map(i => ({
         productId:    i.product.id,
         quantity:     i.quantity,

@@ -88,7 +88,7 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
               <li><a routerLink="/wishlist">My Wishlist</a></li>
               <li><a routerLink="/contact">Track Order</a></li>
               <li><a routerLink="/contact">Returns & Exchange</a></li>
-              <li><a routerLink="/contact">Size Guide</a></li>
+              <li><a routerLink="/size-guide">Size Guide</a></li>
               <li><a routerLink="/contact">Contact Us</a></li>
             </ul>
           </div>

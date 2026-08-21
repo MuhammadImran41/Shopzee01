@@ -1,17 +1,21 @@
 import { Component, inject, signal, OnInit, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { ProductService } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart.service';
 import { WishlistService } from '../../core/services/wishlist.service';
 import { ToastService } from '../../core/services/toast.service';
+import { AuthApiService } from '../../core/services/api/auth-api.service';
 import { SvgIconsComponent } from '../../shared/components/svg-icons/svg-icons.component';
 import { Product } from '../../core/models/product.model';
+import { API_BASE } from '../../core/services/api/api.config';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, SvgIconsComponent],
+  imports: [CommonModule, RouterLink, FormsModule, SvgIconsComponent],
   template: `
     @if (product()) {
       <div class="pd-container container">
@@ -193,6 +197,95 @@ import { Product } from '../../core/models/product.model';
             </div>
           </div>
         </div>
+
+        <!-- Reviews Section -->
+        <section class="pd-reviews" aria-labelledby="reviews-heading">
+          <div class="reviews-header">
+            <div>
+              <span class="section-label">Customer Reviews</span>
+              <h2 class="section-title" id="reviews-heading" style="font-size:var(--text-4xl)">What People Say</h2>
+            </div>
+            @if (reviewsData()) {
+              <div class="reviews-summary">
+                <div class="avg-rating">
+                  <span class="avg-num">{{ reviewsData()!.average }}</span>
+                  <div class="avg-stars">
+                    @for (s of [1,2,3,4,5]; track s) {
+                      <svg width="18" height="18" viewBox="0 0 24 24" [attr.fill]="s <= reviewsData()!.average ? '#C9A84C' : 'none'" stroke="#C9A84C" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    }
+                  </div>
+                  <span class="avg-count">{{ reviewsData()!.totalCount }} review{{ reviewsData()!.totalCount !== 1 ? 's' : '' }}</span>
+                </div>
+                <!-- Distribution bars -->
+                <div class="rating-bars">
+                  @for (i of [5,4,3,2,1]; track i) {
+                    <div class="rating-bar-row">
+                      <span class="bar-label">{{ i }}</span>
+                      <div class="bar-track">
+                        <div class="bar-fill" [style.width.%]="reviewsData()!.totalCount > 0 ? (reviewsData()!.distribution[i-1] / reviewsData()!.totalCount * 100) : 0"></div>
+                      </div>
+                      <span class="bar-count">{{ reviewsData()!.distribution[i-1] }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- Write a review -->
+          @if (authApi.isLoggedIn() && !reviewSubmitted()) {
+            <div class="write-review">
+              <h3 class="wr-title">Write a Review</h3>
+              <div class="star-selector">
+                <span class="wr-label">Your Rating</span>
+                <div class="stars-input">
+                  @for (s of [1,2,3,4,5]; track s) {
+                    <button type="button" class="star-btn" [class.filled]="s <= newReview.rating" (click)="newReview.rating = s" [attr.aria-label]="s + ' star'">
+                      <svg width="24" height="24" viewBox="0 0 24 24" [attr.fill]="s <= newReview.rating ? '#C9A84C' : 'none'" stroke="#C9A84C" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    </button>
+                  }
+                </div>
+              </div>
+              <textarea [(ngModel)]="newReview.comment" class="review-textarea" rows="4" placeholder="Share your experience with this product..."></textarea>
+              @if (reviewError()) { <p class="review-error">{{ reviewError() }}</p> }
+              <button class="btn btn-primary" (click)="submitReview()" [disabled]="reviewLoading()">
+                @if (reviewLoading()) { Submitting... } @else { Submit Review }
+              </button>
+            </div>
+          }
+          @if (!authApi.isLoggedIn()) {
+            <div class="review-login-prompt">
+              <p>Please <strong>sign in</strong> to leave a review.</p>
+            </div>
+          }
+
+          <!-- Reviews List -->
+          @if (reviewsData() && reviewsData()!.reviews.length > 0) {
+            <div class="reviews-list">
+              @for (r of reviewsData()!.reviews; track r.id) {
+                <div class="review-card">
+                  <div class="review-card__header">
+                    <div class="reviewer-avatar">{{ r.userInitial }}</div>
+                    <div class="reviewer-info">
+                      <span class="reviewer-name">{{ r.userName }}</span>
+                      <span class="reviewer-date">{{ r.createdAt | date:'dd MMM yyyy' }}</span>
+                    </div>
+                    <div class="review-stars">
+                      @for (s of [1,2,3,4,5]; track s) {
+                        <svg width="14" height="14" viewBox="0 0 24 24" [attr.fill]="s <= r.rating ? '#C9A84C' : 'none'" stroke="#C9A84C" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                      }
+                    </div>
+                  </div>
+                  <p class="review-text">{{ r.comment }}</p>
+                </div>
+              }
+            </div>
+          } @else if (reviewsData() && reviewsData()!.reviews.length === 0) {
+            <div class="no-reviews">
+              <p>No reviews yet. Be the first to share your experience!</p>
+            </div>
+          }
+        </section>
 
         <!-- Related Products -->
         <section class="pd-related" aria-labelledby="related-heading">
@@ -397,6 +490,83 @@ import { Product } from '../../core/models/product.model';
       .line { flex: 1; max-width: 40px; height: 1px; background: linear-gradient(to right, var(--gold), transparent); &:last-child { background: linear-gradient(to left, var(--gold), transparent); } }
       .diamond { width: 7px; height: 7px; background: var(--gold); transform: rotate(45deg); flex-shrink: 0; }
     }
+
+    /* ── REVIEWS ─────────────────────────────────────── */
+    .pd-reviews {
+      padding: var(--space-12) 0 var(--space-20);
+      border-top: 1px solid var(--gray-200);
+      margin-top: var(--space-8);
+    }
+
+    .reviews-header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 2rem; flex-wrap: wrap; margin-bottom: 2.5rem;
+    }
+
+    .reviews-summary { display: flex; gap: 2rem; flex-wrap: wrap; }
+
+    .avg-rating {
+      display: flex; flex-direction: column; align-items: center; gap: 0.375rem;
+      background: var(--black); padding: 1.25rem 1.75rem;
+      .avg-num { font-family: var(--font-heading); font-size: 3rem; font-weight: 400; color: var(--gold); line-height: 1; }
+      .avg-stars { display: flex; gap: 2px; }
+      .avg-count { font-size: 0.75rem; color: rgba(245,240,232,0.5); letter-spacing: 0.1em; }
+    }
+
+    .rating-bars { display: flex; flex-direction: column; gap: 0.4rem; justify-content: center; min-width: 160px; }
+    .rating-bar-row { display: flex; align-items: center; gap: 0.5rem; }
+    .bar-label { font-size: 0.75rem; color: var(--gray-400); width: 10px; text-align: right; flex-shrink: 0; }
+    .bar-track { flex: 1; height: 6px; background: var(--gray-200); border-radius: 3px; overflow: hidden; }
+    .bar-fill { height: 100%; background: var(--gold); border-radius: 3px; transition: width 0.4s ease; }
+    .bar-count { font-size: 0.75rem; color: var(--gray-400); width: 16px; text-align: right; flex-shrink: 0; }
+
+    .write-review {
+      background: var(--cream-light); border: 1px solid var(--gray-200);
+      padding: 1.75rem; margin-bottom: 2.5rem;
+      .wr-title { font-family: var(--font-heading); font-size: 1.25rem; font-weight: 400; margin-bottom: 1.25rem; }
+      .wr-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-dark); margin-right: 0.75rem; }
+    }
+
+    .star-selector { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+    .stars-input { display: flex; gap: 4px; }
+    .star-btn { background: none; border: none; cursor: pointer; padding: 2px; transition: transform 0.15s; &:hover { transform: scale(1.2); } }
+
+    .review-textarea {
+      width: 100%; padding: 0.875rem 1rem; border: 1px solid var(--gray-300);
+      background: var(--cream); font-family: var(--font-body); font-size: 0.9375rem;
+      color: var(--black); resize: vertical; outline: none; margin-bottom: 1rem;
+      box-sizing: border-box; min-height: 100px;
+      &:focus { border-color: var(--gold); }
+      &::placeholder { color: var(--gray-400); }
+    }
+
+    .review-error { color: #E53935; font-size: 0.8125rem; background: rgba(229,57,53,0.08); padding: 0.5rem 0.75rem; margin-bottom: 1rem; }
+
+    .review-login-prompt {
+      background: var(--cream-light); border: 1px solid var(--gray-200); padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem; font-size: 0.9rem; color: var(--gray-500);
+      strong { color: var(--gold-dark); }
+    }
+
+    .reviews-list { display: flex; flex-direction: column; gap: 1px; background: var(--gray-200); border: 1px solid var(--gray-200); }
+
+    .review-card {
+      background: var(--cream-light); padding: 1.5rem;
+      &__header { display: flex; align-items: center; gap: 0.875rem; margin-bottom: 0.875rem; flex-wrap: wrap; }
+    }
+
+    .reviewer-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: var(--black); flex-shrink: 0;
+    }
+
+    .reviewer-info { flex: 1; .reviewer-name { display: block; font-weight: 600; font-size: 0.9rem; color: var(--black); } .reviewer-date { font-size: 0.75rem; color: var(--gray-400); } }
+    .review-stars { display: flex; gap: 2px; margin-left: auto; }
+    .review-text { font-size: 0.9375rem; color: var(--gray-500); line-height: 1.75; margin: 0; }
+
+    .no-reviews { padding: 2rem; text-align: center; color: var(--gray-400); font-size: 0.9rem; border: 1px dashed var(--gray-300); }
   `]
 })
 export class ProductDetailComponent implements OnInit {
@@ -405,6 +575,8 @@ export class ProductDetailComponent implements OnInit {
   wishlistService= inject(WishlistService);
   private toast  = inject(ToastService);
   private route  = inject(ActivatedRoute);
+  authApi        = inject(AuthApiService);
+  private http   = inject(HttpClient);
 
   product      = signal<Product | undefined>(undefined);
   activeImage  = signal(0);
@@ -414,6 +586,13 @@ export class ProductDetailComponent implements OnInit {
   descOpen     = signal(true);
   careOpen     = signal(false);
   shippingOpen = signal(false);
+
+  // Reviews
+  reviewsData     = signal<any>(null);
+  reviewLoading   = signal(false);
+  reviewSubmitted = signal(false);
+  reviewError     = signal('');
+  newReview       = { rating: 5, comment: '' };
 
   stars = computed(() => Array(5).fill(0).map((_,i) => i < Math.floor(this.product()?.rating || 0) ? 1 : 0));
 
@@ -426,12 +605,12 @@ export class ProductDetailComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       const id = +params['id'];
-      // Try API first, fallback to mock
       this.productService.getByIdFromApi(id).subscribe({
         next: p => {
           this.product.set(p);
           this.selectedSize.set(p.sizes[1] || p.sizes[0]);
           this.selectedColor.set(p.colors[0]);
+          this.loadReviews(id);
         },
         error: () => {
           const p = this.productService.getById(id);
@@ -439,9 +618,41 @@ export class ProductDetailComponent implements OnInit {
           if (p) {
             this.selectedSize.set(p.sizes[1] || p.sizes[0]);
             this.selectedColor.set(p.colors[0]);
+            this.loadReviews(id);
           }
         }
       });
+    });
+  }
+
+  loadReviews(productId: number) {
+    this.http.get<any>(`${API_BASE}/products/${productId}/reviews`).subscribe({
+      next: data => this.reviewsData.set(data),
+      error: () => {}
+    });
+  }
+
+  submitReview() {
+    if (!this.newReview.rating) { this.reviewError.set('Please select a rating.'); return; }
+    if (!this.newReview.comment.trim() || this.newReview.comment.trim().length < 5) {
+      this.reviewError.set('Please write at least 5 characters.'); return;
+    }
+    this.reviewLoading.set(true);
+    this.reviewError.set('');
+    const productId = this.product()?.id;
+    if (!productId) return;
+    this.http.post<any>(`${API_BASE}/products/${productId}/reviews`, this.newReview).subscribe({
+      next: () => {
+        this.reviewSubmitted.set(true);
+        this.reviewLoading.set(false);
+        this.toast.success('Review submitted! Thank you.');
+        this.loadReviews(productId);
+        this.newReview = { rating: 5, comment: '' };
+      },
+      error: err => {
+        this.reviewError.set(err.error?.message || 'Failed to submit review.');
+        this.reviewLoading.set(false);
+      }
     });
   }
 

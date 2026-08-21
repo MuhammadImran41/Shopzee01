@@ -3,6 +3,7 @@ import {
 } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule, RouterLink, RouterLinkActive, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { CartService } from '../../../core/services/cart.service';
 import { WishlistService } from '../../../core/services/wishlist.service';
 import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
@@ -13,7 +14,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterLink, RouterLinkActive, SvgIconsComponent, AuthModalComponent],
+  imports: [CommonModule, RouterModule, RouterLink, RouterLinkActive, FormsModule, SvgIconsComponent, AuthModalComponent],
   animations: [
     trigger('drawerAnim', [
       transition(':enter', [
@@ -366,15 +367,19 @@ import { trigger, transition, style, animate } from '@angular/animations';
       @if (searchOpen()) {
         <div class="search-bar" [@searchAnim]>
           <div class="container">
-            <div class="search-inner">
+            <form class="search-inner" (submit)="goToSearch($event)">
               <app-icon name="search" [size]="20" class="search-icon"/>
-              <input type="search" placeholder="Search clothing, styles, collections..."
+              <input type="search" [(ngModel)]="searchQuery" name="q"
+                placeholder="Search clothing, styles, collections..."
                 class="search-input" autofocus
                 (keydown.escape)="toggleSearch()" aria-label="Search products"/>
-              <button class="action-btn" (click)="toggleSearch()" aria-label="Close search">
+              <button type="submit" class="action-btn" aria-label="Submit search">
+                <app-icon name="search" [size]="20"/>
+              </button>
+              <button type="button" class="action-btn" (click)="toggleSearch()" aria-label="Close search">
                 <app-icon name="close" [size]="20"/>
               </button>
-            </div>
+            </form>
           </div>
         </div>
       }
@@ -1138,9 +1143,20 @@ export class NavbarComponent implements OnInit {
   }
 
   toggleDrop()       { this.userDropOpen.update(v => !v); }
+  searchQuery    = '';
+
   toggleMobileMenu() { this.mobileMenuOpen.update(v => !v); }
   closeMobileMenu()  { this.mobileMenuOpen.set(false); this.drawerAcc.set(null); }
-  toggleSearch()     { this.searchOpen.update(v => !v); }
+  toggleSearch()     { this.searchOpen.update(v => !v); this.searchQuery = ''; }
+
+  goToSearch(e: Event) {
+    e.preventDefault();
+    const q = this.searchQuery.trim();
+    if (!q) return;
+    this.searchOpen.set(false);
+    this.searchQuery = '';
+    this.router.navigate(['/search'], { queryParams: { q } });
+  }
 
   logout() {
     this.authApi.logout();

@@ -11,6 +11,7 @@ public class CreateOrderDto
     public string City { get; set; } = "";
     public string State { get; set; } = "";
     public string PaymentMethod { get; set; } = "cod";
+    public string? CouponCode { get; set; }
     public List<OrderItemInputDto> Items { get; set; } = [];
 }
 
@@ -30,6 +31,8 @@ public class OrderDto
     public string PaymentMethod { get; set; } = "";
     public string PaymentStatus { get; set; } = "";
     public decimal SubTotal { get; set; }
+    public decimal DiscountAmount { get; set; }
+    public string? CouponCode { get; set; }
     public decimal ShippingCost { get; set; }
     public decimal Total { get; set; }
     public string ShippingName { get; set; } = "";
