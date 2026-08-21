@@ -201,6 +201,8 @@ public class OrdersController(ShopzeeDbContext db, EmailService emailService) : 
             order.TrackingNumber = dto.TrackingNumber;
 
         await db.SaveChangesAsync();
-        return Ok(new { message = "Status updated.", order.Status });
+
+        var updated = await db.Orders.Include(o => o.Items).FirstAsync(o => o.Id == id);
+        return Ok(updated.ToDto());
     }
 }

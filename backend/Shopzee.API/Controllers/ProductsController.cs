@@ -150,7 +150,7 @@ public class ProductsController(ShopzeeDbContext db) : ControllerBase
         var product = new Product
         {
             Name           = dto.Name.Trim(),
-            Slug           = dto.Name.ToSlug(),
+            Slug           = $"{dto.Name.ToSlug()}-{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() % 100000}",
             Description    = dto.Description,
             Price          = dto.Price,
             OriginalPrice  = dto.OriginalPrice,
@@ -188,7 +188,10 @@ public class ProductsController(ShopzeeDbContext db) : ControllerBase
         if (product is null) return NotFound();
 
         product.Name           = dto.Name.Trim();
-        product.Slug           = dto.Name.ToSlug();
+        // Make slug unique: if name changed, append id to avoid slug conflict
+        var newSlug = dto.Name.ToSlug();
+        if (product.Slug != newSlug)
+            product.Slug = $"{newSlug}-{id}";
         product.Description    = dto.Description;
         product.Price          = dto.Price;
         product.OriginalPrice  = dto.OriginalPrice;

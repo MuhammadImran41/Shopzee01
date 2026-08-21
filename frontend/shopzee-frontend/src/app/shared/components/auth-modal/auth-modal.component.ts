@@ -74,8 +74,8 @@ import { API_BASE } from '../../../core/services/api/api.config';
             @if (loading()) { <span>Signing in...</span> } @else { <span>Sign In</span> }
           </button>
           <p class="auth-hint">
-            Demo: <strong>admin&#64;stylemaker.pk</strong> / <strong>Admin&#64;123</strong><br/>
-            <small style="color:#aaa">Support: stylemakerofficial.store&#64;gmail.com</small>
+            Demo: <strong>admin&#64;shopzee.pk</strong> / <strong>Admin&#64;2026</strong><br/>
+            <small style="color:#aaa">Support: trendzyofficial.store&#64;gmail.com</small>
           </p>
         </form>
       }
