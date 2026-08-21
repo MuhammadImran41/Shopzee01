@@ -9,6 +9,7 @@ import { CartService } from '../../core/services/cart.service';
 import { WishlistService } from '../../core/services/wishlist.service';
 import { ToastService } from '../../core/services/toast.service';
 import { SvgIconsComponent } from '../../shared/components/svg-icons/svg-icons.component';
+import { SiteImagesService } from '../../core/services/site-images.service';
 import { Product } from '../../core/models/product.model';
 
 @Component({
@@ -27,6 +28,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   private router          = inject(Router);
   private el              = inject(ElementRef);
   private platformId      = inject(PLATFORM_ID);
+  siteImages              = inject(SiteImagesService);
 
   private _womenProducts = signal<Product[]>(this.productService.womenProducts());
   private _menProducts   = signal<Product[]>(this.productService.menProducts());

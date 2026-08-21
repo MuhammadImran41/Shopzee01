@@ -20,6 +20,7 @@ public class ShopzeeDbContext(DbContextOptions<ShopzeeDbContext> options) : DbCo
     public DbSet<ResellerOrderItem> ResellerOrderItems { get; set; }
     public DbSet<ResellerPayment> ResellerPayments { get; set; }
     public DbSet<Coupon>          Coupons         { get; set; }
+    public DbSet<SiteSetting>     SiteSettings    { get; set; }
     public DbSet<NewsletterSubscriber> NewsletterSubscribers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder mb)
@@ -101,6 +102,9 @@ public class ShopzeeDbContext(DbContextOptions<ShopzeeDbContext> options) : DbCo
           .Property(c => c.Value).HasColumnType("decimal(18,2)");
         mb.Entity<Coupon>()
           .Property(c => c.MinOrderAmount).HasColumnType("decimal(18,2)");
+
+        mb.Entity<SiteSetting>()
+          .HasIndex(s => s.Key).IsUnique();
 
         // ── Seed Data ─────────────────────────────────────────
         SeedData(mb);

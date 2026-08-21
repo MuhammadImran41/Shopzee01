@@ -6,7 +6,7 @@
   <!-- Background Image -->
   <div class="hero__video-wrap">
     <img
-      src="assets/images/hero-bg.png"
+      [src]="siteImages.getImage('hero-bg')"
       alt="Hero banner"
       class="hero__video"
       fetchpriority="high"
@@ -98,7 +98,7 @@
   <div class="men-video-inner">
     <div class="men-video-wrap reveal-left">
       <img
-        src="assets/images/women/women-3.png"
+        [src]="siteImages.getImage('women-3')"
         alt="Women's collection"
         class="men-video"
         loading="lazy"
@@ -203,7 +203,7 @@
   <div class="men-video-inner">
     <div class="men-video-wrap reveal-left">
       <img
-        src="assets/images/men/men-2.png"
+        [src]="siteImages.getImage('men-2')"
         alt="Men's collection"
         class="men-video"
         loading="lazy"
@@ -336,7 +336,7 @@
 <!-- ============================================================ -->
 <section class="video-banner" aria-label="Collection banner">
   <img
-    src="assets/images/women/women-7.png"
+    [src]="siteImages.getImage('women-7')"
     alt="New Collection 2026"
     class="video-banner__video"
     loading="lazy"

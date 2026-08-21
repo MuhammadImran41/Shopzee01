@@ -208,6 +208,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     { path: '/admin/resellers',  label: 'Resellers',  icon: 'star-filled' },
     { path: '/admin/analytics',  label: 'Analytics',  icon: 'chart'       },
     { path: '/admin/seo',        label: 'SEO',        icon: 'globe'       },
+    { path: '/admin/settings',   label: 'Settings',   icon: 'settings'    },
   ];
 
   notifications = signal<Notification[]>([

@@ -153,6 +153,11 @@ export const routes: Routes = [
         path: 'seo',
         loadComponent: () =>
           import('./features/admin/components/seo/seo.component').then(m => m.SeoComponent)
+      },
+      {
+        path: 'settings',
+        loadComponent: () =>
+          import('./features/admin/components/settings/settings.component').then(m => m.AdminSettingsComponent)
       }
     ]
   },

@@ -5,6 +5,8 @@ import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { ToastComponent } from './shared/components/toast/toast.component';
 import { AuthApiService } from './core/services/api/auth-api.service';
+import { ThemeService } from './core/services/theme.service';
+import { SiteImagesService } from './core/services/site-images.service';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -45,12 +47,18 @@ export class AppComponent implements OnInit {
   private router     = inject(Router);
   private platformId = inject(PLATFORM_ID);
   private authApi    = inject(AuthApiService);
+  private themeService  = inject(ThemeService);
+  private imagesService = inject(SiteImagesService);
 
   isAdminRoute = signal(false);
   isAdminUser  = () => this.authApi.currentUser()?.role === 'admin';
 
   ngOnInit() {
     if (!isPlatformBrowser(this.platformId)) return;
+
+    // Init theme + images from localStorage/backend on startup
+    this.themeService.init();
+    this.imagesService.init();
 
     this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
