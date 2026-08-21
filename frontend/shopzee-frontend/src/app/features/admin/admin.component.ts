@@ -30,6 +30,10 @@ interface Notification {
   ],
   template: `
     <div class="admin-shell" [class.collapsed]="sidebarCollapsed()">
+      <!-- Mobile overlay — click to close sidebar -->
+      @if (!sidebarCollapsed() && isMobile()) {
+        <div class="mobile-overlay" (click)="sidebarCollapsed.set(true)" aria-hidden="true"></div>
+      }
       <!-- Sidebar -->
       <aside class="admin-sidebar" [attr.aria-expanded]="!sidebarCollapsed()">
         <div class="sidebar-brand">
@@ -58,6 +62,7 @@ interface Notification {
               routerLinkActive="active"
               class="nav-item"
               [attr.title]="sidebarCollapsed() ? item.label : null"
+              (click)="onNavClick()"
             >
               <app-icon [name]="item.icon" [size]="20"/>
               @if (!sidebarCollapsed()) {
@@ -68,7 +73,7 @@ interface Notification {
         </nav>
 
         <div class="sidebar-footer">
-          <a routerLink="/" class="nav-item nav-item--store" [attr.title]="sidebarCollapsed() ? 'View Store' : null">
+          <a routerLink="/" class="nav-item nav-item--store" [attr.title]="sidebarCollapsed() ? 'View Store' : null" (click)="onNavClick()">
             <app-icon name="globe" [size]="20"/>
             @if (!sidebarCollapsed()) { <span>View Store</span> }
           </a>
@@ -374,15 +379,14 @@ interface Notification {
     }
     
     /* Mobile overlay when sidebar is open */
-    @media (max-width: 768px) {
-      .admin-shell:not(.collapsed)::before {
-        content: '';
-        position: fixed;
-        inset: 0;
-        background: rgba(26,26,26,0.5);
-        z-index: 99;
-        animation: fadeIn 0.3s ease;
-      }
+    .mobile-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(26,26,26,0.5);
+      z-index: 99;
+      backdrop-filter: blur(2px);
+      animation: fadeIn 0.25s ease;
+      cursor: pointer;
     }
     
     /* ============================================================ */
@@ -784,13 +788,22 @@ interface Notification {
   `]
 })
 export class AdminComponent implements OnInit, OnDestroy {
-  sidebarCollapsed = signal(false);
+  sidebarCollapsed = signal(true);   // default collapsed — mobile opens via hamburger
   notifOpen        = signal(false);
   authApi          = inject(AuthApiService);
   private router   = inject(Router);
   private notifTimer: ReturnType<typeof setInterval> | null = null;
 
   adminInitial = () => (this.authApi.currentUser()?.name?.[0] ?? 'A').toUpperCase();
+
+  isMobile = () => typeof window !== 'undefined' && window.innerWidth <= 768;
+
+  /** Close sidebar on mobile when nav item clicked */
+  onNavClick() {
+    if (this.isMobile()) {
+      this.sidebarCollapsed.set(true);
+    }
+  }
 
   logout() {
     this.authApi.logout();
@@ -818,11 +831,12 @@ export class AdminComponent implements OnInit, OnDestroy {
   unreadCount = () => this.notifications().filter(n => !n.read).length;
 
   ngOnInit() {
-    // Mobile: sidebar collapsed by default (off-canvas drawer)
-    if (typeof window !== 'undefined' && window.innerWidth <= 768) {
-      this.sidebarCollapsed.set(true);
+    // Desktop: sidebar open by default
+    // Mobile: stays collapsed (opens via hamburger)
+    if (typeof window !== 'undefined' && window.innerWidth > 768) {
+      this.sidebarCollapsed.set(false);
     }
-    
+
     // Simulate real-time notifications
     this.notifTimer = setInterval(() => {
       const newNotif: Notification = {
