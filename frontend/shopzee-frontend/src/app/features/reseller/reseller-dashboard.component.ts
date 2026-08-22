@@ -188,40 +188,45 @@ interface OrderItem {
               <div class="rd-product-card">
                 <div class="rd-product-img-wrap">
                   <img [src]="getFirstImage(p.images)" [alt]="p.name" loading="lazy"/>
+                  <!-- Hover Actions -->
                   <div class="rd-product-actions">
                     <button class="rd-action-btn rd-action-btn--download"
-                      (click)="downloadImage(p)"
-                      title="Download product image">
-                      <app-icon name="download" [size]="16"/>
+                      (click)="downloadImage(p)" title="Download image">
+                      <app-icon name="download" [size]="15"/>
+                      <span>Download</span>
                     </button>
                     <button class="rd-action-btn rd-action-btn--order"
-                      (click)="startOrder(p)"
-                      title="Place order for this product">
-                      <app-icon name="cart" [size]="16"/>
+                      (click)="startOrder(p)" title="Place order">
+                      <app-icon name="cart" [size]="15"/>
+                      <span>Order</span>
                     </button>
                   </div>
+                  <!-- Badges -->
                   <span class="rd-cat-badge">{{ p.category }}</span>
+                  <span class="rd-stock-badge" [class.low]="p.stock < 5">
+                    {{ p.stock }} in stock
+                  </span>
                 </div>
                 <div class="rd-product-info">
                   <p class="rd-product-sub">{{ p.subCategory }}</p>
                   <h3 class="rd-product-name">{{ p.name }}</h3>
-                  <div class="rd-price-row">
-                    <span class="rd-base-price">Base: PKR {{ p.price | number }}</span>
-                    <span class="rd-stock" [class.low]="p.stock < 5">
-                      {{ p.stock }} in stock
-                    </span>
+                  <div class="rd-price-info">
+                    <div class="rd-price-row">
+                      <span class="rd-price-label">Base Price</span>
+                      <span class="rd-price-val">PKR {{ p.price | number }}</span>
+                    </div>
+                    <div class="rd-price-row rd-price-row--hint">
+                      <span class="rd-price-label">You set your selling price</span>
+                      <span class="rd-price-arrow">→</span>
+                    </div>
                   </div>
-                  <div class="rd-profit-row">
-                    <span class="rd-profit-label">Your profit</span>
-                    <input class="rd-profit-input" type="number"
-                      [ngModel]="getProfitFor(p.id)"
-                      (ngModelChange)="setProfit(p.id, $event)"
-                      [min]="0" [max]="50000"
-                      placeholder="0"/>
-                    <span class="rd-profit-pkr">PKR</span>
-                  </div>
-                  <div class="rd-selling-price">
-                    Sell at: <strong>PKR {{ (p.price + getProfitFor(p.id)) | number }}</strong>
+                  <div class="rd-card-actions">
+                    <button class="rd-card-btn rd-card-btn--order" (click)="startOrder(p)">
+                      <app-icon name="cart" [size]="14"/> Place Order
+                    </button>
+                    <button class="rd-card-btn rd-card-btn--dl" (click)="downloadImage(p)">
+                      <app-icon name="download" [size]="14"/>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -575,17 +580,16 @@ interface OrderItem {
 
     .rd-product-actions {
       position: absolute; bottom: 0; left: 0; right: 0;
-      display: flex; gap: 0; opacity: 0; transition: opacity 0.2s;
+      display: flex; gap: 0; opacity: 0; transition: opacity 0.25s;
       .rd-product-card:hover & { opacity: 1; }
     }
 
     .rd-action-btn {
-      flex: 1; padding: 0.625rem; display: flex; align-items: center; justify-content: center;
-      border: none; cursor: pointer; transition: all 0.2s; gap: 0.25rem;
-      font-size: 0.7rem; font-weight: 600;
-
-      &--download { background: var(--black); color: var(--gold); &:hover { background: var(--gold); color: var(--black); } }
-      &--order    { background: var(--gold); color: var(--black); &:hover { background: var(--gold-dark); } }
+      flex: 1; padding: 0.625rem 0.5rem; display: flex; align-items: center; justify-content: center;
+      gap: 0.3rem; border: none; cursor: pointer; transition: all 0.2s;
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      &--download { background: rgba(26,26,26,0.85); color: var(--gold); &:hover { background: var(--black); } }
+      &--order    { background: rgba(201,168,76,0.9); color: var(--black); &:hover { background: var(--gold); } }
     }
 
     .rd-cat-badge {
@@ -595,29 +599,32 @@ interface OrderItem {
       padding: 2px 8px;
     }
 
-    .rd-product-info { padding: 0.875rem; }
-    .rd-product-sub  { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 0.25rem; }
-    .rd-product-name { font-family: var(--font-heading); font-size: 0.95rem; font-weight: 400; margin-bottom: 0.5rem; line-height: 1.3; }
+    .rd-product-info { padding: 1rem; }
+    .rd-product-sub  { font-size:0.62rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); margin-bottom:0.25rem; font-weight:700; }
+    .rd-product-name { font-family:var(--font-heading); font-size:1rem; font-weight:400; margin-bottom:0.75rem; line-height:1.3; color:var(--black); }
 
-    .rd-price-row {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 0.5rem;
+    .rd-price-info { background:var(--cream-dark); padding:0.75rem; margin-bottom:0.75rem; display:flex; flex-direction:column; gap:0.375rem; }
+    .rd-price-row  { display:flex; justify-content:space-between; align-items:center;
+      &--hint { opacity:0.6; }
     }
-    .rd-base-price { font-size: 0.75rem; color: var(--gray-400); }
-    .rd-stock { font-size: 0.68rem; font-weight: 600; color: #4CAF50; &.low { color: #E53935; } }
+    .rd-price-label { font-size:0.72rem; color:var(--gray-500); }
+    .rd-price-val   { font-size:0.875rem; font-weight:700; color:var(--black); }
+    .rd-price-arrow { font-size:0.75rem; color:var(--gold); }
 
-    .rd-profit-row {
-      display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.375rem;
+    .rd-card-actions { display:flex; gap:0.5rem; }
+    .rd-card-btn {
+      flex:1; display:flex; align-items:center; justify-content:center; gap:0.375rem;
+      padding:0.625rem; border:none; cursor:pointer; font-size:0.72rem; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; transition:all 0.2s;
+      &--order { background:var(--gold); color:var(--black); flex:3; &:hover{background:var(--gold-dark);} }
+      &--dl    { background:var(--black); color:var(--gold); flex:1; &:hover{background:#333;} }
     }
-    .rd-profit-label { font-size: 0.68rem; color: var(--gray-500); white-space: nowrap; }
-    .rd-profit-input {
-      width: 80px; padding: 0.3rem 0.5rem; border: 1.5px solid var(--gold);
-      background: rgba(201,168,76,0.06); font-size: 0.875rem; font-weight: 600;
-      outline: none; text-align: right; box-sizing: border-box;
-      &:focus { border-color: var(--gold-dark); }
+
+    .rd-stock-badge {
+      position:absolute; top:0.5rem; right:0.5rem; padding:2px 8px;
+      font-size:0.62rem; font-weight:700; background:rgba(76,175,80,0.9); color:#fff;
+      &.low { background:rgba(229,57,53,0.9); }
     }
-    .rd-profit-pkr { font-size: 0.68rem; color: var(--gray-400); }
-    .rd-selling-price { font-size: 0.75rem; color: var(--gold-dark); font-weight: 600; }
 
     /* ── Order Form ──────────────────────────────────── */
     .rd-order-form { max-width: 720px; }
