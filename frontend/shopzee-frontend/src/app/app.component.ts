@@ -20,8 +20,8 @@ import { filter } from 'rxjs/operators';
       <router-outlet/>
     }
 
-    <!-- Public layout: only for non-admin, non-reseller users -->
-    @if (!isAdminRoute() && !isAdminUser() && !isResellerUser()) {
+    <!-- Public + Reseller layout: navbar + content + footer -->
+    @if (!isAdminRoute() && !isAdminUser()) {
       <app-navbar/>
       <main class="main-content" id="main-content">
         <router-outlet/>
@@ -108,11 +108,8 @@ export class AppComponent implements OnInit {
         if (this.authApi.currentUser()?.role === 'admin' && !url.startsWith('/admin')) {
           this.router.navigate(['/admin']);
         }
-        // Reseller redirect
-        const role = this.authApi.currentUser()?.role;
-        if ((role === 'reseller' || role === 'reseller_pending') && !url.startsWith('/reseller')) {
-          this.router.navigate(['/reseller']);
-        }
+        // Reseller: only block admin panel access, allow public pages
+        // (reseller can browse products, view site normally)
       });
 
     this.isAdminRoute.set(this.router.url.startsWith('/admin'));

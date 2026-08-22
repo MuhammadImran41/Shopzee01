@@ -47,7 +47,8 @@ export const resellerGuard: CanActivateFn = () => {
   return false;
 };
 
-// Redirect admin/reseller away from public pages to their respective dashboards
+// Redirect admin away from public pages to /admin
+// Resellers can access public pages normally
 export const publicOnlyGuard: CanActivateFn = () => {
   const auth   = inject(AuthApiService);
   const router = inject(Router);
@@ -57,9 +58,6 @@ export const publicOnlyGuard: CanActivateFn = () => {
     router.navigate(['/admin']);
     return false;
   }
-  if (user?.role === 'reseller' || user?.role === 'reseller_pending') {
-    router.navigate(['/reseller']);
-    return false;
-  }
+  // Resellers can browse public pages freely
   return true;
 };
