@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
+import { SiteSettingsService } from '../../../core/services/site-settings.service';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [RouterLink, SvgIconsComponent],
+  imports: [CommonModule, RouterLink, SvgIconsComponent],
   template: `
     <footer class="footer" role="contentinfo">
       <!-- Ornament top border -->
@@ -306,7 +308,8 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
   `]
 })
 export class FooterComponent {
-  currentYear = new Date().getFullYear();
+  currentYear  = new Date().getFullYear();
+  siteSettings = inject(SiteSettingsService);
 
   onNewsletterSubmit(e: Event) {
     e.preventDefault();

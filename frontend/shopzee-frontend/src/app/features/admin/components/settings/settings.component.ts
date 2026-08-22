@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ThemeService, DEFAULT_THEME, ThemeColors } from '../../../../core/services/theme.service';
 import { SiteImagesService, DEFAULT_IMAGES, HomeImages } from '../../../../core/services/site-images.service';
+import { SiteSettingsService, SocialLinks } from '../../../../core/services/site-settings.service';
 import { ToastService } from '../../../../core/services/toast.service';
 import { API_BASE } from '../../../../core/services/api/api.config';
 
@@ -60,6 +61,10 @@ const ADJUST_KEY = 'STYLEMAKER_img_adjust';
         <button class="tab" [class.active]="tab()==='images'" (click)="tab.set('images')">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
           Image Changer
+        </button>
+        <button class="tab" [class.active]="tab()==='social'" (click)="tab.set('social')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Social Links
         </button>
       </div>
 
@@ -313,6 +318,55 @@ const ADJUST_KEY = 'STYLEMAKER_img_adjust';
         </div>
       }
 
+      <!-- ═══════════ SOCIAL LINKS ═══════════ -->
+      @if (tab() === 'social') {
+        <div class="card">
+          <div class="card-head">
+            <h2>Social Media Links</h2>
+            <p>Set your social media links — they appear in the website footer instantly after saving.</p>
+          </div>
+          <div class="card-body">
+
+            <div class="social-form">
+              @for (s of socialFields; track s.key) {
+                <div class="social-field-row">
+                  <div class="social-platform-icon" [class]="'spicon-' + s.key">
+                    <svg [innerHTML]="s.iconHtml" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"></svg>
+                  </div>
+                  <div class="social-field-info">
+                    <span class="social-platform-name">{{ s.label }}</span>
+                    <span class="social-platform-hint">{{ s.hint }}</span>
+                  </div>
+                  <div class="social-field-input">
+                    <input
+                      type="url"
+                      [(ngModel)]="socialForm[s.key]"
+                      [placeholder]="s.placeholder"
+                      [name]="s.key"
+                    />
+                    @if (socialForm[s.key]) {
+                      <a [href]="socialForm[s.key]" target="_blank" class="social-preview-link" title="Preview">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                      </a>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+
+            @if (socialOk()) { <div class="alert alert-ok" style="margin-bottom:1rem">✓ {{ socialOk() }}</div> }
+
+            <div style="display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center">
+              <button class="btn-save" (click)="saveSocial()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13"/><polyline points="7 3 7 8 15 8"/></svg>
+                Save Social Links
+              </button>
+              <span style="font-size:0.75rem;color:var(--gray-400)">Changes apply to footer immediately</span>
+            </div>
+          </div>
+        </div>
+      }
+
     </div>
   `,
   styles: [`
@@ -513,15 +567,59 @@ const ADJUST_KEY = 'STYLEMAKER_img_adjust';
     /* Spinner */
     .spinner { width:32px; height:32px; border:3px solid rgba(255,255,255,0.25); border-top-color:var(--gold); border-radius:50%; animation:spin 0.7s linear infinite; }
     @keyframes spin { to{transform:rotate(360deg);} }
+    .social-form { display:flex; flex-direction:column; gap:1px; background:var(--gray-200); border:1px solid var(--gray-200); margin-bottom:1.5rem; }
+
+    .social-field-row {
+      display:grid; grid-template-columns:48px 180px 1fr; gap:0; background:var(--cream-light); align-items:center;
+      transition:background 0.15s;
+      &:hover { background:var(--cream); }
+      @media(max-width:600px) { grid-template-columns:44px 1fr; grid-template-rows:auto auto; }
+    }
+
+    .social-platform-icon {
+      width:48px; height:60px; display:flex; align-items:center; justify-content:center; flex-shrink:0;
+      svg { width:20px; height:20px; }
+      &.spicon-instagram svg { stroke:#E1306C; }
+      &.spicon-facebook  svg { stroke:#1877F2; }
+      &.spicon-tiktok    svg { stroke:#010101; }
+      &.spicon-whatsapp  svg { stroke:#25D366; }
+      &.spicon-youtube   svg { stroke:#FF0000; }
+    }
+
+    .social-field-info {
+      padding:0 1rem 0 0; display:flex; flex-direction:column; gap:2px; border-right:1px solid var(--gray-200);
+      @media(max-width:600px) { display:none; }
+      .social-platform-name { font-size:0.8125rem; font-weight:700; color:var(--black); }
+      .social-platform-hint { font-size:0.7rem; color:var(--gray-400); }
+    }
+
+    .social-field-input {
+      display:flex; align-items:center; gap:0.5rem; padding:0 1rem;
+      @media(max-width:600px) { grid-column:2; padding:0.5rem 0.75rem 0.5rem 0; }
+      input {
+        flex:1; padding:0.625rem 0.875rem; border:1px solid var(--gray-200); background:var(--cream);
+        font-size:0.875rem; outline:none; min-width:0;
+        &:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(201,168,76,0.1); }
+        &::placeholder { color:var(--gray-300); }
+      }
+    }
+
+    .social-preview-link {
+      flex-shrink:0; display:flex; align-items:center; justify-content:center;
+      width:32px; height:32px; background:rgba(201,168,76,0.1); border:1px solid rgba(201,168,76,0.25);
+      color:var(--gold-dark); text-decoration:none; transition:all 0.2s;
+      &:hover { background:rgba(201,168,76,0.2); }
+    }
   `]
 })
 export class AdminSettingsComponent {
   private themeService = inject(ThemeService);
   siteImages           = inject(SiteImagesService);
+  private siteSettings = inject(SiteSettingsService);
   private toast        = inject(ToastService);
   private http         = inject(HttpClient);
 
-  tab = signal<'creds'|'theme'|'images'>('creds');
+  tab = signal<'creds'|'theme'|'images'|'social'>('creds');
 
   // ── Credentials ────────────────────────────────────
   creds       = { currentPassword: '', newEmail: '', newPassword: '' };
@@ -677,6 +775,30 @@ export class AdminSettingsComponent {
     this.siteImages.resetImage(key);
     this.uploadedMap[key] = false;
     this.toast.info('Image reset to default.');
+  }
+
+  // ── Social Links ───────────────────────────────────
+  socialOk   = signal('');
+  socialForm: SocialLinks = { ...this.siteSettings?.social() };
+
+  socialFields: { key: keyof SocialLinks; label: string; hint: string; placeholder: string; iconHtml: string }[] = [
+    { key:'instagram', label:'Instagram', hint:'Profile or page URL',        placeholder:'https://instagram.com/yourbrand',
+      iconHtml:'<rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>' },
+    { key:'facebook',  label:'Facebook',  hint:'Page or profile URL',        placeholder:'https://facebook.com/yourbrand',
+      iconHtml:'<path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>' },
+    { key:'tiktok',    label:'TikTok',    hint:'TikTok profile URL',         placeholder:'https://tiktok.com/@yourbrand',
+      iconHtml:'<path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05A6.34 6.34 0 003.15 15.3a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.16 8.16 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z" fill="currentColor" stroke="none"/>' },
+    { key:'whatsapp',  label:'WhatsApp',  hint:'Phone number (with country code)', placeholder:'+923001234567',
+      iconHtml:'<path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>' },
+    { key:'youtube',   label:'YouTube',   hint:'Channel URL',                placeholder:'https://youtube.com/@yourbrand',
+      iconHtml:'<path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.4a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/>' },
+  ];
+
+  saveSocial() {
+    this.siteSettings.save({ ...this.socialForm });
+    this.socialOk.set('Social links saved and applied to footer!');
+    this.toast.success('Social links updated!');
+    setTimeout(() => this.socialOk.set(''), 3000);
   }
 
   resetAllImages() {

@@ -8,6 +8,7 @@ import { AuthModalComponent } from './shared/components/auth-modal/auth-modal.co
 import { AuthApiService } from './core/services/api/auth-api.service';
 import { ThemeService } from './core/services/theme.service';
 import { SiteImagesService } from './core/services/site-images.service';
+import { SiteSettingsService } from './core/services/site-settings.service';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -57,8 +58,9 @@ export class AppComponent implements OnInit {
   private route      = inject(ActivatedRoute);
   private platformId = inject(PLATFORM_ID);
   private authApi    = inject(AuthApiService);
-  private themeService  = inject(ThemeService);
-  private imagesService = inject(SiteImagesService);
+  private themeService    = inject(ThemeService);
+  private imagesService   = inject(SiteImagesService);
+  private settingsService = inject(SiteSettingsService);
 
   isAdminRoute   = signal(false);
   showGlobalAuth = signal(false);
@@ -87,9 +89,10 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     if (!isPlatformBrowser(this.platformId)) return;
 
-    // Init theme + images from localStorage/backend on startup
+    // Init theme + images + social links from localStorage/backend on startup
     this.themeService.init();
     this.imagesService.init();
+    this.settingsService.init();
 
     // Remove FOUC - mark body as loaded
     if (typeof document !== 'undefined') {
