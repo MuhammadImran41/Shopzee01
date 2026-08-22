@@ -323,7 +323,6 @@ interface Notification {
       &.active {
         color:var(--gold);
         background:rgba(201,168,76,0.1);
-        border-left:2px solid var(--gold);
       }
       
       app-icon {

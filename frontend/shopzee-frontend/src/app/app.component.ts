@@ -91,6 +91,11 @@ export class AppComponent implements OnInit {
     this.themeService.init();
     this.imagesService.init();
 
+    // Remove FOUC - mark body as loaded
+    if (typeof document !== 'undefined') {
+      document.body.classList.add('loaded');
+    }
+
     this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe((e: NavigationEnd) => {

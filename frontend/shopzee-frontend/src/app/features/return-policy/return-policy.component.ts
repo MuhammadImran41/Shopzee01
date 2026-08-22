@@ -16,7 +16,7 @@ import { RouterLink } from '@angular/router';
               Customer Care
             </div>
             <h1>Return &amp; Exchange Policy</h1>
-            <p class="policy-hero__sub">Easy returns, smooth exchanges — because your satisfaction comes first</p>
+            <p class="policy-hero__sub">Easy returns, smooth exchanges because your satisfaction comes first</p>
             <div class="policy-hero__meta">
               <span>Last updated: August 21, 2026</span>
               <span class="dot">·</span>
@@ -55,7 +55,7 @@ import { RouterLink } from '@angular/router';
 
             <div class="intro-box">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-              <p>At <strong>STYLEMAKER</strong>, your satisfaction is everything. If your order isn't right, we'll make it right — quickly, fairly, and without unnecessary hassle.</p>
+              <p>At <strong>STYLEMAKER</strong>, your satisfaction is everything. If your order isn't right, we'll make it right quickly, fairly, and without unnecessary hassle.</p>
             </div>
 
             <!-- Summary Stats — SVG icons -->
@@ -114,7 +114,7 @@ import { RouterLink } from '@angular/router';
                   <h4>Cannot be returned or exchanged</h4>
                 </div>
                 <ul>
-                  <li>Sale &amp; discounted items — all sale purchases are final (unless defective)</li>
+                  <li>Sale &amp; discounted items all sale purchases are final (unless defective)</li>
                   <li>Custom or tailored items made to specific measurements</li>
                   <li>Items marked "Final Sale" at time of purchase</li>
                   <li>Worn, washed, altered, or customer-damaged items</li>

@@ -30,7 +30,7 @@ import { Product } from '../../core/models/product.model';
       <div class="na-hero__content">
         <span class="na-hero__label">✦ Just Landed</span>
         <h1 class="na-hero__title">New Arrivals</h1>
-        <p class="na-hero__sub">{{ allNew().length }} fresh pieces — Season 2026</p>
+        <p class="na-hero__sub">{{ allNew().length }} fresh pieces Season 2026</p>
         <div class="na-hero__tabs">
           <button class="na-tab" [class.active]="activeFilter() === 'all'"   (click)="activeFilter.set('all')">All</button>
           <button class="na-tab" [class.active]="activeFilter() === 'women'" (click)="activeFilter.set('women')">Women</button>

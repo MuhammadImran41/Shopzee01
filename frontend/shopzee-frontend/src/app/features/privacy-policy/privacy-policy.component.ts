@@ -73,7 +73,7 @@ import { RouterLink } from '@angular/router';
                 <li><strong>Contact:</strong> Email address, phone number, delivery address</li>
                 <li><strong>Payment:</strong> JazzCash / EasyPaisa numbers, bank details (never full card data)</li>
                 <li><strong>Orders:</strong> Products purchased, order history, delivery preferences</li>
-                <li><strong>Credentials:</strong> Password (BCrypt-encrypted — never readable)</li>
+                <li><strong>Credentials:</strong> Password (BCrypt-encrypted never readable)</li>
               </ul>
               <h3>What we collect automatically</h3>
               <ul>
@@ -107,7 +107,7 @@ import { RouterLink } from '@angular/router';
               </div>
               <p>We only share data in these specific circumstances:</p>
               <ul>
-                <li><strong>Courier partners:</strong> Your name, phone, and address — solely to deliver your order</li>
+                <li><strong>Courier partners:</strong> Your name, phone, and address solely to deliver your order</li>
                 <li><strong>Payment processors:</strong> Secure transaction processing (JazzCash, EasyPaisa, banks)</li>
                 <li><strong>Legal requirements:</strong> When required by court order or Pakistani law</li>
                 <li><strong>Business transfers:</strong> In the event of a merger or acquisition</li>
@@ -121,11 +121,11 @@ import { RouterLink } from '@angular/router';
               <div class="cookies-grid">
                 <div class="cookie-item">
                   <span class="cookie-badge essential">Essential</span>
-                  <p>Required for core functions — cart, login, checkout. Cannot be disabled.</p>
+                  <p>Required for core functions cart, login, checkout. Cannot be disabled.</p>
                 </div>
                 <div class="cookie-item">
                   <span class="cookie-badge performance">Performance</span>
-                  <p>Help us understand site usage — pages visited, errors encountered.</p>
+                  <p>Help us understand site usage pages visited, errors encountered.</p>
                 </div>
                 <div class="cookie-item">
                   <span class="cookie-badge preference">Preference</span>

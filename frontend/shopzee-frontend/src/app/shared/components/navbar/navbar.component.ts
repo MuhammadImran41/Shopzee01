@@ -86,7 +86,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
               </a>
               <div class="mega-menu">
                 <div class="mega-promo-bar">
-                  <span>✦ Free shipping on orders above PKR 5,000</span>
+                  <span>✦ Free Home Delivery</span>
                   <a routerLink="/new-arrivals">View New Arrivals →</a>
                 </div>
                 <div class="mega-inner">
@@ -182,7 +182,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
               </a>
               <div class="mega-menu">
                 <div class="mega-promo-bar">
-                  <span>✦ New arrivals every week — stay updated</span>
+                  <span>✦ New arrivals every week stay updated</span>
                   <a routerLink="/new-arrivals">Explore Men's →</a>
                 </div>
                 <div class="mega-inner">
@@ -587,10 +587,12 @@ import { trigger, transition, style, animate } from '@angular/animations';
     .nav-chevron {
       width: 10px; height: 7px; flex-shrink: 0;
       transition: transform 0.25s ease;
+      display: none; /* Hidden - no dropdown */
     }
-    .has-mega:hover .nav-chevron { transform: rotate(180deg); }
+    /* Chevron rotation disabled - no dropdown */
+    /* .has-mega:hover .nav-chevron { transform: rotate(180deg); } */
 
-    /* ── MEGA MENU — pure CSS hover ──────────────────────── */
+    /* ── MEGA MENU — DISABLED (No hover dropdown) ──────────────────────── */
     .mega-menu {
       position: absolute;
       top: calc(100% + 16px);
@@ -610,13 +612,15 @@ import { trigger, transition, style, animate } from '@angular/animations';
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.25s ease, transform 0.25s ease;
+      display: none; /* Disabled - no dropdown */
     }
 
-    .has-mega:hover .mega-menu {
+    /* Hover effect disabled */
+    /* .has-mega:hover .mega-menu {
       opacity: 1;
       pointer-events: all;
       transform: translateX(-50%) translateY(0);
-    }
+    } */
 
     /* Promo bar at top */
     .mega-promo-bar {

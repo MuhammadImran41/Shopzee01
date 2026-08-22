@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   private router          = inject(Router);
   private el              = inject(ElementRef);
   private platformId      = inject(PLATFORM_ID);
-  siteImages              = inject(SiteImagesService);
+  readonly siteImages     = inject(SiteImagesService);
 
   private _womenProducts = signal<Product[]>(this.productService.womenProducts());
   private _menProducts   = signal<Product[]>(this.productService.menProducts());

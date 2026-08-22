@@ -24,7 +24,7 @@ import { Product } from '../../core/models/product.model';
       <div class="sale-hero__content">
         <span class="sale-hero__tag">LIMITED TIME</span>
         <h1 class="sale-hero__title">Sale</h1>
-        <p class="sale-hero__sub">Up to 50% off — {{ saleProducts().length }} items</p>
+        <p class="sale-hero__sub">Up to 50% off {{ saleProducts().length }} items</p>
         <div class="sale-hero__tabs">
           <button class="sale-tab" [class.active]="filter() === 'all'"   (click)="filter.set('all')">All</button>
           <button class="sale-tab" [class.active]="filter() === 'women'" (click)="filter.set('women')">Women</button>

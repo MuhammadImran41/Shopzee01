@@ -89,7 +89,7 @@ import { API_BASE } from '../../../core/services/api/api.config';
             <div class="forgot-header">
               <div class="forgot-icon">🔑</div>
               <h3 class="forgot-title">Reset Password</h3>
-              <p class="forgot-desc">Enter your registered email — we'll send a 6-digit OTP code.</p>
+              <p class="forgot-desc">Enter your registered email we'll send a 6-digit OTP code.</p>
             </div>
             <div class="form-group">
               <label>Email Address</label>
@@ -241,7 +241,7 @@ import { API_BASE } from '../../../core/services/api/api.config';
               </div>
               @if (error()) { <p class="auth-error">{{ error() }}</p> }
               <button type="submit" class="btn btn-primary w-full auth-submit">
-                Next — Business Info →
+                Next Business Info →
               </button>
             </form>
           }
@@ -287,7 +287,7 @@ import { API_BASE } from '../../../core/services/api/api.config';
               @if (error()) { <p class="auth-error">{{ error() }}</p> }
               <div class="form-row-2">
                 <button type="button" class="btn btn-ghost" (click)="resellerStep.set(1)">← Back</button>
-                <button type="submit" class="btn btn-primary">Next — Payment →</button>
+                <button type="submit" class="btn btn-primary">Next Payment →</button>
               </div>
             </form>
           }
@@ -346,7 +346,7 @@ import { API_BASE } from '../../../core/services/api/api.config';
               <div class="reseller-benefits">
                 <h4>✦ Reseller Benefits</h4>
                 <ul>
-                  <li>✓ Sell at your own price — keep 100% profit</li>
+                  <li>✓ Sell at your own price keep 100% profit</li>
                   <li>✓ Access all product images for sharing</li>
                   <li>✓ StyleMaker delivers directly to your customers</li>
                   <li>✓ No upfront investment needed</li>
