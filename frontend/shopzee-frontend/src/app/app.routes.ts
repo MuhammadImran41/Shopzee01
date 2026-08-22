@@ -84,7 +84,6 @@ export const routes: Routes = [
   },
   {
     path: 'search',
-    canActivate: [publicOnlyGuard],
     loadComponent: () =>
       import('./features/search/search.component').then(m => m.SearchComponent)
   },

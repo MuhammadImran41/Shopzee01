@@ -10,6 +10,8 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
 import { AuthApiService } from '../../../core/services/api/auth-api.service';
 import { AuthModalComponent } from '../auth-modal/auth-modal.component';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { ProductApiService } from '../../../core/services/api/product-api.service';
+import { apiToProduct } from '../../../core/services/product.service';
 
 @Component({
   selector: 'app-navbar',
@@ -40,14 +42,18 @@ import { trigger, transition, style, animate } from '@angular/animations';
     ]),
     trigger('searchAnim', [
       transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(-10px)' }),
-        animate('300ms ease', style({ opacity: 1, transform: 'translateY(0)' }))
+        style({ opacity: 0, transform: 'translateY(-20px) scale(0.95)' }),
+        animate('350ms cubic-bezier(0.34, 1.56, 0.64, 1)', 
+          style({ opacity: 1, transform: 'translateY(0) scale(1)' }))
       ]),
-      transition(':leave', [animate('200ms ease', style({ opacity: 0, transform: 'translateY(-10px)' }))])
+      transition(':leave', [
+        animate('250ms cubic-bezier(0.4, 0, 1, 1)', 
+          style({ opacity: 0, transform: 'translateY(-20px) scale(0.95)' }))
+      ])
     ])
   ],
   template: `
-    <header class="navbar" [class.scrolled]="isScrolled()" role="banner">
+    <header class="navbar" [class.scrolled]="isScrolled()" [class.search-active]="searchOpen()" role="banner">
       <div class="navbar__inner container">
 
         <!-- Logo -->
@@ -374,28 +380,118 @@ import { trigger, transition, style, animate } from '@angular/animations';
           </button>
         </div>
       </div>
-
-      <!-- Search Bar -->
-      @if (searchOpen()) {
-        <div class="search-bar" [@searchAnim]>
-          <div class="container">
-            <form class="search-inner" (submit)="goToSearch($event)">
-              <app-icon name="search" [size]="20" class="search-icon"/>
-              <input type="search" [(ngModel)]="searchQuery" name="q"
-                placeholder="Search clothing, styles, collections..."
-                class="search-input" autofocus
-                (keydown.escape)="toggleSearch()" aria-label="Search products"/>
-              <button type="submit" class="action-btn" aria-label="Submit search">
-                <app-icon name="search" [size]="20"/>
-              </button>
-              <button type="button" class="action-btn" (click)="toggleSearch()" aria-label="Close search">
-                <app-icon name="close" [size]="20"/>
-              </button>
-            </form>
-          </div>
-        </div>
-      }
     </header>
+
+    <!-- Search Drawer Overlay -->
+    @if (searchOpen()) {
+      <div class="search-drawer-overlay" [@overlayAnim] (click)="toggleSearch()"></div>
+    }
+
+    <!-- Search Drawer (Right Side) -->
+    @if (searchOpen()) {
+      <div class="search-drawer" [@drawerAnim]>
+        <div class="search-drawer-header">
+          <h2 class="search-drawer-title">Search</h2>
+          <button class="search-drawer-close" (click)="toggleSearch()" aria-label="Close search">
+            <app-icon name="close" [size]="24"/>
+          </button>
+        </div>
+
+        <div class="search-drawer-body">
+          <!-- Search Input -->
+          <form class="search-drawer-form" (submit)="goToSearch($event)">
+            <div class="search-input-group">
+              <app-icon name="search" [size]="20" class="search-input-icon"/>
+              <input 
+                type="search" 
+                [(ngModel)]="searchQuery" 
+                name="q"
+                placeholder="Search products..."
+                class="search-drawer-input"
+                autofocus
+                (input)="onSearchInput()"
+                (keydown.escape)="toggleSearch()"
+              />
+              @if (searchQuery) {
+                <button type="button" class="search-input-clear" (click)="clearSearch()" aria-label="Clear">
+                  <app-icon name="close" [size]="18"/>
+                </button>
+              }
+            </div>
+          </form>
+
+          <!-- Suggestions -->
+          @if (searchQuery && searchQuery.length > 0) {
+            <div class="search-suggestions">
+              <p class="search-section-title">Suggestions For You</p>
+              @if (searchSuggestions().length > 0) {
+                <ul class="suggestion-list">
+                  @for (suggestion of searchSuggestions(); track suggestion) {
+                    <li>
+                      <button class="suggestion-item" (click)="selectSuggestion(suggestion)">
+                        {{ suggestion }}
+                      </button>
+                    </li>
+                  }
+                </ul>
+              }
+            </div>
+          }
+
+          <!-- Search Results -->
+          @if (searchQuery && searchResults().length > 0) {
+            <div class="search-results-section">
+              <p class="search-section-title">Search results</p>
+              <div class="search-results-grid">
+                @for (product of searchResults(); track product.id) {
+                  <a [routerLink]="['/product', product.id]" class="search-result-card" (click)="toggleSearch()">
+                    <img [src]="product.images[0]" [alt]="product.name" loading="lazy"/>
+                    <div class="search-result-info">
+                      <p class="search-result-name">{{ product.name }}</p>
+                      <p class="search-result-category">{{ product.subCategory }}</p>
+                      <p class="search-result-price">
+                        PKR {{ product.price | number }}
+                        @if (product.discount) {
+                          <span class="search-result-discount">{{ product.discount }}% off</span>
+                        }
+                      </p>
+                    </div>
+                  </a>
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Loading State -->
+          @if (searchLoading()) {
+            <div class="search-loading">
+              <div class="search-spinner"></div>
+              <span>Searching...</span>
+            </div>
+          }
+
+          <!-- No Results -->
+          @if (!searchLoading() && searchQuery.length > 2 && searchResults().length === 0) {
+            <div class="search-no-results">
+              <app-icon name="search" [size]="48" class="no-results-icon"/>
+              <p>No results found for "<strong>{{ searchQuery }}</strong>"</p>
+            </div>
+          }
+
+          <!-- Popular Searches (when empty) -->
+          @if (!searchQuery) {
+            <div class="popular-searches">
+              <p class="search-section-title">Popular Searches</p>
+              <div class="popular-chips">
+                @for (tag of popularSearches; track tag) {
+                  <button class="popular-chip" (click)="selectSuggestion(tag)">{{ tag }}</button>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
 
     <!-- Mobile Drawer Overlay -->
     @if (mobileMenuOpen()) {
@@ -479,7 +575,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
       width: auto; max-width: 1400px;
       margin: 0 auto;
       z-index: 200;
-      transition: background 0.05s ease, box-shadow 0.05s ease, border-color 0.05s ease;
+      transition: background 0.05s ease, box-shadow 0.05s ease, border-color 0.05s ease, opacity 0.3s ease, transform 0.3s ease;
       background: transparent;
       backdrop-filter: none;
       border: 2px solid transparent;
@@ -488,6 +584,12 @@ import { trigger, transition, style, animate } from '@angular/animations';
       will-change: background, box-shadow;
       transform: translateZ(0);
       backface-visibility: hidden;
+
+      &.search-active {
+        opacity: 0;
+        pointer-events: none;
+        transform: scale(0.95) translateY(-10px);
+      }
 
       &__inner {
         display: flex; align-items: center;
@@ -852,27 +954,307 @@ import { trigger, transition, style, animate } from '@angular/animations';
       display: flex; align-items: center; justify-content: center; line-height: 1;
     }
 
-    /* ── SEARCH BAR ──────────────────────────────────────── */
-    .search-bar {
+    /* ── SEARCH DRAWER OVERLAY ───────────────────────────── */
+    .search-drawer-overlay {
       position: fixed;
-      /* 16px navbar-top + 68px navbar height + 4px = 88px */
-      top: 88px; left: 24px; right: 24px;
-      max-width: 1400px; margin: 0 auto;
-      background: rgba(245,240,232,0.98);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(201,168,76,0.25);
-      border-radius: 12px;
-      box-shadow: 0 8px 32px rgba(26,26,26,0.12);
-      padding: 1rem 1.5rem;
-      z-index: 198;
+      inset: 0;
+      background: rgba(26, 26, 26, 0.6);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 199;
+    }
 
-      .search-inner { display: flex; align-items: center; gap: 0.75rem; }
-      .search-icon  { color: #aaa; flex-shrink: 0; }
-      .search-input {
-        flex: 1; background: none; border: none;
-        font-size: 1.125rem; font-family: var(--font-heading);
-        color: #1A1A1A; outline: none;
-        &::placeholder { color: #bbb; }
+    /* ── SEARCH DRAWER (RIGHT SIDE) ──────────────────────── */
+    .search-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: min(480px, 90vw);
+      background: #fff;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      box-shadow: -4px 0 24px rgba(0, 0, 0, 0.15);
+      
+      @media (max-width: 768px) {
+        width: min(400px, 100vw);
+      }
+    }
+
+    .search-drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 1.5rem 1rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .search-drawer-title {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    .search-drawer-close {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #666;
+      border-radius: 50%;
+      transition: all 0.2s;
+      
+      &:hover {
+        background: rgba(26, 26, 26, 0.05);
+        color: #1A1A1A;
+      }
+    }
+
+    .search-drawer-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem;
+    }
+
+    /* ── SEARCH INPUT ────────────────────────────────────── */
+    .search-drawer-form {
+      margin-bottom: 1.5rem;
+    }
+
+    .search-input-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: #f5f5f5;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      transition: all 0.2s;
+      
+      &:focus-within {
+        background: #fff;
+        border-color: #C9A84C;
+        box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.1);
+      }
+    }
+
+    .search-input-icon {
+      color: #999;
+      flex-shrink: 0;
+    }
+
+    .search-drawer-input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      font-size: 0.9375rem;
+      color: #1A1A1A;
+      
+      &::placeholder {
+        color: #999;
+      }
+    }
+
+    .search-input-clear {
+      flex-shrink: 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #999;
+      padding: 4px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      
+      &:hover {
+        background: rgba(26, 26, 26, 0.08);
+        color: #1A1A1A;
+      }
+    }
+
+    /* ── SECTIONS ────────────────────────────────────────── */
+    .search-section-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #666;
+      margin: 0 0 0.75rem 0;
+    }
+
+    /* ── SUGGESTIONS ─────────────────────────────────────── */
+    .search-suggestions {
+      margin-bottom: 1.5rem;
+    }
+
+    .suggestion-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .suggestion-item {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      padding: 0.625rem 0;
+      font-size: 0.9375rem;
+      color: #666;
+      cursor: pointer;
+      transition: color 0.2s;
+      border-bottom: 1px solid #f5f5f5;
+      
+      &:hover {
+        color: #C9A84C;
+      }
+    }
+
+    /* ── SEARCH RESULTS GRID ─────────────────────────────── */
+    .search-results-section {
+      margin-top: 1.5rem;
+    }
+
+    .search-results-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .search-result-card {
+      display: block;
+      text-decoration: none;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: all 0.2s;
+      
+      &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-color: #C9A84C;
+      }
+      
+      img {
+        width: 100%;
+        aspect-ratio: 3/4;
+        object-fit: cover;
+        object-position: top center;
+      }
+    }
+
+    .search-result-info {
+      padding: 0.75rem;
+    }
+
+    .search-result-name {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #1A1A1A;
+      margin: 0 0 0.25rem 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .search-result-category {
+      font-size: 0.75rem;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .search-result-price {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #C9A84C;
+      margin: 0;
+    }
+
+    .search-result-discount {
+      font-size: 0.75rem;
+      color: #dc2626;
+      margin-left: 0.5rem;
+    }
+
+    /* ── LOADING STATE ───────────────────────────────────── */
+    .search-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: 3rem 1rem;
+      color: #999;
+    }
+
+    .search-spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid #f0f0f0;
+      border-top-color: #C9A84C;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ── NO RESULTS ──────────────────────────────────────── */
+    .search-no-results {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: #999;
+      
+      .no-results-icon {
+        color: #ddd;
+        margin-bottom: 1rem;
+      }
+      
+      p {
+        margin: 0;
+        font-size: 0.9375rem;
+        
+        strong {
+          color: #666;
+        }
+      }
+    }
+
+    /* ── POPULAR SEARCHES ────────────────────────────────── */
+    .popular-searches {
+      margin-top: 1.5rem;
+    }
+
+    .popular-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .popular-chip {
+      padding: 0.5rem 1rem;
+      background: #f5f5f5;
+      border: 1px solid #e0e0e0;
+      border-radius: 20px;
+      font-size: 0.8125rem;
+      color: #666;
+      cursor: pointer;
+      transition: all 0.2s;
+      
+      &:hover {
+        background: rgba(201, 168, 76, 0.1);
+        border-color: #C9A84C;
+        color: #C9A84C;
       }
     }
 
@@ -1153,6 +1535,7 @@ export class NavbarComponent implements OnInit {
   authApi         = inject(AuthApiService);
   private router     = inject(Router);
   private platformId = inject(PLATFORM_ID);
+  private productApi = inject(ProductApiService);
 
   isScrolled     = signal(false);
   mobileMenuOpen = signal(false);
@@ -1200,17 +1583,73 @@ export class NavbarComponent implements OnInit {
 
   toggleDrop()       { this.userDropOpen.update(v => !v); }
   searchQuery    = '';
+  searchResults  = signal<any[]>([]);
+  searchSuggestions = signal<string[]>([]);
+  searchLoading  = signal(false);
+  popularSearches = ['Embroidered Suits', 'Bridal', 'Shalwar Kameez', 'Formal Wear', 'Kurta', 'Sherwani'];
 
   toggleMobileMenu() { this.mobileMenuOpen.update(v => !v); }
   closeMobileMenu()  { this.mobileMenuOpen.set(false); this.drawerAcc.set(null); }
-  toggleSearch()     { this.searchOpen.update(v => !v); this.searchQuery = ''; }
+  toggleSearch()     { 
+    this.searchOpen.update(v => !v); 
+    if (!this.searchOpen()) {
+      this.clearSearch();
+    }
+  }
+
+  clearSearch() {
+    this.searchQuery = '';
+    this.searchResults.set([]);
+    this.searchSuggestions.set([]);
+    this.searchLoading.set(false);
+  }
+
+  onSearchInput() {
+    const query = this.searchQuery.trim();
+    if (query.length < 2) {
+      this.searchResults.set([]);
+      this.searchSuggestions.set([]);
+      return;
+    }
+
+    // Generate suggestions
+    const suggestions = this.popularSearches
+      .filter(s => s.toLowerCase().includes(query.toLowerCase()))
+      .slice(0, 5);
+    this.searchSuggestions.set(suggestions);
+
+    // Debounce search
+    this.performSearch(query);
+  }
+
+  private searchTimeout: any;
+  private performSearch(query: string) {
+    clearTimeout(this.searchTimeout);
+    this.searchTimeout = setTimeout(() => {
+      this.searchLoading.set(true);
+      this.productApi.getAll({ search: query, pageSize: 12 }).subscribe({
+        next: (res) => {
+          this.searchResults.set(res.items.map(apiToProduct));
+          this.searchLoading.set(false);
+        },
+        error: () => {
+          this.searchResults.set([]);
+          this.searchLoading.set(false);
+        }
+      });
+    }, 300);
+  }
+
+  selectSuggestion(suggestion: string) {
+    this.searchQuery = suggestion;
+    this.onSearchInput();
+  }
 
   goToSearch(e: Event) {
     e.preventDefault();
     const q = this.searchQuery.trim();
     if (!q) return;
     this.searchOpen.set(false);
-    this.searchQuery = '';
     this.router.navigate(['/search'], { queryParams: { q } });
   }
 

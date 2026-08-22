@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Background circle -->
+  <circle cx="32" cy="32" r="30" fill="#C9A84C"/>
+  
+  <!-- S letter - Large and Bold -->
+  <path d="M14 22 C14 17, 17 14, 22 14 L26 14 C31 14, 34 17, 34 22 C34 25.5, 31 27, 28 28 C31 29, 34 30.5, 34 34 C34 39, 31 42, 26 42 L22 42 C17 42, 14 39, 14 34" 
+        fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- M letter - Large and Bold -->
+  <path d="M38 42 L38 14 L46 34 L54 14 L54 42" 
+        fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

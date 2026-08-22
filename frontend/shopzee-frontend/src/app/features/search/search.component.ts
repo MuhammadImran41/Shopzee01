@@ -311,9 +311,42 @@ export class SearchComponent implements OnInit {
     this.lastQuery.set(q);
     this.productApi.getAll({ search: q, pageSize: 50 }).subscribe({
       next: res => {
-        this.results.set(res.items.map(apiToProduct));
+        const items = res.items.map(apiToProduct);
+        this.results.set(items);
         this.loading.set(false);
         this.searched.set(true);
+        
+        // Auto-redirect if single product found
+        if (items.length === 1) {
+          // Navigate to product detail page
+          this.router.navigate(['/product', items[0].id]);
+        } else if (items.length > 1) {
+          // Check if all products belong to same category
+          const categories = [...new Set(items.map((p: any) => p.category))];
+          const tags = [...new Set(items.flatMap((p: any) => p.tags || []))];
+          
+          // Redirect based on dominant category/tag
+          if (categories.length === 1) {
+            const cat = categories[0].toLowerCase();
+            if (cat === 'women' || cat === 'men') {
+              this.router.navigate([`/${cat}`]);
+              return;
+            }
+          }
+          
+          // Check for special tags
+          if (tags.includes('new-arrival') || tags.includes('new')) {
+            this.router.navigate(['/new-arrivals']);
+            return;
+          }
+          
+          if (tags.includes('sale') || items.some((p: any) => p.discount > 0)) {
+            this.router.navigate(['/sale']);
+            return;
+          }
+          
+          // Otherwise stay on search results page
+        }
       },
       error: () => { this.loading.set(false); this.searched.set(true); }
     });
