@@ -223,153 +223,206 @@ interface OrderItem {
 
         <!-- ── PLACE ORDER TAB ────────────────────────────── -->
         @if (activeTab() === 'order') {
-          <div class="rd-order-form">
-            <h2 class="rd-section-title">Place New Order</h2>
+          <div class="rd-order-wrap">
 
             @if (orderSuccess()) {
               <div class="rd-order-success">
-                <app-icon name="check" [size]="40" class="order-success-icon"/>
-                <h3>Order Placed!</h3>
-                <p>Your profit: <strong class="profit-highlight">PKR {{ lastProfit() | number }}</strong></p>
-                <button class="btn btn-primary" (click)="resetOrder()">Place Another Order</button>
+                <div class="success-check">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <h3>Order Placed Successfully!</h3>
+                <p>Your profit on this order:</p>
+                <div class="success-profit">PKR {{ lastProfit() | number }}</div>
+                <button class="rd-submit-btn" (click)="resetOrder()">Place Another Order</button>
               </div>
             } @else {
-              <form (submit)="submitOrder($event)">
+              <form (submit)="submitOrder($event)" class="rd-order-form-grid">
 
-                <!-- Customer Details -->
-                <div class="order-section">
-                  <h3 class="order-section-title">Customer Details</h3>
-                  <div class="order-grid-2">
-                    <div class="form-group">
-                      <label>Customer Name <span class="req">*</span></label>
-                      <input type="text" [(ngModel)]="orderForm.customerName" name="cust_name"
-                        placeholder="Customer full name" required/>
-                    </div>
-                    <div class="form-group">
-                      <label>Customer Phone <span class="req">*</span></label>
-                      <input type="tel" [(ngModel)]="orderForm.customerPhone" name="cust_phone"
-                        placeholder="03XX XXXXXXX" required/>
-                    </div>
-                  </div>
-                  <div class="order-grid-2">
-                    <div class="form-group">
-                      <label>City <span class="req">*</span></label>
-                      <input type="text" [(ngModel)]="orderForm.customerCity" name="cust_city"
-                        placeholder="Lahore, Karachi..." required/>
-                    </div>
-                    <div class="form-group">
-                      <label>Payment Method</label>
-                      <select [(ngModel)]="orderForm.paymentMethod" name="cust_pay" class="form-select">
-                        <option value="cod">Cash on Delivery</option>
-                        <option value="easypaisa">EasyPaisa</option>
-                        <option value="jazzcash">JazzCash</option>
-                        <option value="bank">Bank Transfer</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label>Full Address <span class="req">*</span></label>
-                    <input type="text" [(ngModel)]="orderForm.customerAddress" name="cust_addr"
-                      placeholder="House #, Street, Area" required/>
-                  </div>
-                </div>
+                <!-- LEFT: Form -->
+                <div class="rd-form-col">
 
-                <!-- Order Items -->
-                <div class="order-section">
-                  <div class="order-items-header">
-                    <h3 class="order-section-title">Order Items</h3>
-                    <button type="button" class="btn-add-item" (click)="addOrderItem()">
-                      + Add Product
-                    </button>
-                  </div>
-
-                  @for (item of orderItems(); track $index; let i = $index) {
-                    <div class="order-item-row">
-                      <div class="item-row-top">
-                        <select class="form-select item-product-select"
-                          [(ngModel)]="item.productId"
-                          [name]="'item_prod_' + i"
-                          (ngModelChange)="onProductSelect(i, $event)">
-                          <option [value]="0">Select Product</option>
-                          @for (p of products(); track p.id) {
-                            <option [value]="p.id">{{ p.name }} — PKR {{ p.price | number }}</option>
-                          }
-                        </select>
-                        @if (orderItems().length > 1) {
-                          <button type="button" class="item-remove" (click)="removeItem(i)">
-                            <app-icon name="close" [size]="14"/>
-                          </button>
-                        }
+                  <!-- Customer Details -->
+                  <div class="rd-form-section">
+                    <div class="rfs-header">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                      Customer Details
+                    </div>
+                    <div class="rfs-body">
+                      <div class="rfs-row">
+                        <div class="rfs-field">
+                          <label>Customer Name <span class="req">*</span></label>
+                          <input type="text" [(ngModel)]="orderForm.customerName" name="cust_name" placeholder="Full name" required/>
+                        </div>
+                        <div class="rfs-field">
+                          <label>Phone Number <span class="req">*</span></label>
+                          <input type="tel" [(ngModel)]="orderForm.customerPhone" name="cust_phone" placeholder="03XX XXXXXXX" required/>
+                        </div>
                       </div>
+                      <div class="rfs-row">
+                        <div class="rfs-field">
+                          <label>City <span class="req">*</span></label>
+                          <input type="text" [(ngModel)]="orderForm.customerCity" name="cust_city" placeholder="Lahore, Karachi, Islamabad..." required/>
+                        </div>
+                        <div class="rfs-field">
+                          <label>Payment Method</label>
+                          <select [(ngModel)]="orderForm.paymentMethod" name="cust_pay" class="rfs-select">
+                            <option value="cod">Cash on Delivery</option>
+                            <option value="easypaisa">EasyPaisa</option>
+                            <option value="jazzcash">JazzCash</option>
+                            <option value="bank">Bank Transfer</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="rfs-field rfs-field--full">
+                        <label>Full Address <span class="req">*</span></label>
+                        <input type="text" [(ngModel)]="orderForm.customerAddress" name="cust_addr" placeholder="House #, Street, Area, Colony" required/>
+                      </div>
+                      <div class="rfs-field rfs-field--full">
+                        <label>Notes (Optional)</label>
+                        <input type="text" [(ngModel)]="orderForm.notes" name="notes" placeholder="Special instructions, colour preference, etc."/>
+                      </div>
+                    </div>
+                  </div>
 
-                      @if (item.productId > 0) {
-                        <div class="item-row-details">
-                          <div class="form-group-sm">
-                            <label>Size</label>
-                            <select class="form-select-sm" [(ngModel)]="item.selectedSize" [name]="'item_size_' + i">
-                              @for (s of getSizes(item.productId); track s) {
-                                <option [value]="s">{{ s }}</option>
+                  <!-- Order Items -->
+                  <div class="rd-form-section">
+                    <div class="rfs-header">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                      Order Items
+                      <button type="button" class="rfs-add-btn" (click)="addOrderItem()">+ Add Product</button>
+                    </div>
+                    <div class="rfs-body">
+                      @for (item of orderItems(); track $index; let i = $index) {
+                        <div class="rfs-item-card">
+                          <div class="rfs-item-top">
+                            <select class="rfs-select rfs-item-select"
+                              [(ngModel)]="item.productId" [name]="'item_prod_'+i"
+                              (ngModelChange)="onProductSelect(i,$event)">
+                              <option [value]="0">— Select Product —</option>
+                              @for (p of products(); track p.id) {
+                                <option [value]="p.id">{{ p.name }} — PKR {{ p.price | number }}</option>
                               }
                             </select>
+                            @if (orderItems().length > 1) {
+                              <button type="button" class="rfs-remove-btn" (click)="removeItem(i)" aria-label="Remove">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                              </button>
+                            }
                           </div>
-                          <div class="form-group-sm">
-                            <label>Qty</label>
-                            <input class="form-input-sm" type="number"
-                              [(ngModel)]="item.quantity" [name]="'item_qty_' + i"
-                              [min]="1" [max]="50"/>
-                          </div>
-                          <div class="form-group-sm">
-                            <label>Your Price (PKR)</label>
-                            <input class="form-input-sm form-input-sm--price" type="number"
-                              [(ngModel)]="item.resellerPrice" [name]="'item_price_' + i"
-                              [min]="getBasePrice(item.productId)"
-                              [placeholder]="getBasePrice(item.productId)"/>
-                          </div>
-                          <div class="item-profit-display">
-                            Profit: <strong>PKR {{ (item.resellerPrice - getBasePrice(item.productId)) * item.quantity | number }}</strong>
-                          </div>
+
+                          @if (item.productId > 0) {
+                            <div class="rfs-item-details">
+                              <div class="rfs-item-field">
+                                <label>Size</label>
+                                <select class="rfs-select-sm" [(ngModel)]="item.selectedSize" [name]="'sz_'+i">
+                                  @for (s of getSizes(item.productId); track s) {
+                                    <option [value]="s">{{ s }}</option>
+                                  }
+                                </select>
+                              </div>
+                              <div class="rfs-item-field">
+                                <label>Quantity</label>
+                                <input class="rfs-input-sm" type="number" [(ngModel)]="item.quantity" [name]="'qty_'+i" min="1" max="50"/>
+                              </div>
+                              <div class="rfs-item-field">
+                                <label>Your Selling Price (PKR)</label>
+                                <input class="rfs-input-sm rfs-price-input" type="number"
+                                  [(ngModel)]="item.resellerPrice" [name]="'price_'+i"
+                                  [min]="getBasePrice(item.productId)"
+                                  [placeholder]="getBasePrice(item.productId)"/>
+                              </div>
+                              <div class="rfs-item-profit">
+                                <span class="iprofit-label">Your Profit</span>
+                                <span class="iprofit-val">PKR {{ (item.resellerPrice - getBasePrice(item.productId)) * item.quantity | number }}</span>
+                              </div>
+                            </div>
+                          }
                         </div>
                       }
                     </div>
+                  </div>
+
+                  @if (orderError()) {
+                    <div class="rfs-error">{{ orderError() }}</div>
                   }
+
+                  <button type="submit" class="rd-submit-btn" [disabled]="orderLoading()">
+                    @if (orderLoading()) {
+                      <div class="btn-spinner"></div> Placing Order...
+                    } @else {
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                      Place Order — Earn PKR {{ orderTotalProfit() | number }}
+                    }
+                  </button>
                 </div>
 
-                <!-- Notes -->
-                <div class="form-group" style="margin-top:0.5rem">
-                  <label>Notes (optional)</label>
-                  <input type="text" [(ngModel)]="orderForm.notes" name="notes"
-                    placeholder="Any special instructions..."/>
-                </div>
+                <!-- RIGHT: Live Order Summary -->
+                <aside class="rd-summary-col">
+                  <div class="rd-summary-card">
+                    <div class="rsc-title">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                      Order Summary
+                    </div>
 
-                <!-- Order Summary -->
-                <div class="order-summary-box">
-                  <div class="summary-row">
-                    <span>Subtotal</span>
-                    <span>PKR {{ orderSubTotal() | number }}</span>
-                  </div>
-                  <div class="summary-row">
-                    <span>Shipping</span>
-                    <span>{{ orderSubTotal() >= 5000 ? 'Free' : 'PKR 300' }}</span>
-                  </div>
-                  <div class="summary-row summary-row--profit">
-                    <span>Your Profit ✦</span>
-                    <span class="profit-val">PKR {{ orderTotalProfit() | number }}</span>
-                  </div>
-                  <div class="summary-row summary-row--total">
-                    <span>Customer Pays</span>
-                    <span>PKR {{ (orderSubTotal() + (orderSubTotal() >= 5000 ? 0 : 300)) | number }}</span>
-                  </div>
-                </div>
+                    <!-- Items preview -->
+                    @if (orderItems().length > 0 && orderItems()[0].productId > 0) {
+                      <div class="rsc-items">
+                        @for (item of orderItems(); track $index) {
+                          @if (item.productId > 0) {
+                            <div class="rsc-item">
+                              <div class="rsc-item-name">{{ getProductName(item.productId) }}</div>
+                              <div class="rsc-item-meta">
+                                {{ item.selectedSize }} × {{ item.quantity }}
+                                @if (item.resellerPrice > 0) {
+                                  · PKR {{ item.resellerPrice | number }}
+                                }
+                              </div>
+                            </div>
+                          }
+                        }
+                      </div>
+                    } @else {
+                      <div class="rsc-empty">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(245,240,232,0.2)" stroke-width="1.5" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/></svg>
+                        <p>Select products to see summary</p>
+                      </div>
+                    }
 
-                @if (orderError()) {
-                  <p class="auth-error">{{ orderError() }}</p>
-                }
+                    <div class="rsc-divider"></div>
 
-                <button type="submit" class="btn btn-primary w-full order-submit-btn"
-                  [disabled]="orderLoading()">
-                  @if (orderLoading()) { Placing Order... }
-                  @else { Place Order — Profit: PKR {{ orderTotalProfit() | number }} }
-                </button>
+                    <!-- Totals -->
+                    <div class="rsc-row"><span>Subtotal (Base)</span><span>PKR {{ orderSubTotal() | number }}</span></div>
+                    <div class="rsc-row"><span>Shipping</span><span>{{ orderSubTotal() >= 5000 ? 'Free' : 'PKR 300' }}</span></div>
+                    <div class="rsc-divider"></div>
+                    <div class="rsc-row rsc-total"><span>Customer Pays</span><span>PKR {{ (orderSubTotal() + (orderSubTotal() >= 5000 ? 0 : 300)) | number }}</span></div>
+
+                    <!-- Profit highlight -->
+                    <div class="rsc-profit-box">
+                      <div class="rpb-label">Your Total Profit</div>
+                      <div class="rpb-value">PKR {{ orderTotalProfit() | number }}</div>
+                      @if (orderTotalProfit() > 0) {
+                        <div class="rpb-note">✓ Will be added to your earnings after delivery</div>
+                      }
+                    </div>
+
+                    <!-- Tips -->
+                    <div class="rsc-tips">
+                      <div class="tip">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        Set your selling price higher than base to earn profit
+                      </div>
+                      <div class="tip">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        Free shipping when base total ≥ PKR 5,000
+                      </div>
+                      <div class="tip">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        Profit paid within 24 hrs of delivery
+                      </div>
+                    </div>
+                  </div>
+                </aside>
+
               </form>
             }
           </div>
@@ -599,37 +652,160 @@ interface OrderItem {
       &.low { background:rgba(229,57,53,0.9); }
     }
 
-    /* ── Order Form ──────────────────────────────────── */
-    .rd-order-form { max-width: 720px; }
-    .rd-section-title { font-family: var(--font-heading); font-size: 1.5rem; font-weight: 400; margin-bottom: 1.5rem; }
+    /* ── Order Form — 2 col layout ──────────────────────── */
+    .rd-order-wrap { width: 100%; }
 
-    .order-section {
-      background: var(--cream-light); border: 1px solid var(--gray-200);
-      padding: 1.5rem; margin-bottom: 1.25rem;
+    .rd-order-success {
+      text-align:center; padding:4rem 2rem; max-width:480px; margin:0 auto;
+      .success-check { width:80px; height:80px; border-radius:50%; background:rgba(76,175,80,0.1); display:flex; align-items:center; justify-content:center; margin:0 auto 1.5rem; }
+      h3 { font-family:var(--font-heading); font-size:2rem; font-weight:400; margin-bottom:0.5rem; }
+      p  { color:var(--gray-400); margin-bottom:0.75rem; }
+      .success-profit { font-family:var(--font-heading); font-size:2.5rem; color:var(--gold-dark); font-weight:400; margin-bottom:2rem; }
     }
 
-    .order-section-title {
-      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
-      color: var(--gold-dark); margin-bottom: 1rem; padding-bottom: 0.5rem;
-      border-bottom: 1px solid rgba(201,168,76,0.2);
+    .rd-order-form-grid {
+      display:grid; grid-template-columns:1fr 360px; gap:1.75rem; align-items:start;
+      @media(max-width:1024px) { grid-template-columns:1fr 300px; gap:1.25rem; }
+      @media(max-width:800px)  { grid-template-columns:1fr; }
     }
 
-    .order-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.875rem; @media (max-width: 600px) { grid-template-columns: 1fr; } }
+    /* Form sections */
+    .rd-form-col { display:flex; flex-direction:column; gap:1rem; }
 
-    .order-items-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-    .btn-add-item {
-      padding: 0.4rem 0.875rem; background: rgba(201,168,76,0.1);
-      border: 1px solid rgba(201,168,76,0.4); color: var(--gold-dark);
-      font-size: 0.75rem; font-weight: 600; cursor: pointer;
-      &:hover { background: rgba(201,168,76,0.18); }
+    .rd-form-section { background:var(--cream-light); border:1px solid var(--gray-200); overflow:hidden; }
+
+    .rfs-header {
+      display:flex; align-items:center; gap:0.625rem;
+      padding:0.875rem 1.25rem; background:var(--black);
+      font-size:0.7rem; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold);
+      svg { stroke:var(--gold); flex-shrink:0; }
     }
 
-    .order-item-row {
-      border: 1px solid var(--gray-200); padding: 0.875rem; margin-bottom: 0.75rem;
-      background: var(--cream);
+    .rfs-add-btn {
+      margin-left:auto; padding:0.3rem 0.75rem; background:rgba(201,168,76,0.15);
+      border:1px solid rgba(201,168,76,0.4); color:var(--gold-dark); font-size:0.7rem;
+      font-weight:700; cursor:pointer; letter-spacing:0.08em;
+      &:hover { background:rgba(201,168,76,0.25); }
     }
 
-    .item-row-top { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; align-items: center; }
+    .rfs-body { padding:1.25rem; }
+
+    .rfs-row { display:grid; grid-template-columns:1fr 1fr; gap:0.875rem; margin-bottom:0.875rem;
+      @media(max-width:600px) { grid-template-columns:1fr; }
+    }
+
+    .rfs-field {
+      display:flex; flex-direction:column; gap:0.3rem;
+      &--full { grid-column:1/-1; }
+      label { font-size:0.68rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--black); }
+      input { padding:0.7rem 0.875rem; border:1px solid var(--gray-300); background:var(--cream); font-size:0.9rem; outline:none; transition:border-color 0.2s;
+        &:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(201,168,76,0.1); }
+      }
+    }
+
+    .rfs-select {
+      padding:0.7rem 0.875rem; border:1px solid var(--gray-300); background:var(--cream);
+      font-size:0.9rem; outline:none; width:100%; cursor:pointer;
+      &:focus { border-color:var(--gold); }
+    }
+
+    /* Item cards */
+    .rfs-item-card { border:1px solid var(--gray-200); padding:1rem; margin-bottom:0.75rem; background:var(--cream); &:last-child{margin-bottom:0;} }
+
+    .rfs-item-top { display:flex; gap:0.5rem; margin-bottom:0.875rem; }
+    .rfs-item-select { flex:1; }
+
+    .rfs-remove-btn {
+      width:36px; height:36px; background:rgba(229,57,53,0.08); border:1px solid rgba(229,57,53,0.2);
+      color:#E53935; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0;
+      &:hover { background:rgba(229,57,53,0.15); }
+    }
+
+    .rfs-item-details { display:grid; grid-template-columns:1fr 1fr 1.5fr auto; gap:0.75rem; align-items:end;
+      @media(max-width:600px) { grid-template-columns:1fr 1fr; }
+    }
+
+    .rfs-item-field {
+      display:flex; flex-direction:column; gap:0.25rem;
+      label { font-size:0.65rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--gray-400); }
+    }
+
+    .rfs-select-sm {
+      padding:0.5rem 0.625rem; border:1px solid var(--gray-300); background:var(--cream);
+      font-size:0.875rem; outline:none; width:100%;
+      &:focus { border-color:var(--gold); }
+    }
+
+    .rfs-input-sm {
+      padding:0.5rem 0.625rem; border:1px solid var(--gray-300); background:var(--cream);
+      font-size:0.875rem; outline:none; width:100%; box-sizing:border-box;
+      &:focus { border-color:var(--gold); }
+    }
+
+    .rfs-price-input { border-color:var(--gold); background:rgba(201,168,76,0.05); font-weight:600; }
+
+    .rfs-item-profit {
+      display:flex; flex-direction:column; gap:2px; padding:0.5rem 0.75rem;
+      background:rgba(76,175,80,0.08); border:1px solid rgba(76,175,80,0.2); align-self:end;
+      @media(max-width:600px) { grid-column:1/-1; flex-direction:row; justify-content:space-between; }
+      .iprofit-label { font-size:0.62rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#388E3C; }
+      .iprofit-val   { font-size:0.9rem; font-weight:700; color:#2e7d32; }
+    }
+
+    .rfs-error { background:rgba(229,57,53,0.08); border-left:3px solid #E53935; padding:0.75rem 1rem; font-size:0.875rem; color:#c62828; margin-bottom:1rem; }
+
+    .rd-submit-btn {
+      width:100%; padding:1rem; background:var(--gold); color:var(--black); border:none; cursor:pointer;
+      font-size:0.8rem; font-weight:800; letter-spacing:0.14em; text-transform:uppercase;
+      display:flex; align-items:center; justify-content:center; gap:0.625rem;
+      transition:background 0.2s;
+      &:hover { background:var(--gold-dark); }
+      &:disabled { opacity:0.6; cursor:not-allowed; }
+      .btn-spinner { width:18px; height:18px; border:2px solid rgba(26,26,26,0.3); border-top-color:var(--black); border-radius:50%; animation:spin 0.7s linear infinite; }
+    }
+
+    /* Right: Summary */
+    .rd-summary-col { position:sticky; top:100px; }
+
+    .rd-summary-card { background:var(--black); overflow:hidden; }
+
+    .rsc-title {
+      display:flex; align-items:center; gap:0.625rem;
+      padding:1rem 1.25rem; border-bottom:1px solid rgba(201,168,76,0.15);
+      font-size:0.7rem; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold);
+      svg { stroke:var(--gold); flex-shrink:0; }
+    }
+
+    .rsc-items { padding:0.875rem 1.25rem; display:flex; flex-direction:column; gap:0.625rem; }
+
+    .rsc-item {
+      .rsc-item-name { font-size:0.8125rem; font-weight:600; color:var(--cream); }
+      .rsc-item-meta { font-size:0.72rem; color:rgba(245,240,232,0.5); margin-top:2px; }
+    }
+
+    .rsc-empty { padding:2rem; text-align:center;
+      svg { margin:0 auto 0.75rem; display:block; }
+      p { font-size:0.75rem; color:rgba(245,240,232,0.3); }
+    }
+
+    .rsc-divider { height:1px; background:rgba(255,255,255,0.08); margin:0 1.25rem; }
+
+    .rsc-row {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:0.625rem 1.25rem; font-size:0.8125rem; color:rgba(245,240,232,0.6);
+      &.rsc-total { color:var(--cream); font-weight:600; font-size:0.9rem; }
+    }
+
+    .rsc-profit-box {
+      margin:0.75rem; padding:1rem 1.25rem; background:rgba(201,168,76,0.1);
+      border:1px solid rgba(201,168,76,0.25);
+      .rpb-label { font-size:0.65rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:rgba(201,168,76,0.65); margin-bottom:0.375rem; }
+      .rpb-value { font-family:var(--font-heading); font-size:1.75rem; font-weight:400; color:var(--gold); }
+      .rpb-note  { font-size:0.7rem; color:rgba(76,175,80,0.8); margin-top:0.375rem; }
+    }
+
+    .rsc-tips { padding:0.875rem 1.25rem; display:flex; flex-direction:column; gap:0.375rem; border-top:1px solid rgba(255,255,255,0.06); }
+    .tip { display:flex; align-items:flex-start; gap:0.5rem; font-size:0.7rem; color:rgba(245,240,232,0.35); line-height:1.5; svg{stroke:rgba(201,168,76,0.5);flex-shrink:0;margin-top:2px;} }
     .item-product-select { flex: 1; }
     .item-remove { background: none; border: none; cursor: pointer; color: var(--gray-300); padding: 0.25rem; &:hover { color: #C62828; } display: flex; }
 
@@ -813,6 +989,10 @@ export class ResellerDashboardComponent implements OnInit {
         next: o => { this.orders.set(o); this.ordersLoading.set(false); },
         error: () => { this.ordersLoading.set(false); }
       });
+  }
+
+  getProductName(productId: number): string {
+    return this.products().find(p => p.id === productId)?.name || '';
   }
 
   getFirstImage(images: string): string {
