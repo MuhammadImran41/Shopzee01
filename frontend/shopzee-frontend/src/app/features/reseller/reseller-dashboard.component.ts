@@ -188,20 +188,7 @@ interface OrderItem {
               <div class="rd-product-card">
                 <div class="rd-product-img-wrap">
                   <img [src]="getFirstImage(p.images)" [alt]="p.name" loading="lazy"/>
-                  <!-- Hover Actions -->
-                  <div class="rd-product-actions">
-                    <button class="rd-action-btn rd-action-btn--download"
-                      (click)="downloadImage(p)" title="Download image">
-                      <app-icon name="download" [size]="15"/>
-                      <span>Download</span>
-                    </button>
-                    <button class="rd-action-btn rd-action-btn--order"
-                      (click)="startOrder(p)" title="Place order">
-                      <app-icon name="cart" [size]="15"/>
-                      <span>Order</span>
-                    </button>
-                  </div>
-                  <!-- Badges -->
+                  <!-- Badges only -->
                   <span class="rd-cat-badge">{{ p.category }}</span>
                   <span class="rd-stock-badge" [class.low]="p.stock < 5">
                     {{ p.stock }} in stock
@@ -576,20 +563,6 @@ interface OrderItem {
     .rd-product-img-wrap {
       position: relative; aspect-ratio: 3/4; overflow: hidden;
       img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
-    }
-
-    .rd-product-actions {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      display: flex; gap: 0; opacity: 0; transition: opacity 0.25s;
-      .rd-product-card:hover & { opacity: 1; }
-    }
-
-    .rd-action-btn {
-      flex: 1; padding: 0.625rem 0.5rem; display: flex; align-items: center; justify-content: center;
-      gap: 0.3rem; border: none; cursor: pointer; transition: all 0.2s;
-      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-      &--download { background: rgba(26,26,26,0.85); color: var(--gold); &:hover { background: var(--black); } }
-      &--order    { background: rgba(201,168,76,0.9); color: var(--black); &:hover { background: var(--gold); } }
     }
 
     .rd-cat-badge {
