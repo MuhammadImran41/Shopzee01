@@ -3,7 +3,7 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AuthApiService } from '../services/api/auth-api.service';
 import { ToastService } from '../services/toast.service';
 
-export const authGuard: CanActivateFn = () => {
+export const authGuard: CanActivateFn = (route, state) => {
   const auth  = inject(AuthApiService);
   const router= inject(Router);
   const toast = inject(ToastService);
@@ -11,7 +11,8 @@ export const authGuard: CanActivateFn = () => {
   if (auth.isLoggedIn()) return true;
 
   toast.info('Please sign in to continue.');
-  router.navigate(['/account']);
+  // Save the attempted URL so we can redirect after login
+  router.navigate(['/'], { queryParams: { signIn: '1', returnUrl: state.url } });
   return false;
 };
 

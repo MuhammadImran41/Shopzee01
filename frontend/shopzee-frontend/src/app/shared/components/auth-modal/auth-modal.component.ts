@@ -688,6 +688,11 @@ export class AuthModalComponent {
           this.loggedIn.emit();
           this.close.emit();
           this.toast.success('Welcome back!');
+          // Normal user: stay on current page (returnUrl handled by app.component)
+          // Only navigate to home if currently on /account
+          if (this.router.url.startsWith('/account') || this.router.url.includes('signIn=1')) {
+            // App component's onAuthLoggedIn handles returnUrl navigation
+          }
         }
       },
       error: err => {

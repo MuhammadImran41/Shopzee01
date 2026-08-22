@@ -1,9 +1,10 @@
 import { Component, inject, signal, OnInit, PLATFORM_ID } from '@angular/core';
-import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
+import { RouterOutlet, Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { ToastComponent } from './shared/components/toast/toast.component';
+import { AuthModalComponent } from './shared/components/auth-modal/auth-modal.component';
 import { AuthApiService } from './core/services/api/auth-api.service';
 import { ThemeService } from './core/services/theme.service';
 import { SiteImagesService } from './core/services/site-images.service';
@@ -12,7 +13,7 @@ import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, NavbarComponent, FooterComponent, ToastComponent],
+  imports: [CommonModule, RouterOutlet, NavbarComponent, FooterComponent, ToastComponent, AuthModalComponent],
   template: `
     <!-- Admin layout: full screen, no navbar/footer -->
     @if (isAdminRoute()) {
@@ -26,6 +27,14 @@ import { filter } from 'rxjs/operators';
         <router-outlet/>
       </main>
       <app-footer/>
+    }
+
+    <!-- Global auth modal (triggered by ?signIn=1) -->
+    @if (showGlobalAuth()) {
+      <app-auth-modal
+        (close)="onAuthClose()"
+        (loggedIn)="onAuthLoggedIn()"
+      />
     }
 
     <!-- Toast always visible -->
@@ -45,17 +54,35 @@ import { filter } from 'rxjs/operators';
 })
 export class AppComponent implements OnInit {
   private router     = inject(Router);
+  private route      = inject(ActivatedRoute);
   private platformId = inject(PLATFORM_ID);
   private authApi    = inject(AuthApiService);
   private themeService  = inject(ThemeService);
   private imagesService = inject(SiteImagesService);
 
-  isAdminRoute = signal(false);
+  isAdminRoute   = signal(false);
+  showGlobalAuth = signal(false);
+  private returnUrl = '';
+
   isAdminUser    = () => this.authApi.currentUser()?.role === 'admin';
   isResellerUser = () => {
     const r = this.authApi.currentUser()?.role;
     return r === 'reseller' || r === 'reseller_pending';
   };
+
+  onAuthClose() {
+    this.showGlobalAuth.set(false);
+    // Remove query params from URL
+    this.router.navigate(['/'], { replaceUrl: true });
+  }
+
+  onAuthLoggedIn() {
+    this.showGlobalAuth.set(false);
+    const dest = this.returnUrl || '/';
+    this.returnUrl = '';
+    // Navigate to returnUrl after login (checkout, etc.)
+    this.router.navigate([dest], { replaceUrl: true });
+  }
 
   ngOnInit() {
     if (!isPlatformBrowser(this.platformId)) return;
@@ -70,11 +97,18 @@ export class AppComponent implements OnInit {
         const url = e.urlAfterRedirects;
         this.isAdminRoute.set(url.startsWith('/admin'));
 
-        // If admin is logged in and on any non-admin route, redirect to admin
+        // Check for ?signIn=1 — open auth modal + save returnUrl
+        const urlObj = new URL(window.location.href);
+        if (urlObj.searchParams.get('signIn') === '1') {
+          this.returnUrl = urlObj.searchParams.get('returnUrl') || '/';
+          this.showGlobalAuth.set(true);
+        }
+
+        // Admin redirect
         if (this.authApi.currentUser()?.role === 'admin' && !url.startsWith('/admin')) {
           this.router.navigate(['/admin']);
         }
-        // If reseller is on public route (not /reseller), redirect to reseller
+        // Reseller redirect
         const role = this.authApi.currentUser()?.role;
         if ((role === 'reseller' || role === 'reseller_pending') && !url.startsWith('/reseller')) {
           this.router.navigate(['/reseller']);
