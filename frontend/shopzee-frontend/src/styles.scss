@@ -5,15 +5,17 @@
 
 // ============================================================
 // ANTI-FOUC (Flash of Unstyled Content)
-// Prevents footer/content flash on initial load
+// Body stays hidden until router resolves first navigation,
+// preventing the footer-flash-then-reload artifact.
 // ============================================================
 body:not(.loaded) {
   opacity: 0;
-  transition: opacity 0.2s ease-in;
+  /* No transition here — we want instant hide, smooth reveal */
 }
 
 body.loaded {
   opacity: 1;
+  transition: opacity 0.25s ease-in;
 }
 
 // Google Fonts — loaded via index.html preload for better performance.

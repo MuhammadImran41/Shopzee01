@@ -676,7 +676,7 @@ import { apiToProduct } from '../../../core/services/product.service';
       &:hover { color: #C9A84C; text-shadow: none; background: rgba(255,255,255,0.08); }
       &.active { color: #C9A84C; text-shadow: none; }
 
-      &--sale { color: #C9A84C; font-weight: 700; }
+      &--sale { color: #dc3232; font-weight: 700; }
     }
 
     .navbar.scrolled .nav-link {

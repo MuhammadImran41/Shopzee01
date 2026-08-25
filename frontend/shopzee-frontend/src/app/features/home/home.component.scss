@@ -30,15 +30,7 @@
   }
 
   @media (max-width: 500px) {
-    min-height: 560px;
-  }
-
-  @media (max-width: 400px) {
-    min-height: 500px;
-  }
-
-  @media (max-width: 300px) {
-    min-height: 420px;
+    min-height: auto;
   }
 
   &__video-wrap {
@@ -144,6 +136,10 @@
     @media (max-width: 480px) {
       padding: 0 1rem;
       min-height: auto;
+    }
+
+    @media (max-width: 500px) {
+      padding-top: 85px;
     }
 
     @media (max-width: 360px) {

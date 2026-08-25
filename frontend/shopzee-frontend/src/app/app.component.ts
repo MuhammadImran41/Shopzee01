@@ -16,26 +16,31 @@ import { filter } from 'rxjs/operators';
   standalone: true,
   imports: [CommonModule, RouterOutlet, NavbarComponent, FooterComponent, ToastComponent, AuthModalComponent],
   template: `
-    <!-- Admin layout: full screen, no navbar/footer -->
-    @if (isAdminRoute()) {
-      <router-outlet/>
-    }
+    <!-- Render nothing until first navigation is resolved -->
+    @if (routerReady()) {
 
-    <!-- Public + Reseller layout: navbar + content + footer -->
-    @if (!isAdminRoute() && !isAdminUser()) {
-      <app-navbar/>
-      <main class="main-content" id="main-content">
+      <!-- Admin layout: full screen, no navbar/footer -->
+      @if (isAdminRoute()) {
         <router-outlet/>
-      </main>
-      <app-footer/>
-    }
+      }
 
-    <!-- Global auth modal (triggered by ?signIn=1) -->
-    @if (showGlobalAuth()) {
-      <app-auth-modal
-        (close)="onAuthClose()"
-        (loggedIn)="onAuthLoggedIn()"
-      />
+      <!-- Public + Reseller layout: navbar + content + footer -->
+      @if (!isAdminRoute() && !isAdminUser()) {
+        <app-navbar/>
+        <main class="main-content" id="main-content">
+          <router-outlet/>
+        </main>
+        <app-footer/>
+      }
+
+      <!-- Global auth modal (triggered by ?signIn=1) -->
+      @if (showGlobalAuth()) {
+        <app-auth-modal
+          (close)="onAuthClose()"
+          (loggedIn)="onAuthLoggedIn()"
+        />
+      }
+
     }
 
     <!-- Toast always visible -->
@@ -64,6 +69,8 @@ export class AppComponent implements OnInit {
 
   isAdminRoute   = signal(false);
   showGlobalAuth = signal(false);
+  /** True only after the first NavigationEnd — prevents premature rendering */
+  routerReady    = signal(false);
   private returnUrl = '';
 
   isAdminUser    = () => this.authApi.currentUser()?.role === 'admin';
@@ -74,7 +81,6 @@ export class AppComponent implements OnInit {
 
   onAuthClose() {
     this.showGlobalAuth.set(false);
-    // Remove query params from URL
     this.router.navigate(['/'], { replaceUrl: true });
   }
 
@@ -82,7 +88,6 @@ export class AppComponent implements OnInit {
     this.showGlobalAuth.set(false);
     const dest = this.returnUrl || '/';
     this.returnUrl = '';
-    // Navigate to returnUrl after login (checkout, etc.)
     this.router.navigate([dest], { replaceUrl: true });
   }
 
@@ -94,16 +99,18 @@ export class AppComponent implements OnInit {
     this.imagesService.init();
     this.settingsService.init();
 
-    // Remove FOUC - mark body as loaded
-    if (typeof document !== 'undefined') {
-      document.body.classList.add('loaded');
-    }
-
     this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe((e: NavigationEnd) => {
         const url = e.urlAfterRedirects;
         this.isAdminRoute.set(url.startsWith('/admin'));
+
+        // Mark router as ready after first navigation — prevents footer flash
+        if (!this.routerReady()) {
+          this.routerReady.set(true);
+          // Reveal the page now that layout is determined
+          document.body.classList.add('loaded');
+        }
 
         // Check for ?signIn=1 — open auth modal + save returnUrl
         const urlObj = new URL(window.location.href);
@@ -116,8 +123,6 @@ export class AppComponent implements OnInit {
         if (this.authApi.currentUser()?.role === 'admin' && !url.startsWith('/admin')) {
           this.router.navigate(['/admin']);
         }
-        // Reseller: only block admin panel access, allow public pages
-        // (reseller can browse products, view site normally)
       });
 
     this.isAdminRoute.set(this.router.url.startsWith('/admin'));
