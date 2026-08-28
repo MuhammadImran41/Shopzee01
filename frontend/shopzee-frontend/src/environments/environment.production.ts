@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBase: 'https://api.stylemaker.store/api'
+  apiBase: 'http://Shopzee-api-env.eba-qzdcqsdv.us-east-1.elasticbeanstalk.com/api'
 };
