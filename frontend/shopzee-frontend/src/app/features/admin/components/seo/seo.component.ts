@@ -5,11 +5,12 @@ import { ProductApiService } from '../../../../core/services/api/product-api.ser
 import { ProductService } from '../../../../core/services/product.service';
 import { ToastService } from '../../../../core/services/toast.service';
 import { SvgIconsComponent } from '../../../../shared/components/svg-icons/svg-icons.component';
+import { SafeUrlPipe } from '../../../../shared/pipes/safe-url.pipe';
 
 @Component({
   selector: 'app-seo',
   standalone: true,
-  imports: [CommonModule, FormsModule, SvgIconsComponent],
+  imports: [CommonModule, FormsModule, SvgIconsComponent, SafeUrlPipe],
   template: `
     <div class="admin-section">
       <div class="section-top">
@@ -29,7 +30,7 @@ import { SvgIconsComponent } from '../../../../shared/components/svg-icons/svg-i
         @for (product of products(); track product.id) {
           <div class="seo-item" [class.expanded]="expandedId() === product.id">
             <div class="seo-item-header" (click)="toggle(product.id)">
-              <img [src]="product.images[0]" [alt]="product.name" class="seo-img" loading="lazy"/>
+              <img [src]="product.images[0] | safeUrl" [alt]="product.name" class="seo-img" loading="lazy"/>
               <div class="seo-item-info">
                 <span class="seo-item-name">{{ product.name }}</span>
                 <span class="seo-item-status" [class]="getSeoStatus(product)">{{ getSeoStatusLabel(product) }}</span>

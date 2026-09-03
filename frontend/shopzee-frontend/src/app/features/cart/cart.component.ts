@@ -4,11 +4,12 @@ import { RouterLink } from '@angular/router';
 import { CartService } from '../../core/services/cart.service';
 import { ToastService } from '../../core/services/toast.service';
 import { SvgIconsComponent } from '../../shared/components/svg-icons/svg-icons.component';
+import { SafeUrlPipe } from '../../shared/pipes/safe-url.pipe';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, RouterLink, SvgIconsComponent],
+  imports: [CommonModule, RouterLink, SvgIconsComponent, SafeUrlPipe],
   template: `
     <div class="cart-page container">
       <div class="page-header">
@@ -23,7 +24,7 @@ import { SvgIconsComponent } from '../../shared/components/svg-icons/svg-icons.c
             @for (item of cartService.items(); track item.product.id + item.selectedSize + item.selectedColor) {
               <div class="cart-item">
                 <a [routerLink]="['/product', item.product.id]" class="cart-item__img">
-                  <img [src]="item.product.images[0]" [alt]="item.product.name" loading="lazy"/>
+                  <img [src]="item.product.images[0] | safeUrl" [alt]="item.product.name" loading="lazy"/>
                 </a>
                 <div class="cart-item__info">
                   <span class="cart-item__cat">{{ item.product.subCategory }}</span>

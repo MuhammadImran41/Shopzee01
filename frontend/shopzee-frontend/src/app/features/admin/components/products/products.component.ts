@@ -3,13 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductApiService, ApiProduct } from '../../../../core/services/api/product-api.service';
 import { SvgIconsComponent } from '../../../../shared/components/svg-icons/svg-icons.component';
+import { SafeUrlPipe } from '../../../../shared/pipes/safe-url.pipe';
 import { ToastService } from '../../../../core/services/toast.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-admin-products',
   standalone: true,
-  imports: [CommonModule, FormsModule, SvgIconsComponent],
+  imports: [CommonModule, FormsModule, SvgIconsComponent, SafeUrlPipe],
   animations: [
     trigger('modalAnim', [
       transition(':enter', [
@@ -44,29 +45,6 @@ import { trigger, transition, style, animate } from '@angular/animations';
         </div>
       </div>
 
-      <!-- Bulk Upload Zone -->
-      <div
-        class="upload-zone"
-        [class.drag-over]="dragOver"
-        (dragover)="onDragOver($event)"
-        (dragleave)="dragOver = false"
-        (drop)="onDrop($event)"
-      >
-        <app-icon name="upload" [size]="32" class="upload-icon"/>
-        <p class="upload-text">Drag & drop product images for bulk upload</p>
-        <p class="upload-sub">PNG, JPG up to 10MB each</p>
-        <input type="file" multiple accept="image/*" class="upload-input"
-          (change)="onFileSelect($event)" id="bulk-upload" aria-label="Bulk upload"/>
-        <label for="bulk-upload" class="btn btn-outline">Browse Files</label>
-        @if (uploadedPreviews().length > 0) {
-          <div class="upload-previews">
-            @for (p of uploadedPreviews(); track $index) {
-              <img [src]="p" alt="Preview" class="upload-preview-img" loading="lazy"/>
-            }
-          </div>
-        }
-      </div>
-
       <!-- Loading -->
       @if (loading()) {
         <div class="loading-row">
@@ -95,7 +73,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
                     <td>
                       <div class="product-cell">
                         <img
-                          [src]="product.images[0] || 'assets/images/women/women-1.png'"
+                          [src]="product.images[0] || 'assets/images/women/women-1.png' | safeUrl"
                           [alt]="product.name"
                           class="product-thumb"
                           loading="lazy"
@@ -168,41 +146,124 @@ import { trigger, transition, style, animate } from '@angular/animations';
         </div>
         <div class="modal-body">
           <div class="form-grid">
+
+            <!-- Product Images Upload -->
+            <div class="form-group form-full">
+              <label>Product Images</label>
+              <div
+                class="img-upload-zone"
+                [class.drag-over]="imgDragOver"
+                (dragover)="onImgDragOver($event)"
+                (dragleave)="imgDragOver = false"
+                (drop)="onImgDrop($event)"
+              >
+                @if (formProduct.images?.length) {
+                  <div class="img-preview-list">
+                    @for (img of formProduct.images; track $index) {
+                      <div class="img-preview-item">
+                        <img [src]="img" alt="Product image" class="img-preview-thumb"/>
+                        <button class="img-remove-btn" (click)="removeImage($index)" aria-label="Remove image" type="button">
+                          <app-icon name="close" [size]="10"/>
+                        </button>
+                      </div>
+                    }
+                    <label class="img-add-more" for="modal-img-upload" title="Add more images">
+                      <app-icon name="plus" [size]="20"/>
+                    </label>
+                  </div>
+                } @else {
+                  <app-icon name="upload" [size]="28" class="upload-icon"/>
+                  <p class="upload-text">Drag & drop or click to upload</p>
+                  <p class="upload-sub">PNG, JPG up to 10MB each</p>
+                  <label for="modal-img-upload" class="btn btn-outline" style="cursor:pointer">Browse Files</label>
+                }
+                <input type="file" multiple accept="image/*" class="upload-input"
+                  (change)="onImgFileSelect($event)" id="modal-img-upload" aria-label="Upload product images"/>
+              </div>
+            </div>
+
+            <!-- Name -->
             <div class="form-group form-full">
               <label>Product Name</label>
-              <input [(ngModel)]="formProduct.name" type="text" placeholder="Enter product name"/>
+              <input [(ngModel)]="formProduct.name" type="text" placeholder="Enter product name"
+                (ngModelChange)="onNameChange($event)"/>
             </div>
+
+            <!-- Category -->
             <div class="form-group">
               <label>Category</label>
-              <select [(ngModel)]="formProduct.categoryId" class="form-select">
+              <select [(ngModel)]="formProduct.categoryId" class="form-select"
+                (ngModelChange)="onCategoryChange($event)">
                 <option [value]="1">Women</option>
                 <option [value]="2">Men</option>
               </select>
             </div>
+
+            <!-- SKU (auto-generated but editable) -->
+            <div class="form-group">
+              <label>SKU <span class="sku-auto-label">(auto-generated)</span></label>
+              <div class="sku-field">
+                <input [(ngModel)]="formProduct.sku" type="text" placeholder="e.g. WF-001"/>
+                <button class="sku-regen-btn" type="button" (click)="regenSku()" title="Re-generate SKU">
+                  ↻
+                </button>
+              </div>
+            </div>
+
+            <!-- Price -->
             <div class="form-group">
               <label>Price (PKR)</label>
               <input [(ngModel)]="formProduct.price" type="number" placeholder="0"/>
             </div>
+
+            <!-- Stock -->
             <div class="form-group">
               <label>Stock</label>
               <input [(ngModel)]="formProduct.stock" type="number" placeholder="0"/>
             </div>
+
+            <!-- Sub Category -->
             <div class="form-group">
               <label>Sub Category</label>
               <input [(ngModel)]="formProduct.subCategory" type="text" placeholder="e.g. Formal"/>
             </div>
+
+            <!-- Sizes -->
             <div class="form-group">
-              <label>SKU</label>
-              <input [(ngModel)]="formProduct.sku" type="text" placeholder="e.g. WF-001"/>
+              <label>Sizes (comma-separated)</label>
+              <input [(ngModel)]="formProduct.sizesStr" type="text" placeholder="XS,S,M,L,XL"/>
             </div>
+
+            <!-- Colors -->
+            <div class="form-group form-full">
+              <label>Colors</label>
+              <div class="colors-row">
+                @for (color of formProduct.colorsArr; track $index) {
+                  <div class="color-chip">
+                    <span class="color-swatch" [style.background]="color"></span>
+                    <span class="color-hex">{{ color }}</span>
+                    <button class="color-remove" (click)="removeColor($index)" type="button" aria-label="Remove color">×</button>
+                  </div>
+                }
+                <div class="color-add-wrap">
+                  <input
+                    type="color"
+                    [(ngModel)]="newColor"
+                    class="color-picker-input"
+                    aria-label="Pick color"
+                  />
+                  <button class="btn btn-outline btn-sm" type="button" (click)="addColor()">+ Add Color</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Description -->
             <div class="form-group form-full">
               <label>Description</label>
               <textarea [(ngModel)]="formProduct.description" rows="3" placeholder="Product description..."></textarea>
             </div>
-            <div class="form-group form-full">
-              <label>Sizes (comma-separated)</label>
-              <input [(ngModel)]="formProduct.sizesStr" type="text" placeholder="XS,S,M,L,XL"/>
-            </div>
+
+            <!-- Checkboxes -->
             <div class="form-group">
               <label class="check-label">
                 <input type="checkbox" [(ngModel)]="formProduct.isNew"/>
@@ -215,12 +276,13 @@ import { trigger, transition, style, animate } from '@angular/animations';
                 Featured Product
               </label>
             </div>
+
           </div>
         </div>
         <div class="modal-footer">
           <button class="btn btn-ghost" (click)="modalOpen.set(false)">Cancel</button>
-          <button class="btn btn-primary" (click)="saveProduct()">
-            {{ editMode() ? 'Save Changes' : 'Add Product' }}
+          <button class="btn btn-primary" [disabled]="saving()" (click)="saveProduct()">
+            {{ saving() ? 'Saving...' : (editMode() ? 'Save Changes' : 'Add Product') }}
           </button>
         </div>
       </div>
@@ -251,13 +313,60 @@ import { trigger, transition, style, animate } from '@angular/animations';
     .section-actions { display:flex; gap:0.75rem; align-items:center; flex-wrap:wrap; }
     .search-box { display:flex; align-items:center; gap:0.5rem; border:1px solid var(--gray-200); background:var(--cream-light); padding:0.5rem 0.875rem; .search-ico{color:var(--gray-400);} }
     .admin-search-input { border:none; background:none; font-size:0.875rem; color:var(--black); outline:none; width:200px; &::placeholder{color:var(--gray-400);} }
-    .upload-zone { border:2px dashed var(--gray-300); padding:2rem; text-align:center; margin-bottom:1.5rem; transition:all 0.3s; &.drag-over{border-color:var(--gold);background:rgba(201,168,76,0.04);} }
-    .upload-icon { color:var(--gold); margin:0 auto 0.75rem; }
-    .upload-text { font-weight:500; margin-bottom:0.25rem; }
-    .upload-sub { font-size:0.8125rem; color:var(--gray-400); margin-bottom:1rem; }
-    .upload-input { display:none; }
-    .upload-previews { display:flex; flex-wrap:wrap; gap:0.5rem; justify-content:center; margin-top:1rem; }
-    .upload-preview-img { width:80px; height:100px; object-fit:cover; border:2px solid var(--gold); }
+
+    /* Image upload zone inside modal */
+    .img-upload-zone {
+      border: 2px dashed var(--gray-300); padding: 1.25rem; text-align: center;
+      transition: all 0.3s; background: var(--cream); min-height: 110px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem;
+      &.drag-over { border-color: var(--gold); background: rgba(201,168,76,0.05); }
+    }
+    .upload-icon { color: var(--gold); }
+    .upload-text { font-size: 0.875rem; font-weight: 500; margin: 0; }
+    .upload-sub { font-size: 0.775rem; color: var(--gray-400); margin: 0 0 0.5rem; }
+    .upload-input { display: none; }
+
+    /* Image previews */
+    .img-preview-list { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: flex-start; width: 100%; padding: 0.25rem 0; }
+    .img-preview-item { position: relative; width: 72px; height: 88px; flex-shrink: 0; }
+    .img-preview-thumb { width: 72px; height: 88px; object-fit: cover; border: 2px solid var(--gold); display: block; }
+    .img-remove-btn {
+      position: absolute; top: -6px; right: -6px; width: 18px; height: 18px;
+      background: var(--black); color: #fff; border: none; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      padding: 0; line-height: 1;
+    }
+    .img-add-more {
+      width: 72px; height: 88px; border: 2px dashed var(--gray-300); display: flex;
+      align-items: center; justify-content: center; cursor: pointer; color: var(--gray-400);
+      flex-shrink: 0; transition: all 0.2s;
+      &:hover { border-color: var(--gold); color: var(--gold); }
+    }
+
+    /* SKU field */
+    .sku-auto-label { font-size: 0.7rem; color: var(--gray-400); font-weight: 400; margin-left: 0.25rem; }
+    .sku-field { display: flex; gap: 0.4rem; align-items: stretch; }
+    .sku-field input { flex: 1; }
+    .sku-regen-btn {
+      padding: 0 0.75rem; border: 1px solid var(--gray-300); background: var(--cream);
+      cursor: pointer; font-size: 1.1rem; color: var(--gray-500); transition: all 0.2s;
+      &:hover { border-color: var(--gold); color: var(--gold); }
+    }
+
+    /* Colors */
+    .colors-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+    .color-chip {
+      display: flex; align-items: center; gap: 0.3rem; border: 1px solid var(--gray-200);
+      padding: 0.2rem 0.5rem; background: var(--cream); font-size: 0.75rem;
+    }
+    .color-swatch { width: 16px; height: 16px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); flex-shrink: 0; }
+    .color-hex { font-size: 0.7rem; color: var(--gray-500); }
+    .color-remove { background: none; border: none; cursor: pointer; color: var(--gray-400); font-size: 1rem; line-height: 1; padding: 0 0.1rem; &:hover { color: var(--black); } }
+    .color-add-wrap { display: flex; align-items: center; gap: 0.4rem; }
+    .color-picker-input { width: 32px; height: 32px; border: 1px solid var(--gray-300); padding: 2px; cursor: pointer; background: none; }
+    .btn-sm { padding: 0.3rem 0.625rem; font-size: 0.75rem; }
+
+    /* Table */
     .loading-row { display:flex; align-items:center; gap:1rem; padding:2rem; color:var(--gray-400); }
     .spinner { width:24px; height:24px; border:2px solid var(--gray-200); border-top-color:var(--gold); border-radius:50%; animation:spin 0.7s linear infinite; }
     @keyframes spin { to{transform:rotate(360deg);} }
@@ -289,8 +398,9 @@ import { trigger, transition, style, animate } from '@angular/animations';
     .stock-btn-label { white-space: nowrap; }
     .empty-row { text-align:center; padding:2rem; color:var(--gray-400); }
     .table-footer { padding:0.75rem 1rem; border-top:1px solid var(--gray-200); font-size:0.8125rem; color:var(--gray-400); }
-    .total-count {}
-    .admin-modal { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:var(--cream-light); z-index:var(--z-modal); width:90%; max-width:560px; max-height:90vh; overflow-y:auto; border:1px solid var(--gray-200); box-shadow:var(--shadow-xl); &--sm{max-width:400px;} }
+
+    /* Modal */
+    .admin-modal { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:var(--cream-light); z-index:var(--z-modal); width:90%; max-width:600px; max-height:90vh; overflow-y:auto; border:1px solid var(--gray-200); box-shadow:var(--shadow-xl); &--sm{max-width:400px;} }
     .modal-header { display:flex; justify-content:space-between; align-items:center; padding:1.25rem 1.5rem; border-bottom:1px solid var(--gray-200); h2{font-family:var(--font-heading);font-size:var(--text-2xl);} button{background:none;border:none;cursor:pointer;color:var(--black);} }
     .modal-body { padding:1.5rem; p{font-size:0.875rem;color:var(--gray-500);} }
     .modal-footer { padding:1rem 1.5rem; border-top:1px solid var(--gray-200); display:flex; justify-content:flex-end; gap:0.75rem; }
@@ -306,18 +416,26 @@ export class AdminProductsComponent implements OnInit {
 
   products         = signal<ApiProduct[]>([]);
   loading          = signal(false);
+  saving           = signal(false);
   totalCount       = signal(0);
-  dragOver         = false;
-  uploadedPreviews = signal<string[]>([]);
+  imgDragOver      = false;
   modalOpen        = signal(false);
   editMode         = signal(false);
   deleteId         = signal<number | null>(null);
   searchTerm       = '';
+  newColor         = '#C9A84C';
 
-  formProduct: any = {
-    name: '', categoryId: 1, price: 0, stock: 10, description: '',
-    subCategory: '', sku: '', sizesStr: 'S,M,L,XL', isNew: false, isFeatured: false
-  };
+  formProduct: any = this.blankForm();
+
+  private blankForm() {
+    return {
+      name: '', categoryId: 1, price: 0, stock: 10, description: '',
+      subCategory: '', sku: '', sizesStr: 'S,M,L,XL',
+      isNew: false, isFeatured: false,
+      images: [] as string[],
+      colorsArr: [] as string[]
+    };
+  }
 
   ngOnInit() { this.loadProducts(); }
 
@@ -346,10 +464,7 @@ export class AdminProductsComponent implements OnInit {
 
   openAddModal() {
     this.editMode.set(false);
-    this.formProduct = {
-      name: '', categoryId: 1, price: 0, stock: 10, description: '',
-      subCategory: '', sku: '', sizesStr: 'S,M,L,XL', isNew: false, isFeatured: false
-    };
+    this.formProduct = this.blankForm();
     this.modalOpen.set(true);
   }
 
@@ -358,56 +473,158 @@ export class AdminProductsComponent implements OnInit {
     this.formProduct = {
       ...p,
       categoryId: p.categoryId,
-      sizesStr:   p.sizes?.join(',') || 'S,M,L,XL'
+      sizesStr:   p.sizes?.join(',') || 'S,M,L,XL',
+      images:     [...(p.images || [])],
+      colorsArr:  [...(p.colors || [])]
     };
     this.modalOpen.set(true);
   }
 
+  // ── SKU auto-generation ──────────────────────────────────────
+  onNameChange(name: string) {
+    if (!this.editMode()) {
+      this.formProduct.sku = this.generateSku(name, this.formProduct.categoryId);
+    }
+  }
+
+  onCategoryChange(catId: number) {
+    if (!this.editMode()) {
+      this.formProduct.sku = this.generateSku(this.formProduct.name, catId);
+    }
+  }
+
+  regenSku() {
+    this.formProduct.sku = this.generateSku(this.formProduct.name, this.formProduct.categoryId);
+  }
+
+  private generateSku(name: string, categoryId: number): string {
+    const prefix = +categoryId === 2 ? 'MF' : 'WF';
+    const words  = (name || '').trim().split(/\s+/).filter(Boolean);
+    const abbr   = words.length >= 2
+      ? (words[0][0] + words[1][0]).toUpperCase()
+      : (words[0] || 'XX').substring(0, 2).toUpperCase();
+    const num    = String(Math.floor(Math.random() * 900) + 100);
+    return `${prefix}-${abbr}${num}`;
+  }
+
+  // ── Color management ─────────────────────────────────────────
+  addColor() {
+    const c = (this.newColor || '#000000').toUpperCase();
+    if (!this.formProduct.colorsArr.includes(c)) {
+      this.formProduct.colorsArr = [...this.formProduct.colorsArr, c];
+    }
+  }
+
+  removeColor(idx: number) {
+    this.formProduct.colorsArr = this.formProduct.colorsArr.filter((_: string, i: number) => i !== idx);
+  }
+
+  // ── Image handling inside modal ──────────────────────────────
+  onImgDragOver(e: DragEvent) { e.preventDefault(); this.imgDragOver = true; }
+
+  onImgDrop(e: DragEvent) {
+    e.preventDefault();
+    this.imgDragOver = false;
+    this.readImageFiles(Array.from(e.dataTransfer?.files || []));
+  }
+
+  onImgFileSelect(e: Event) {
+    this.readImageFiles(Array.from((e.target as HTMLInputElement).files || []));
+    (e.target as HTMLInputElement).value = '';
+  }
+
+  private readImageFiles(files: File[]) {
+    const imgs = files.filter(f => f.type.startsWith('image/'));
+    imgs.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const dataUrl = ev.target?.result as string;
+        // Compress via canvas — max 800px wide, 80% quality
+        const img = new Image();
+        img.onload = () => {
+          const MAX = 800;
+          const scale = img.width > MAX ? MAX / img.width : 1;
+          const canvas = document.createElement('canvas');
+          canvas.width  = Math.round(img.width  * scale);
+          canvas.height = Math.round(img.height * scale);
+          const ctx = canvas.getContext('2d')!;
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          const compressed = canvas.toDataURL('image/jpeg', 0.80);
+          this.formProduct.images = [...(this.formProduct.images || []), compressed];
+        };
+        img.src = dataUrl;
+      };
+      reader.readAsDataURL(file);
+    });
+    if (imgs.length) this.toast.success(`${imgs.length} image(s) added`);
+  }
+
+  removeImage(idx: number) {
+    this.formProduct.images = this.formProduct.images.filter((_: string, i: number) => i !== idx);
+  }
+
+  // ── Save ─────────────────────────────────────────────────────
   saveProduct() {
+    if (!this.formProduct.name?.trim()) {
+      this.toast.error('Product name is required.');
+      return;
+    }
+
     const sizes = String(this.formProduct.sizesStr || 'S,M,L,XL')
       .split(',').map((s: string) => s.trim()).filter(Boolean);
 
     const payload = {
-      name:        this.formProduct.name?.trim() || 'New Product',
+      name:        this.formProduct.name.trim(),
       description: this.formProduct.description  || '',
       price:       +this.formProduct.price        || 0,
       categoryId:  +this.formProduct.categoryId   || 1,
       subCategory: this.formProduct.subCategory   || '',
-      sku:         this.formProduct.sku           || '',
+      sku:         this.formProduct.sku           || this.generateSku(this.formProduct.name, this.formProduct.categoryId),
       stock:       +this.formProduct.stock        || 0,
       sizes,
-      colors:  this.formProduct.colors  || [],
-      images:  this.formProduct.images?.length ? this.formProduct.images : [],
-      tags:    this.formProduct.tags    || [],
+      colors:  this.formProduct.colorsArr || [],
+      images:  this.formProduct.images    || [],
+      tags:    this.formProduct.tags      || [],
       isNew:       !!this.formProduct.isNew,
       isFeatured:  !!this.formProduct.isFeatured,
-      isActive:    true
+      isActive:    true,
+      isInStock:   true
     };
+
+    this.saving.set(true);
 
     if (this.editMode() && this.formProduct.id) {
       this.productApi.update(this.formProduct.id, payload).subscribe({
-        next: () => { this.toast.success('Product updated'); this.modalOpen.set(false); this.loadProducts(); },
-        error: () => this.toast.error('Failed to update product.')
+        next: () => {
+          this.toast.success('Product updated');
+          this.modalOpen.set(false);
+          this.saving.set(false);
+          this.loadProducts();
+        },
+        error: () => { this.toast.error('Failed to update product.'); this.saving.set(false); }
       });
     } else {
       this.productApi.create(payload).subscribe({
-        next: () => { this.toast.success('Product added'); this.modalOpen.set(false); this.loadProducts(); },
-        error: () => this.toast.error('Failed to add product.')
+        next: () => {
+          this.toast.success('Product added');
+          this.modalOpen.set(false);
+          this.saving.set(false);
+          this.loadProducts();
+        },
+        error: () => { this.toast.error('Failed to add product.'); this.saving.set(false); }
       });
     }
   }
 
+  // ── Delete ───────────────────────────────────────────────────
   deleteProduct(id: number) { this.deleteId.set(id); }
 
   toggleStock(product: ApiProduct) {
     this.productApi.toggleStock(product.id).subscribe({
       next: (res) => {
-        // Force new array + new object reference for change detection
         this.products.set(
           this.products().map(p =>
-            p.id === product.id
-              ? { ...p, isInStock: res.isInStock }
-              : p
+            p.id === product.id ? { ...p, isInStock: res.isInStock } : p
           )
         );
         this.toast.success(res.isInStock
@@ -431,27 +648,5 @@ export class AdminProductsComponent implements OnInit {
         error: () => this.toast.error('Failed to delete product.')
       });
     }
-  }
-
-  onDragOver(e: DragEvent) { e.preventDefault(); this.dragOver = true; }
-
-  onDrop(e: DragEvent) {
-    e.preventDefault();
-    this.dragOver = false;
-    this.processFiles(Array.from(e.dataTransfer?.files || []));
-  }
-
-  onFileSelect(e: Event) {
-    this.processFiles(Array.from((e.target as HTMLInputElement).files || []));
-  }
-
-  private processFiles(files: File[]) {
-    const imgs = files.filter(f => f.type.startsWith('image/'));
-    imgs.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = ev => this.uploadedPreviews.update(p => [...p, ev.target?.result as string]);
-      reader.readAsDataURL(file);
-    });
-    if (imgs.length) this.toast.success(`${imgs.length} image(s) ready for upload`);
   }
 }

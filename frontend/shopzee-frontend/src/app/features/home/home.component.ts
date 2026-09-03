@@ -9,13 +9,14 @@ import { CartService } from '../../core/services/cart.service';
 import { WishlistService } from '../../core/services/wishlist.service';
 import { ToastService } from '../../core/services/toast.service';
 import { SvgIconsComponent } from '../../shared/components/svg-icons/svg-icons.component';
+import { SafeUrlPipe } from '../../shared/pipes/safe-url.pipe';
 import { SiteImagesService } from '../../core/services/site-images.service';
 import { Product } from '../../core/models/product.model';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterLink, SvgIconsComponent],
+  imports: [CommonModule, RouterLink, SvgIconsComponent, SafeUrlPipe],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })

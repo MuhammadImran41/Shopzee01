@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { CartService } from '../../core/services/cart.service';
 import { ToastService } from '../../core/services/toast.service';
 import { SvgIconsComponent } from '../../shared/components/svg-icons/svg-icons.component';
+import { SafeUrlPipe } from '../../shared/pipes/safe-url.pipe';
 import { OrderApiService } from '../../core/services/api/order-api.service';
 import { AuthApiService } from '../../core/services/api/auth-api.service';
 import { API_BASE } from '../../core/services/api/api.config';
@@ -13,7 +14,7 @@ import { API_BASE } from '../../core/services/api/api.config';
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule, SvgIconsComponent],
+  imports: [CommonModule, RouterLink, FormsModule, SvgIconsComponent, SafeUrlPipe],
   template: `
     <div class="checkout-page container">
       @if (!orderPlaced()) {
@@ -102,7 +103,7 @@ import { API_BASE } from '../../core/services/api/api.config';
             <h3 class="summary-heading">Order Summary</h3>
             @for (item of cartService.items(); track item.product.id) {
               <div class="summary-item">
-                <img [src]="item.product.images[0]" [alt]="item.product.name" class="summary-item-img"/>
+                <img [src]="item.product.images[0] | safeUrl" [alt]="item.product.name" class="summary-item-img"/>
                 <div class="summary-item-info">
                   <span class="summary-item-name">{{ item.product.name }}</span>
                   <span class="summary-item-meta">{{ item.selectedSize }} · Qty {{ item.quantity }}</span>

@@ -92,8 +92,26 @@ public static class MappingHelper
             .Replace("'", "")
             .Replace("/", "-");
 
-    private static List<string> Split(string val) =>
-        string.IsNullOrWhiteSpace(val)
-            ? []
-            : [.. val.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)];
+    /// <summary>
+    /// Split a pipe-separated or comma-separated string into a list.
+    /// Uses pipe (|) as primary separator to safely handle base64 data URLs
+    /// which contain commas (e.g. "data:image/jpeg;base64,/9j/...").
+    /// Falls back to comma splitting for legacy records that don't contain data: URLs.
+    /// </summary>
+    private static List<string> Split(string val)
+    {
+        if (string.IsNullOrWhiteSpace(val)) return [];
+
+        // If value contains a pipe, it was stored with the new pipe separator
+        if (val.Contains('|'))
+            return [.. val.Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)];
+
+        // Legacy comma-separated (asset paths like "img1.png,img2.png" — no data: URLs)
+        // Also handles the case where a single data: URL was stored with comma separator
+        // by detecting "data:" prefix and returning the whole thing as one item
+        if (val.StartsWith("data:"))
+            return [val];
+
+        return [.. val.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)];
+    }
 }

@@ -9,13 +9,14 @@ import { WishlistService } from '../../core/services/wishlist.service';
 import { ToastService } from '../../core/services/toast.service';
 import { AuthApiService } from '../../core/services/api/auth-api.service';
 import { SvgIconsComponent } from '../../shared/components/svg-icons/svg-icons.component';
+import { SafeUrlPipe } from '../../shared/pipes/safe-url.pipe';
 import { Product } from '../../core/models/product.model';
 import { API_BASE } from '../../core/services/api/api.config';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule, SvgIconsComponent],
+  imports: [CommonModule, RouterLink, FormsModule, SvgIconsComponent, SafeUrlPipe],
   template: `
     @if (product()) {
       <div class="pd-container container">
@@ -32,7 +33,7 @@ import { API_BASE } from '../../core/services/api/api.config';
           <!-- Gallery -->
           <div class="pd-gallery">
             <div class="pd-main-image">
-              <img [src]="product()!.images[activeImage()]" [alt]="product()!.name" class="pd-img"/>
+              <img [src]="product()!.images[activeImage()] | safeUrl" [alt]="product()!.name" class="pd-img"/>
               <button
                 class="pd-wishlist-btn"
                 [class.active]="wishlistService.isWishlisted(product()!.id)"
@@ -51,7 +52,7 @@ import { API_BASE } from '../../core/services/api/api.config';
                     (click)="activeImage.set($index)"
                     [attr.aria-label]="'View image ' + ($index + 1)"
                   >
-                    <img [src]="img" [alt]="product()!.name + ' view ' + ($index + 1)" loading="lazy"/>
+                    <img [src]="img | safeUrl" [alt]="product()!.name + ' view ' + ($index + 1)" loading="lazy"/>
                   </button>
                 }
               </div>
@@ -297,7 +298,7 @@ import { API_BASE } from '../../core/services/api/api.config';
             @for (p of relatedProducts(); track p.id) {
               <article class="product-card">
                 <a [routerLink]="['/product', p.id]" class="card-image-wrap">
-                  <img [src]="p.images[0]" [alt]="p.name" loading="lazy"/>
+                  <img [src]="p.images[0] | safeUrl" [alt]="p.name" loading="lazy"/>
                   <div class="card-overlay">
                     <button class="btn btn-primary w-full" (click)="$event.preventDefault(); quickAdd(p)">
                       Quick Add

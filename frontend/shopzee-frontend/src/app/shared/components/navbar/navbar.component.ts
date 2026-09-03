@@ -12,11 +12,12 @@ import { AuthModalComponent } from '../auth-modal/auth-modal.component';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { ProductApiService } from '../../../core/services/api/product-api.service';
 import { apiToProduct } from '../../../core/services/product.service';
+import { SafeUrlPipe } from '../../pipes/safe-url.pipe';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterLink, RouterLinkActive, FormsModule, SvgIconsComponent, AuthModalComponent],
+  imports: [CommonModule, RouterModule, RouterLink, RouterLinkActive, FormsModule, SvgIconsComponent, AuthModalComponent, SafeUrlPipe],
   animations: [
     trigger('drawerAnim', [
       transition(':enter', [
@@ -445,7 +446,7 @@ import { apiToProduct } from '../../../core/services/product.service';
               <div class="search-results-grid">
                 @for (product of searchResults(); track product.id) {
                   <a [routerLink]="['/product', product.id]" class="search-result-card" (click)="toggleSearch()">
-                    <img [src]="product.images[0]" [alt]="product.name" loading="lazy"/>
+                    <img [src]="product.images[0] | safeUrl" [alt]="product.name" loading="lazy"/>
                     <div class="search-result-info">
                       <p class="search-result-name">{{ product.name }}</p>
                       <p class="search-result-category">{{ product.subCategory }}</p>

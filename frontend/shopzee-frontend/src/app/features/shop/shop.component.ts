@@ -7,12 +7,13 @@ import { CartService } from '../../core/services/cart.service';
 import { WishlistService } from '../../core/services/wishlist.service';
 import { ToastService } from '../../core/services/toast.service';
 import { SvgIconsComponent } from '../../shared/components/svg-icons/svg-icons.component';
+import { SafeUrlPipe } from '../../shared/pipes/safe-url.pipe';
 import { Product } from '../../core/models/product.model';
 
 @Component({
   selector: 'app-shop',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule, SvgIconsComponent],
+  imports: [CommonModule, RouterLink, FormsModule, SvgIconsComponent, SafeUrlPipe],
   template: `
     <!-- Page Hero — full image, no cut -->
     <div class="shop-hero" [class.shop-hero--men]="category() === 'men'">
@@ -158,7 +159,7 @@ import { Product } from '../../core/models/product.model';
                 <app-icon [name]="wishlistService.isWishlisted(product.id) ? 'heart-filled' : 'heart'" [size]="18"/>
               </button>
               <a [routerLink]="['/product', product.id]" class="card-image-wrap">
-                <img [src]="product.images[0]" [alt]="product.name" loading="lazy"/>
+                <img [src]="product.images[0] | safeUrl" [alt]="product.name" loading="lazy"/>
                 <div class="card-overlay">
                   @if (product.isInStock !== false) {
                     <button class="btn btn-primary w-full" (click)="$event.preventDefault(); addToCart(product)">

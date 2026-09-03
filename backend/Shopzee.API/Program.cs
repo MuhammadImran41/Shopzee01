@@ -15,14 +15,24 @@ builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 Console.WriteLine($"[STARTUP] Listening on port: {port}");
 
 // ── Services ──────────────────────────────────────────────────
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(opt =>
+    {
+        opt.JsonSerializerOptions.MaxDepth = 64;
+    });
+
+// Raise Kestrel body size limit to 50 MB for image uploads
+builder.WebHost.ConfigureKestrel(k =>
+{
+    k.Limits.MaxRequestBodySize = 52_428_800;
+});
 
 // EF Core — PostgreSQL (Neon)
-var dbConn = Environment.GetEnvironmentVariable("DATABASE_URL")
-             ?? builder.Configuration.GetConnectionString("DefaultConnection")!;
+var rawConn = Environment.GetEnvironmentVariable("DATABASE_URL")
+              ?? builder.Configuration.GetConnectionString("DefaultConnection")!;
 
 builder.Services.AddDbContext<ShopzeeDbContext>(opt =>
-    opt.UseNpgsql(dbConn));
+    opt.UseNpgsql(rawConn));
 
 // JWT
 var jwtKey    = builder.Configuration["Jwt:Key"]
@@ -126,12 +136,11 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<ShopzeeDbContext>();
     try
     {
-        db.Database.Migrate();
+        db.Database.EnsureCreated();
     }
-    catch (Exception ex) when (ex.Message.Contains("already exists"))
+    catch (Exception ex)
     {
-        // Tables already exist — skip migration, continue
-        Console.WriteLine("[STARTUP] Tables already exist, skipping migration.");
+        Console.WriteLine($"[STARTUP] DB init warning: {ex.Message}");
     }
 }
 

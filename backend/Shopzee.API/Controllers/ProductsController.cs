@@ -145,6 +145,8 @@ public class ProductsController(ShopzeeDbContext db) : ControllerBase
     // POST api/products  [Admin]
     [Authorize(Roles = "admin")]
     [HttpPost]
+    [RequestSizeLimit(52_428_800)]
+    [RequestFormLimits(MultipartBodyLengthLimit = 52_428_800)]
     public async Task<IActionResult> Create(CreateProductDto dto)
     {
         var product = new Product
@@ -160,7 +162,7 @@ public class ProductsController(ShopzeeDbContext db) : ControllerBase
             CategoryId     = dto.CategoryId,
             SubCategory    = dto.SubCategory,
             Sku            = dto.Sku,
-            Images         = string.Join(",", dto.Images),
+            Images         = string.Join("|", dto.Images),
             Colors         = string.Join(",", dto.Colors),
             Sizes          = string.Join(",", dto.Sizes),
             Tags           = string.Join(",", dto.Tags),
@@ -182,6 +184,8 @@ public class ProductsController(ShopzeeDbContext db) : ControllerBase
     // PUT api/products/{id}  [Admin]
     [Authorize(Roles = "admin")]
     [HttpPut("{id:int}")]
+    [RequestSizeLimit(52_428_800)]
+    [RequestFormLimits(MultipartBodyLengthLimit = 52_428_800)]
     public async Task<IActionResult> Update(int id, UpdateProductDto dto)
     {
         var product = await db.Products.FindAsync(id);
@@ -198,7 +202,7 @@ public class ProductsController(ShopzeeDbContext db) : ControllerBase
         product.CategoryId     = dto.CategoryId;
         product.SubCategory    = dto.SubCategory;
         product.Sku            = dto.Sku;
-        product.Images         = string.Join(",", dto.Images);
+        product.Images         = string.Join("|", dto.Images);
         product.Colors         = string.Join(",", dto.Colors);
         product.Sizes          = string.Join(",", dto.Sizes);
         product.Tags           = string.Join(",", dto.Tags);

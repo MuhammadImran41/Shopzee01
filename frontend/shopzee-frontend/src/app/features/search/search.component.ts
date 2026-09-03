@@ -7,12 +7,13 @@ import { CartService } from '../../core/services/cart.service';
 import { WishlistService } from '../../core/services/wishlist.service';
 import { ToastService } from '../../core/services/toast.service';
 import { SvgIconsComponent } from '../../shared/components/svg-icons/svg-icons.component';
+import { SafeUrlPipe } from '../../shared/pipes/safe-url.pipe';
 import { apiToProduct } from '../../core/services/product.service';
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule, SvgIconsComponent],
+  imports: [CommonModule, RouterLink, FormsModule, SvgIconsComponent, SafeUrlPipe],
   template: `
     <div class="search-page">
 
@@ -110,7 +111,7 @@ import { apiToProduct } from '../../core/services/product.service';
                     <app-icon [name]="wishlist.isWishlisted(product.id) ? 'heart-filled' : 'heart'" [size]="18"/>
                   </button>
                   <a [routerLink]="['/product', product.id]" class="card-image-wrap">
-                    <img [src]="product.images[0]" [alt]="product.name" loading="lazy"/>
+                    <img [src]="product.images[0] | safeUrl" [alt]="product.name" loading="lazy"/>
                     <div class="card-overlay">
                       @if (product.isInStock !== false) {
                         <button class="btn btn-primary w-full" (click)="$event.preventDefault(); addToCart(product)">
