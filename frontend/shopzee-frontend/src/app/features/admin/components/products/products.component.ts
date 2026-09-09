@@ -145,138 +145,149 @@ import { trigger, transition, style, animate } from '@angular/animations';
           </button>
         </div>
         <div class="modal-body">
-          <div class="form-grid">
+          <div class="modal-two-col">
 
-            <!-- Product Images Upload -->
-            <div class="form-group form-full">
-              <label>Product Images</label>
-              <div
-                class="img-upload-zone"
-                [class.drag-over]="imgDragOver"
-                (dragover)="onImgDragOver($event)"
-                (dragleave)="imgDragOver = false"
-                (drop)="onImgDrop($event)"
-              >
-                @if (formProduct.images?.length) {
-                  <div class="img-preview-list">
-                    @for (img of formProduct.images; track $index) {
-                      <div class="img-preview-item">
-                        <img [src]="img" alt="Product image" class="img-preview-thumb"/>
-                        <button class="img-remove-btn" (click)="removeImage($index)" aria-label="Remove image" type="button">
-                          <app-icon name="close" [size]="10"/>
-                        </button>
-                      </div>
-                    }
-                    <label class="img-add-more" for="modal-img-upload" title="Add more images">
-                      <app-icon name="plus" [size]="20"/>
-                    </label>
-                  </div>
-                } @else {
-                  <app-icon name="upload" [size]="28" class="upload-icon"/>
-                  <p class="upload-text">Drag & drop or click to upload</p>
-                  <p class="upload-sub">PNG, JPG up to 10MB each</p>
-                  <label for="modal-img-upload" class="btn btn-outline" style="cursor:pointer">Browse Files</label>
-                }
-                <input type="file" multiple accept="image/*" class="upload-input"
-                  (change)="onImgFileSelect($event)" id="modal-img-upload" aria-label="Upload product images"/>
+            <!-- LEFT: Image Upload -->
+            <div class="modal-left">
+              <div class="form-group">
+                <label>Product Images</label>
+                <div
+                  class="img-upload-zone"
+                  [class.drag-over]="imgDragOver"
+                  (dragover)="onImgDragOver($event)"
+                  (dragleave)="imgDragOver = false"
+                  (drop)="onImgDrop($event)"
+                >
+                  @if (formProduct.images?.length) {
+                    <div class="img-preview-list">
+                      @for (img of formProduct.images; track $index) {
+                        <div class="img-preview-item">
+                          <img [src]="img" alt="Product image" class="img-preview-thumb"/>
+                          <button class="img-remove-btn" (click)="removeImage($index)" aria-label="Remove image" type="button">
+                            <app-icon name="close" [size]="10"/>
+                          </button>
+                        </div>
+                      }
+                      <label class="img-add-more" for="modal-img-upload" title="Add more images">
+                        <app-icon name="plus" [size]="20"/>
+                      </label>
+                    </div>
+                  } @else {
+                    <app-icon name="upload" [size]="28" class="upload-icon"/>
+                    <p class="upload-text">Drag & drop or click to upload</p>
+                    <p class="upload-sub">PNG, JPG up to 10MB each</p>
+                    <label for="modal-img-upload" class="btn btn-outline" style="cursor:pointer">Browse Files</label>
+                  }
+                  <input type="file" multiple accept="image/*" class="upload-input"
+                    (change)="onImgFileSelect($event)" id="modal-img-upload" aria-label="Upload product images"/>
+                </div>
               </div>
-            </div>
 
-            <!-- Name -->
-            <div class="form-group form-full">
-              <label>Product Name</label>
-              <input [(ngModel)]="formProduct.name" type="text" placeholder="Enter product name"
-                (ngModelChange)="onNameChange($event)"/>
-            </div>
-
-            <!-- Category -->
-            <div class="form-group">
-              <label>Category</label>
-              <select [(ngModel)]="formProduct.categoryId" class="form-select"
-                (ngModelChange)="onCategoryChange($event)">
-                <option [value]="1">Women</option>
-                <option [value]="2">Men</option>
-              </select>
-            </div>
-
-            <!-- SKU (auto-generated but editable) -->
-            <div class="form-group">
-              <label>SKU <span class="sku-auto-label">(auto-generated)</span></label>
-              <div class="sku-field">
-                <input [(ngModel)]="formProduct.sku" type="text" placeholder="e.g. WF-001"/>
-                <button class="sku-regen-btn" type="button" (click)="regenSku()" title="Re-generate SKU">
-                  ↻
-                </button>
+              <!-- Description -->
+              <div class="form-group">
+                <label>Description</label>
+                <textarea [(ngModel)]="formProduct.description" rows="5" placeholder="Product description..."></textarea>
               </div>
-            </div>
 
-            <!-- Price -->
-            <div class="form-group">
-              <label>Price (PKR)</label>
-              <input [(ngModel)]="formProduct.price" type="number" placeholder="0"/>
-            </div>
-
-            <!-- Stock -->
-            <div class="form-group">
-              <label>Stock</label>
-              <input [(ngModel)]="formProduct.stock" type="number" placeholder="0"/>
-            </div>
-
-            <!-- Sub Category -->
-            <div class="form-group">
-              <label>Sub Category</label>
-              <input [(ngModel)]="formProduct.subCategory" type="text" placeholder="e.g. Formal"/>
-            </div>
-
-            <!-- Sizes -->
-            <div class="form-group">
-              <label>Sizes (comma-separated)</label>
-              <input [(ngModel)]="formProduct.sizesStr" type="text" placeholder="XS,S,M,L,XL"/>
-            </div>
-
-            <!-- Colors -->
-            <div class="form-group form-full">
-              <label>Colors</label>
-              <div class="colors-row">
-                @for (color of formProduct.colorsArr; track $index) {
-                  <div class="color-chip">
-                    <span class="color-swatch" [style.background]="color"></span>
-                    <span class="color-hex">{{ color }}</span>
-                    <button class="color-remove" (click)="removeColor($index)" type="button" aria-label="Remove color">×</button>
+              <!-- Colors -->
+              <div class="form-group">
+                <label>Colors</label>
+                <div class="colors-row">
+                  @for (color of formProduct.colorsArr; track $index) {
+                    <div class="color-chip">
+                      <span class="color-swatch" [style.background]="color"></span>
+                      <span class="color-hex">{{ color }}</span>
+                      <button class="color-remove" (click)="removeColor($index)" type="button" aria-label="Remove color">×</button>
+                    </div>
+                  }
+                  <div class="color-add-wrap">
+                    <input type="color" [(ngModel)]="newColor" class="color-picker-input" aria-label="Pick color"/>
+                    <button class="btn btn-outline btn-sm" type="button" (click)="addColor()">+ Add Color</button>
                   </div>
-                }
-                <div class="color-add-wrap">
-                  <input
-                    type="color"
-                    [(ngModel)]="newColor"
-                    class="color-picker-input"
-                    aria-label="Pick color"
-                  />
-                  <button class="btn btn-outline btn-sm" type="button" (click)="addColor()">+ Add Color</button>
                 </div>
               </div>
             </div>
 
-            <!-- Description -->
-            <div class="form-group form-full">
-              <label>Description</label>
-              <textarea [(ngModel)]="formProduct.description" rows="3" placeholder="Product description..."></textarea>
-            </div>
+            <!-- RIGHT: Fields -->
+            <div class="modal-right">
 
-            <!-- Checkboxes -->
-            <div class="form-group">
-              <label class="check-label">
-                <input type="checkbox" [(ngModel)]="formProduct.isNew"/>
-                Mark as New
-              </label>
-            </div>
-            <div class="form-group">
-              <label class="check-label">
-                <input type="checkbox" [(ngModel)]="formProduct.isFeatured"/>
-                Featured Product
-              </label>
-            </div>
+              <!-- Name -->
+              <div class="form-group span-2">
+                <label>Product Name</label>
+                <input [(ngModel)]="formProduct.name" type="text" placeholder="Enter product name"
+                  (ngModelChange)="onNameChange($event)"/>
+              </div>
 
+              <!-- Category -->
+              <div class="form-group">
+                <label>Category</label>
+                <select [(ngModel)]="formProduct.categoryId" class="form-select"
+                  (ngModelChange)="onCategoryChange($event)">
+                  <option [value]="1">Women</option>
+                  <option [value]="2">Men</option>
+                </select>
+              </div>
+
+              <!-- SKU -->
+              <div class="form-group">
+                <label>SKU <span class="sku-auto-label">(auto-generated)</span></label>
+                <div class="sku-field">
+                  <input [(ngModel)]="formProduct.sku" type="text" placeholder="e.g. WF-001"/>
+                  <button class="sku-regen-btn" type="button" (click)="regenSku()" title="Re-generate SKU">↻</button>
+                </div>
+              </div>
+
+              <!-- Price -->
+              <div class="form-group">
+                <label>Price (PKR)</label>
+                <input [(ngModel)]="formProduct.price" type="number" placeholder="0"/>
+              </div>
+
+              <!-- Stock -->
+              <div class="form-group">
+                <label>Stock</label>
+                <input [(ngModel)]="formProduct.stock" type="number" placeholder="0"/>
+              </div>
+
+              <!-- Sub Category -->
+              <div class="form-group">
+                <label>Sub Category</label>
+                <input [(ngModel)]="formProduct.subCategory" type="text" placeholder="e.g. Formal"/>
+              </div>
+
+              <!-- Sizes -->
+              <div class="form-group">
+                <label>Sizes (comma-separated)</label>
+                <input [(ngModel)]="formProduct.sizesStr" type="text" placeholder="XS,S,M,L,XL"/>
+              </div>
+
+              <!-- Original Price -->
+              <div class="form-group">
+                <label>Original Price (PKR)</label>
+                <input [(ngModel)]="formProduct.originalPrice" type="number" placeholder="0"/>
+              </div>
+
+              <!-- Discount -->
+              <div class="form-group">
+                <label>Discount %</label>
+                <input [(ngModel)]="formProduct.discountPercent" type="number" placeholder="0"/>
+              </div>
+
+              <!-- Checkboxes -->
+              <div class="form-group">
+                <label class="check-label">
+                  <input type="checkbox" [(ngModel)]="formProduct.isNew"/>
+                  Mark as New
+                </label>
+              </div>
+              <div class="form-group">
+                <label class="check-label">
+                  <input type="checkbox" [(ngModel)]="formProduct.isFeatured"/>
+                  Featured Product
+                </label>
+              </div>
+
+            </div>
           </div>
         </div>
         <div class="modal-footer">
@@ -317,7 +328,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
     /* Image upload zone inside modal */
     .img-upload-zone {
       border: 2px dashed var(--gray-300); padding: 1.25rem; text-align: center;
-      transition: all 0.3s; background: var(--cream); min-height: 110px;
+      transition: all 0.3s; background: var(--cream); min-height: 200px;
       display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem;
       &.drag-over { border-color: var(--gold); background: rgba(201,168,76,0.05); }
     }
@@ -400,14 +411,47 @@ import { trigger, transition, style, animate } from '@angular/animations';
     .table-footer { padding:0.75rem 1rem; border-top:1px solid var(--gray-200); font-size:0.8125rem; color:var(--gray-400); }
 
     /* Modal */
-    .admin-modal { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:var(--cream-light); z-index:var(--z-modal); width:90%; max-width:600px; max-height:90vh; overflow-y:auto; border:1px solid var(--gray-200); box-shadow:var(--shadow-xl); &--sm{max-width:400px;} }
-    .modal-header { display:flex; justify-content:space-between; align-items:center; padding:1.25rem 1.5rem; border-bottom:1px solid var(--gray-200); h2{font-family:var(--font-heading);font-size:var(--text-2xl);} button{background:none;border:none;cursor:pointer;color:var(--black);} }
-    .modal-body { padding:1.5rem; p{font-size:0.875rem;color:var(--gray-500);} }
-    .modal-footer { padding:1rem 1.5rem; border-top:1px solid var(--gray-200); display:flex; justify-content:flex-end; gap:0.75rem; }
-    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
-    .form-full { grid-column:1/-1; }
-    .form-select { width:100%; padding:0.625rem 0.875rem; border:1px solid var(--gray-300); background:var(--cream); font-size:0.875rem; outline:none; &:focus{border-color:var(--gold);} }
+    .admin-modal {
+      position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+      background:var(--cream-light); z-index:var(--z-modal);
+      width:96vw; max-width:1000px; max-height:92vh;
+      display:flex; flex-direction:column;
+      border:1px solid var(--gray-200); box-shadow:var(--shadow-xl);
+      &--sm{ max-width:400px; }
+    }
+    .modal-header {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:1rem 1.5rem; border-bottom:1px solid var(--gray-200); flex-shrink:0;
+      h2{font-family:var(--font-heading);font-size:var(--text-2xl);}
+      button{background:none;border:none;cursor:pointer;color:var(--black);}
+    }
+    .modal-body {
+      padding:1.25rem 1.5rem; overflow-y:auto; flex:1;
+      p{font-size:0.875rem;color:var(--gray-500);}
+    }
+    .modal-footer {
+      padding:0.875rem 1.5rem; border-top:1px solid var(--gray-200);
+      display:flex; justify-content:flex-end; gap:0.75rem; flex-shrink:0;
+    }
+    .form-grid {
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:1rem;
+    }
+    .form-full  { grid-column:1/-1; }
+    .form-half  { grid-column:span 2; }
+    .form-select {
+      width:100%; padding:0.625rem 0.875rem; border:1px solid var(--gray-300);
+      background:var(--cream); font-size:0.875rem; outline:none;
+      &:focus{border-color:var(--gold);}
+    }
     .check-label { display:flex; align-items:center; gap:0.5rem; cursor:pointer; font-size:0.875rem; }
+
+    /* Left/Right split inside modal body */
+    .modal-two-col { display:grid; grid-template-columns:280px 1fr; gap:1.25rem; }
+    .modal-left { display:flex; flex-direction:column; gap:1rem; }
+    .modal-right { display:grid; grid-template-columns:1fr 1fr; gap:1rem; align-content:start; }
+    .span-2 { grid-column:1/-1; }
   `]
 })
 export class AdminProductsComponent implements OnInit {
