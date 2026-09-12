@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../core/services/product.service';
+import { ProductCacheService } from '../../core/services/product-cache.service';
 import { CartService } from '../../core/services/cart.service';
 import { WishlistService } from '../../core/services/wishlist.service';
 import { ToastService } from '../../core/services/toast.service';
@@ -544,6 +545,7 @@ import { Product } from '../../core/models/product.model';
 })
 export class ShopComponent implements OnInit {
   private productService  = inject(ProductService);
+  private cache           = inject(ProductCacheService);
   cartService    = inject(CartService);
   wishlistService= inject(WishlistService);
   private toast  = inject(ToastService);
@@ -592,18 +594,18 @@ export class ShopComponent implements OnInit {
   }
 
   private loadProducts(cat: 'women' | 'men') {
-    this.loading.set(true);
-    this.productService.getProductsFromApi({ category: cat, pageSize: 50 }).subscribe({
-      next: res => {
-        this._products.set(res.items);
-        this.loading.set(false);
-      },
-      error: () => {
-        // Fallback to mock data if API unavailable
-        this._products.set(this.productService.getByCategory(cat));
-        this.loading.set(false);
-      }
-    });
+    const applyCache = () => {
+      this._products.set(this.cache.filter({ category: cat }));
+      this.loading.set(false);
+    };
+    if (this.cache.loaded()) {
+      applyCache();
+    } else {
+      this.loading.set(true);
+      const check = setInterval(() => {
+        if (this.cache.loaded()) { clearInterval(check); applyCache(); }
+      }, 50);
+    }
   }
 
   toggleCat(cat: string) {

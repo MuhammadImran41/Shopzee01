@@ -2,6 +2,8 @@ import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductApiService, ApiProduct } from '../../../../core/services/api/product-api.service';
+import { ProductCacheService } from '../../../../core/services/product-cache.service';
+import { apiToProduct } from '../../../../core/services/product.service';
 import { SvgIconsComponent } from '../../../../shared/components/svg-icons/svg-icons.component';
 import { SafeUrlPipe } from '../../../../shared/pipes/safe-url.pipe';
 import { ToastService } from '../../../../core/services/toast.service';
@@ -45,6 +47,19 @@ import { trigger, transition, style, animate } from '@angular/animations';
         </div>
       </div>
 
+      <!-- Bulk Action Bar (shows when items selected) -->
+      @if (selectedIds().size > 0) {
+        <div class="bulk-bar">
+          <span class="bulk-count">{{ selectedIds().size }} product{{ selectedIds().size > 1 ? 's' : '' }} selected</span>
+          <div class="bulk-actions">
+            <button class="btn btn-ghost btn-sm" (click)="clearSelection()">Deselect All</button>
+            <button class="btn btn-dark btn-sm" (click)="bulkDeleteConfirm()">
+              <app-icon name="trash" [size]="14"/> Delete Selected
+            </button>
+          </div>
+        </div>
+      }
+
       <!-- Loading -->
       @if (loading()) {
         <div class="loading-row">
@@ -59,6 +74,16 @@ import { trigger, transition, style, animate } from '@angular/animations';
             <table class="admin-table products-table">
               <thead>
                 <tr>
+                  <th class="th-check">
+                    <input
+                      type="checkbox"
+                      class="row-check"
+                      [checked]="isAllSelected()"
+                      [indeterminate]="isIndeterminate()"
+                      (change)="toggleSelectAll($event)"
+                      aria-label="Select all"
+                    />
+                  </th>
                   <th>Product</th>
                   <th>Category</th>
                   <th>Price</th>
@@ -69,7 +94,16 @@ import { trigger, transition, style, animate } from '@angular/animations';
               </thead>
               <tbody>
                 @for (product of products(); track product.id) {
-                  <tr>
+                  <tr [class.row-selected]="selectedIds().has(product.id)">
+                    <td class="td-check">
+                      <input
+                        type="checkbox"
+                        class="row-check"
+                        [checked]="selectedIds().has(product.id)"
+                        (change)="toggleSelect(product.id)"
+                        [attr.aria-label]="'Select ' + product.name"
+                      />
+                    </td>
                     <td>
                       <div class="product-cell">
                         <img
@@ -121,7 +155,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
                   </tr>
                 }
                 @if (products().length === 0) {
-                  <tr><td colspan="6" class="empty-row">No products found.</td></tr>
+                  <tr><td colspan="7" class="empty-row">No products found.</td></tr>
                 }
               </tbody>
             </table>
@@ -316,6 +350,25 @@ import { trigger, transition, style, animate } from '@angular/animations';
         </div>
       </div>
     }
+    <!-- Bulk Delete Confirm Modal -->
+    @if (bulkDeleteOpen()) {
+      <div class="overlay" (click)="bulkDeleteOpen.set(false)"></div>
+      <div class="admin-modal admin-modal--sm" [@modalAnim] role="alertdialog"
+        aria-modal="true" aria-label="Confirm bulk delete">
+        <div class="modal-header">
+          <h2>Delete {{ selectedIds().size }} Products?</h2>
+        </div>
+        <div class="modal-body">
+          <p>This will deactivate all {{ selectedIds().size }} selected products. This action cannot be undone.</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-ghost" (click)="bulkDeleteOpen.set(false)">Cancel</button>
+          <button class="btn btn-dark" [disabled]="bulkDeleting()" (click)="confirmBulkDelete()">
+            {{ bulkDeleting() ? 'Deleting...' : 'Delete All' }}
+          </button>
+        </div>
+      </div>
+    }
   `,
   styles: [`
     .admin-section {}
@@ -376,6 +429,20 @@ import { trigger, transition, style, animate } from '@angular/animations';
     .color-add-wrap { display: flex; align-items: center; gap: 0.4rem; }
     .color-picker-input { width: 32px; height: 32px; border: 1px solid var(--gray-300); padding: 2px; cursor: pointer; background: none; }
     .btn-sm { padding: 0.3rem 0.625rem; font-size: 0.75rem; }
+
+    /* Bulk action bar */
+    .bulk-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      background: #1a1a1a; color: #fff; padding: 0.625rem 1rem;
+      margin-bottom: 0.75rem; gap: 1rem; flex-wrap: wrap;
+    }
+    .bulk-count { font-size: 0.875rem; font-weight: 500; }
+    .bulk-actions { display: flex; gap: 0.5rem; }
+
+    /* Checkbox column */
+    .th-check, .td-check { width: 40px; padding: 0.5rem 0.75rem; text-align: center; }
+    .row-check { width: 16px; height: 16px; cursor: pointer; accent-color: var(--gold); }
+    .row-selected { background: rgba(201,168,76,0.07); }
 
     /* Table */
     .loading-row { display:flex; align-items:center; gap:1rem; padding:2rem; color:var(--gray-400); }
@@ -456,16 +523,20 @@ import { trigger, transition, style, animate } from '@angular/animations';
 })
 export class AdminProductsComponent implements OnInit {
   private productApi = inject(ProductApiService);
+  private cache      = inject(ProductCacheService);
   private toast      = inject(ToastService);
 
   products         = signal<ApiProduct[]>([]);
   loading          = signal(false);
   saving           = signal(false);
+  bulkDeleting     = signal(false);
   totalCount       = signal(0);
   imgDragOver      = false;
   modalOpen        = signal(false);
   editMode         = signal(false);
   deleteId         = signal<number | null>(null);
+  bulkDeleteOpen   = signal(false);
+  selectedIds      = signal<Set<number>>(new Set());
   searchTerm       = '';
   newColor         = '#C9A84C';
 
@@ -485,11 +556,13 @@ export class AdminProductsComponent implements OnInit {
 
   loadProducts() {
     this.loading.set(true);
-    this.productApi.getAll({ search: this.searchTerm || undefined, pageSize: 50 }).subscribe({
+    this.productApi.getAll({ search: this.searchTerm || undefined, pageSize: 200 }).subscribe({
       next: res => {
         this.products.set(res.items);
         this.totalCount.set(res.totalCount);
         this.loading.set(false);
+        // Also update cache so public pages stay fresh
+        this.cache.refresh();
       },
       error: () => {
         this.loading.set(false);
@@ -498,8 +571,65 @@ export class AdminProductsComponent implements OnInit {
     });
   }
 
+  // ── Selection ────────────────────────────────────────────────
+  isAllSelected(): boolean {
+    return this.products().length > 0 && this.selectedIds().size === this.products().length;
+  }
+
+  isIndeterminate(): boolean {
+    return this.selectedIds().size > 0 && this.selectedIds().size < this.products().length;
+  }
+
+  toggleSelectAll(e: Event) {
+    const checked = (e.target as HTMLInputElement).checked;
+    if (checked) {
+      this.selectedIds.set(new Set(this.products().map(p => p.id)));
+    } else {
+      this.selectedIds.set(new Set());
+    }
+  }
+
+  toggleSelect(id: number) {
+    const current = new Set(this.selectedIds());
+    current.has(id) ? current.delete(id) : current.add(id);
+    this.selectedIds.set(current);
+  }
+
+  clearSelection() { this.selectedIds.set(new Set()); }
+
+  // ── Bulk Delete ──────────────────────────────────────────────
+  bulkDeleteConfirm() { this.bulkDeleteOpen.set(true); }
+
+  confirmBulkDelete() {
+    const ids = Array.from(this.selectedIds());
+    if (!ids.length) return;
+    this.bulkDeleting.set(true);
+
+    const deleteNext = (index: number) => {
+      if (index >= ids.length) {
+        this.toast.success(`${ids.length} product${ids.length > 1 ? 's' : ''} deleted`);
+        this.bulkDeleteOpen.set(false);
+        this.bulkDeleting.set(false);
+        this.selectedIds.set(new Set());
+        // Reload from DB to get fresh state
+        this.cache.refresh();
+        this.loadProducts();
+        return;
+      }
+      this.productApi.delete(ids[index]).subscribe({
+        next: () => {
+          // Remove from local list immediately
+          this.products.update(list => list.filter(p => p.id !== ids[index]));
+          this.totalCount.update(n => n - 1);
+          deleteNext(index + 1);
+        },
+        error: () => { this.toast.error(`Failed to delete product ${ids[index]}`); deleteNext(index + 1); }
+      });
+    };
+    deleteNext(0);
+  }
+
   getStockClass(stock: number): string {
-    if (stock > 10) return 'stock-badge stock-ok';
     if (stock > 0)  return 'stock-badge stock-low';
     return 'stock-badge stock-out';
   }
@@ -643,6 +773,7 @@ export class AdminProductsComponent implements OnInit {
           this.toast.success('Product updated');
           this.modalOpen.set(false);
           this.saving.set(false);
+          this.cache.refresh();
           this.loadProducts();
         },
         error: () => { this.toast.error('Failed to update product.'); this.saving.set(false); }
@@ -653,6 +784,7 @@ export class AdminProductsComponent implements OnInit {
           this.toast.success('Product added');
           this.modalOpen.set(false);
           this.saving.set(false);
+          this.cache.refresh();
           this.loadProducts();
         },
         error: () => { this.toast.error('Failed to add product.'); this.saving.set(false); }
@@ -685,8 +817,13 @@ export class AdminProductsComponent implements OnInit {
     if (id !== null) {
       this.productApi.delete(id).subscribe({
         next: () => {
+          // Remove immediately from local list
+          this.products.update(list => list.filter(p => p.id !== id));
+          this.totalCount.update(n => n - 1);
           this.toast.info('Product deleted');
           this.deleteId.set(null);
+          // Refresh DB data and cache in background
+          this.cache.refresh();
           this.loadProducts();
         },
         error: () => this.toast.error('Failed to delete product.')

@@ -32,32 +32,71 @@ import { API_BASE } from '../../core/services/api/api.config';
         <div class="pd-layout">
           <!-- Gallery -->
           <div class="pd-gallery">
-            <div class="pd-main-image">
-              <img [src]="product()!.images[activeImage()] | safeUrl" [alt]="product()!.name" class="pd-img"/>
-              <button
-                class="pd-wishlist-btn"
-                [class.active]="wishlistService.isWishlisted(product()!.id)"
-                (click)="toggleWishlist()"
-                [attr.aria-label]="'Toggle wishlist for ' + product()!.name"
-              >
-                <app-icon [name]="wishlistService.isWishlisted(product()!.id) ? 'heart-filled' : 'heart'" [size]="22"/>
-              </button>
-            </div>
-            @if (product()!.images.length > 1) {
-              <div class="pd-thumbs">
-                @for (img of product()!.images; track $index) {
-                  <button
-                    class="pd-thumb"
-                    [class.active]="activeImage() === $index"
-                    (click)="activeImage.set($index)"
-                    [attr.aria-label]="'View image ' + ($index + 1)"
-                  >
-                    <img [src]="img | safeUrl" [alt]="product()!.name + ' view ' + ($index + 1)" loading="lazy"/>
-                  </button>
-                }
+
+            <!-- Single image -->
+            @if (product()!.images.length === 1) {
+              <div class="pd-main-image">
+                <img [src]="product()!.images[0] | safeUrl" [alt]="product()!.name" class="pd-img" loading="eager"/>
+                <button class="pd-wishlist-btn" [class.active]="wishlistService.isWishlisted(product()!.id)" (click)="toggleWishlist()" [attr.aria-label]="'Wishlist ' + product()!.name">
+                  <app-icon [name]="wishlistService.isWishlisted(product()!.id) ? 'heart-filled' : 'heart'" [size]="22"/>
+                </button>
               </div>
             }
+
+            <!-- 2 images — side by side equal -->
+            @if (product()!.images.length === 2) {
+              <div class="pd-collage pd-collage--2">
+                @for (img of product()!.images; track $index) {
+                  <div class="pd-col-item" (click)="openLightbox($index)">
+                    <img [src]="img | safeUrl" [alt]="product()!.name + ' ' + ($index+1)" [loading]="$index===0?'eager':'lazy'"/>
+                  </div>
+                }
+                <button class="pd-wishlist-btn" [class.active]="wishlistService.isWishlisted(product()!.id)" (click)="toggleWishlist()" [attr.aria-label]="'Wishlist'">
+                  <app-icon [name]="wishlistService.isWishlisted(product()!.id) ? 'heart-filled' : 'heart'" [size]="22"/>
+                </button>
+              </div>
+            }
+
+            <!-- 3+ images — 1 big left + grid right -->
+            @if (product()!.images.length >= 3) {
+              <div class="pd-collage pd-collage--grid">
+                <!-- Big featured image -->
+                <div class="pd-col-main" (click)="openLightbox(0)">
+                  <img [src]="product()!.images[0] | safeUrl" [alt]="product()!.name" loading="eager"/>
+                </div>
+                <!-- Right grid -->
+                <div class="pd-col-grid">
+                  @for (img of product()!.images; track $index) {
+                    @if ($index > 0 && $index <= 4) {
+                      <div class="pd-col-item" (click)="openLightbox($index)">
+                        <img [src]="img | safeUrl" [alt]="product()!.name + ' ' + ($index+1)" loading="lazy"/>
+                        @if ($index === 4 && product()!.images.length > 5) {
+                          <div class="pd-col-more">+{{ product()!.images.length - 5 }} more</div>
+                        }
+                      </div>
+                    }
+                  }
+                </div>
+                <button class="pd-wishlist-btn" [class.active]="wishlistService.isWishlisted(product()!.id)" (click)="toggleWishlist()" [attr.aria-label]="'Wishlist'">
+                  <app-icon [name]="wishlistService.isWishlisted(product()!.id) ? 'heart-filled' : 'heart'" [size]="22"/>
+                </button>
+              </div>
+            }
+
           </div>
+
+          <!-- Lightbox -->
+          @if (lightboxOpen()) {
+            <div class="lightbox-overlay" (click)="closeLightbox()">
+              <button class="lightbox-close" (click)="closeLightbox()" aria-label="Close">✕</button>
+              <button class="lightbox-arrow lightbox-arrow--prev" (click)="$event.stopPropagation(); prevImage()" aria-label="Previous">&#8249;</button>
+              <div class="lightbox-img-wrap" (click)="$event.stopPropagation()">
+                <img [src]="product()!.images[activeImage()] | safeUrl" [alt]="product()!.name" class="lightbox-img"/>
+                <span class="lightbox-counter">{{ activeImage()+1 }} / {{ product()!.images.length }}</span>
+              </div>
+              <button class="lightbox-arrow lightbox-arrow--next" (click)="$event.stopPropagation(); nextImage()" aria-label="Next">&#8250;</button>
+            </div>
+          }
 
           <!-- Info -->
           <div class="pd-info">
@@ -349,38 +388,118 @@ import { API_BASE } from '../../core/services/api/api.config';
       @media (max-width: 768px) { grid-template-columns: 1fr; gap: var(--space-6); margin-bottom: var(--space-10); }
     }
 
-    .pd-gallery {}
+    .pd-gallery { position: relative; }
 
+    /* Single image */
     .pd-main-image {
-      position: relative; aspect-ratio: 3/4;
-      overflow: hidden; margin-bottom: var(--space-3);
+      position: relative; aspect-ratio: 3/4; overflow: hidden;
       background: var(--cream-dark);
-      @media (max-width: 480px) { aspect-ratio: 4/5; }
     }
+    .pd-img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
 
-    .pd-img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
-
+    /* Wishlist btn — shared across all layouts */
     .pd-wishlist-btn {
       position: absolute; top: var(--space-4); right: var(--space-4);
-      width: 44px; height: 44px; border-radius: 50%;
+      z-index: 4; width: 44px; height: 44px; border-radius: 50%;
       background: rgba(245,240,232,0.9); border: none; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       color: var(--black); transition: all 0.3s;
       &.active, &:hover { color: var(--gold); background: var(--cream); }
     }
 
-    .pd-thumbs {
-      display: flex; gap: var(--space-2); flex-wrap: wrap;
-      @media (max-width: 480px) { gap: var(--space-1); }
+    /* ── Collage layouts ─────────────────────────────── */
+    .pd-collage { position: relative; width: 100%; }
+
+    /* 2 images — equal side by side */
+    .pd-collage--2 {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3px;
+      .pd-col-item { aspect-ratio: 3/4; overflow: hidden; cursor: zoom-in;
+        img { width:100%; height:100%; object-fit:cover; object-position:top center; display:block; transition: transform 0.4s;
+          &:hover { transform: scale(1.03); }
+        }
+      }
     }
 
-    .pd-thumb {
-      width: 72px; height: 90px; overflow: hidden;
-      border: 2px solid transparent; cursor: pointer;
-      transition: border-color 0.2s; padding: 0; background: none;
-      &.active { border-color: var(--gold); }
-      img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
-      @media (max-width: 480px) { width: 60px; height: 75px; }
+    /* 3+ images — 1 big left, grid right */
+    .pd-collage--grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px;
+      .pd-col-main {
+        grid-row: span 2; aspect-ratio: 3/5; overflow: hidden; cursor: zoom-in;
+        img { width:100%; height:100%; object-fit:cover; object-position:top center; display:block; transition: transform 0.4s;
+          &:hover { transform: scale(1.03); }
+        }
+      }
+      .pd-col-grid {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 3px;
+      }
+      .pd-col-item {
+        position: relative; aspect-ratio: 1/1; overflow: hidden; cursor: zoom-in;
+        img { width:100%; height:100%; object-fit:cover; object-position:top center; display:block; transition: transform 0.4s;
+          &:hover { transform: scale(1.03); }
+        }
+      }
+      .pd-col-more {
+        position: absolute; inset:0; background: rgba(26,26,26,0.55);
+        display: flex; align-items:center; justify-content:center;
+        color:#fff; font-size:1.1rem; font-weight:600; letter-spacing:0.05em;
+      }
+    }
+
+    /* ── Lightbox ────────────────────────────────────── */
+    .lightbox-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(10,10,10,0.95);
+      display: flex; align-items: center; justify-content: center; gap: 1rem;
+    }
+    .lightbox-img-wrap {
+      position: relative; max-height: 90vh; max-width: 70vw;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lightbox-img {
+      max-height: 90vh; max-width: 70vw;
+      object-fit: contain; display: block;
+    }
+    .lightbox-close {
+      position: absolute; top: 1.25rem; right: 1.25rem;
+      background: none; border: none; color: #fff; font-size: 1.5rem;
+      cursor: pointer; z-index: 10000; padding: 0.5rem;
+      &:hover { color: var(--gold); }
+    }
+    .lightbox-arrow {
+      background: none; border: none; color: rgba(255,255,255,0.7);
+      font-size: 3.5rem; cursor: pointer; padding: 0 0.5rem; line-height:1;
+      transition: color 0.2s; flex-shrink:0;
+      &:hover { color: var(--gold); }
+    }
+    .lightbox-counter {
+      position: absolute; bottom: -2rem; left: 50%; transform: translateX(-50%);
+      color: rgba(255,255,255,0.6); font-size: 0.8rem; letter-spacing: 0.1em;
+    }
+
+    /* Slider stuff (kept for legacy) */
+    .pd-slider-track { width:100%; height:100%; }
+    .pd-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.45s ease; pointer-events:none;
+      &.active { opacity:1; pointer-events:auto; z-index:1; }
+    }
+    .pd-arrow {
+      position:absolute; top:50%; transform:translateY(-50%); z-index:3;
+      background:rgba(245,240,232,0.85); border:none; cursor:pointer;
+      width:40px; height:40px; display:flex; align-items:center; justify-content:center;
+      font-size:2rem; color:var(--black); transition:all 0.2s; padding:0;
+      &:hover { background:var(--cream); color:var(--gold); }
+      &--prev { left:0.6rem; } &--next { right:0.6rem; }
+    }
+    .pd-dots { position:absolute; bottom:0.75rem; left:50%; transform:translateX(-50%); z-index:3; display:flex; gap:0.4rem; align-items:center; }
+    .pd-dot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,0.6); border:none; cursor:pointer; padding:0; transition:all 0.25s;
+      &.active { background:var(--gold); width:22px; border-radius:4px; }
+    }
+    .pd-counter { position:absolute; top:0.75rem; left:0.75rem; z-index:3; background:rgba(26,26,26,0.5); color:#fff; font-size:0.72rem; padding:0.2rem 0.5rem; letter-spacing:0.06em; }
+    .pd-thumbs { display:flex; gap:var(--space-2); flex-wrap:wrap; margin-top:var(--space-2); }
+    .pd-thumb { width:72px; height:90px; overflow:hidden; border:2px solid transparent; cursor:pointer; transition:border-color 0.2s; padding:0; background:none;
+      &.active { border-color:var(--gold); }
+      img { width:100%; height:100%; object-fit:cover; object-position:top center; }
     }
 
     .pd-info { @media (max-width: 768px) { padding-top: 0; } }
@@ -582,6 +701,24 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
   product      = signal<Product | undefined>(undefined);
   activeImage  = signal(0);
+  lightboxOpen = signal(false);
+
+  openLightbox(index: number) {
+    this.activeImage.set(index);
+    this.lightboxOpen.set(true);
+  }
+
+  closeLightbox() { this.lightboxOpen.set(false); }
+
+  prevImage() {
+    const len = this.product()?.images.length ?? 1;
+    this.activeImage.update(i => (i - 1 + len) % len);
+  }
+
+  nextImage() {
+    const len = this.product()?.images.length ?? 1;
+    this.activeImage.update(i => (i + 1) % len);
+  }
   selectedSize = signal('');
   selectedColor= signal('');
   qty          = signal(1);
@@ -613,6 +750,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       this.productService.getByIdFromApi(id).subscribe({
         next: p => {
           this.product.set(p);
+          this.activeImage.set(0);
           this.selectedSize.set(p.sizes[1] || p.sizes[0]);
           this.selectedColor.set(p.colors[0]);
           this.loadReviews(id);

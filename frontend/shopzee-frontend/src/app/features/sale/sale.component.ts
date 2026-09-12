@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProductService } from '../../core/services/product.service';
+import { ProductCacheService } from '../../core/services/product-cache.service';
 import { CartService } from '../../core/services/cart.service';
 import { WishlistService } from '../../core/services/wishlist.service';
 import { ToastService } from '../../core/services/toast.service';
@@ -188,6 +189,7 @@ import { Product } from '../../core/models/product.model';
 })
 export class SaleComponent implements OnInit {
   private productService = inject(ProductService);
+  private cache          = inject(ProductCacheService);
   cartService            = inject(CartService);
   wishlistService        = inject(WishlistService);
   private toast          = inject(ToastService);
@@ -205,10 +207,17 @@ export class SaleComponent implements OnInit {
   });
 
   ngOnInit() {
-    this.productService.getProductsFromApi({ pageSize: 100 }).subscribe({
-      next: res => { this._products.set(res.items); this.loading.set(false); },
-      error: () => { this._products.set(this.productService.products()); this.loading.set(false); }
-    });
+    const applyCache = () => {
+      this._products.set(this.cache.all());
+      this.loading.set(false);
+    };
+    if (this.cache.loaded()) {
+      applyCache();
+    } else {
+      const check = setInterval(() => {
+        if (this.cache.loaded()) { clearInterval(check); applyCache(); }
+      }, 50);
+    }
   }
 
   addToCart(product: Product) {

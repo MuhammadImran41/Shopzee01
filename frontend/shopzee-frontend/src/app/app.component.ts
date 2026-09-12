@@ -9,6 +9,7 @@ import { AuthApiService } from './core/services/api/auth-api.service';
 import { ThemeService } from './core/services/theme.service';
 import { SiteImagesService } from './core/services/site-images.service';
 import { SiteSettingsService } from './core/services/site-settings.service';
+import { ProductCacheService } from './core/services/product-cache.service';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -66,6 +67,7 @@ export class AppComponent implements OnInit {
   private themeService    = inject(ThemeService);
   private imagesService   = inject(SiteImagesService);
   private settingsService = inject(SiteSettingsService);
+  private cache           = inject(ProductCacheService);
 
   isAdminRoute   = signal(false);
   showGlobalAuth = signal(false);
@@ -98,6 +100,9 @@ export class AppComponent implements OnInit {
     this.themeService.init();
     this.imagesService.init();
     this.settingsService.init();
+
+    // Prefetch all products immediately — pages will show instantly
+    this.cache.prefetch();
 
     this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))

@@ -2,6 +2,7 @@ import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProductService } from '../../core/services/product.service';
+import { ProductCacheService } from '../../core/services/product-cache.service';
 import { CartService } from '../../core/services/cart.service';
 import { WishlistService } from '../../core/services/wishlist.service';
 import { ToastService } from '../../core/services/toast.service';
@@ -365,6 +366,7 @@ import { Product } from '../../core/models/product.model';
 })
 export class NewArrivalsComponent implements OnInit {
   private productService = inject(ProductService);
+  private cache          = inject(ProductCacheService);
   cartService            = inject(CartService);
   wishlistService        = inject(WishlistService);
   private toast          = inject(ToastService);
@@ -386,17 +388,23 @@ export class NewArrivalsComponent implements OnInit {
   });
 
   ngOnInit() {
-    this.productService.getProductsFromApi({ pageSize: 100 }).subscribe({
-      next: res => {
-        this._products.set(res.items);
-        this.loading.set(false);
-      },
-      error: () => {
-        // Fallback to local mock data
-        this._products.set(this.productService.products());
-        this.loading.set(false);
-      }
-    });
+    // Use cache — instant if already loaded, waits for first fetch if not
+    const applyCache = () => {
+      this._products.set(this.cache.all());
+      this.loading.set(false);
+    };
+
+    if (this.cache.loaded()) {
+      applyCache();
+    } else {
+      // Cache still loading — subscribe to loaded signal via effect pattern
+      const checkLoaded = setInterval(() => {
+        if (this.cache.loaded()) {
+          clearInterval(checkLoaded);
+          applyCache();
+        }
+      }, 50);
+    }
   }
 
   addToCart(product: Product) {

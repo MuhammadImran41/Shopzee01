@@ -5,6 +5,7 @@ import {
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
 import { ProductService } from '../../core/services/product.service';
+import { ProductCacheService } from '../../core/services/product-cache.service';
 import { CartService } from '../../core/services/cart.service';
 import { WishlistService } from '../../core/services/wishlist.service';
 import { ToastService } from '../../core/services/toast.service';
@@ -23,6 +24,7 @@ import { Product } from '../../core/models/product.model';
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private productService  = inject(ProductService);
+  private cache           = inject(ProductCacheService);
   private cartService     = inject(CartService);
   private wishlistService = inject(WishlistService);
   private toastService    = inject(ToastService);
@@ -31,9 +33,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   private platformId      = inject(PLATFORM_ID);
   readonly siteImages     = inject(SiteImagesService);
 
-  private _womenProducts = signal<Product[]>(this.productService.womenProducts());
-  private _menProducts   = signal<Product[]>(this.productService.menProducts());
-  private _allProducts   = signal<Product[]>(this.productService.products());
+  private _womenProducts = signal<Product[]>(this.cache.women());
+  private _menProducts   = signal<Product[]>(this.cache.men());
+  private _allProducts   = signal<Product[]>(this.cache.all());
 
   womenProducts         = this._womenProducts.asReadonly();
   menProducts           = this._menProducts.asReadonly();
@@ -59,22 +61,25 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   ];
 
   ngOnInit() {
-    this.loadProductsFromApi();
-  }
+    // Load from cache — instant if prefetch already done
+    const applyCache = () => {
+      const all   = this.cache.all();
+      const women = this.cache.women();
+      const men   = this.cache.men();
+      if (women.length) this._womenProducts.set(women);
+      if (men.length)   this._menProducts.set(men);
+      if (all.length)   this._allProducts.set(all);
+      this.loading.set(false);
+    };
 
-  private loadProductsFromApi() {
-    this.loading.set(true);
-    this.productService.getProductsFromApi({ pageSize: 50 }).subscribe({
-      next: res => {
-        const women = res.items.filter(p => p.category === 'women');
-        const men   = res.items.filter(p => p.category === 'men');
-        if (women.length) this._womenProducts.set(women);
-        if (men.length)   this._menProducts.set(men);
-        this._allProducts.set(res.items);
-        this.loading.set(false);
-      },
-      error: () => { this.loading.set(false); }
-    });
+    if (this.cache.loaded()) {
+      applyCache();
+    } else {
+      this.loading.set(true);
+      const check = setInterval(() => {
+        if (this.cache.loaded()) { clearInterval(check); applyCache(); }
+      }, 50);
+    }
   }
 
   ngAfterViewInit() {
