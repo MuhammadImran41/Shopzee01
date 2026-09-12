@@ -73,10 +73,7 @@ import { API_BASE } from '../../../core/services/api/api.config';
           <button type="submit" class="btn btn-primary w-full auth-submit" [disabled]="loading()">
             @if (loading()) { <span>Signing in...</span> } @else { <span>Sign In</span> }
           </button>
-          <p class="auth-hint">
-            Demo: <strong>admin&#64;shopzee.pk</strong> / <strong>Admin&#64;2026</strong><br/>
-            <small style="color:#aaa">Support: trendzyofficial.store&#64;gmail.com</small>
-          </p>
+
         </form>
       }
 
