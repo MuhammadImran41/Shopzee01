@@ -207,10 +207,12 @@ import { trigger, transition, style, animate } from '@angular/animations';
                       </label>
                     </div>
                   } @else {
-                    <app-icon name="upload" [size]="28" class="upload-icon"/>
-                    <p class="upload-text">Drag & drop or click to upload</p>
-                    <p class="upload-sub">PNG, JPG up to 10MB each</p>
-                    <label for="modal-img-upload" class="btn btn-outline" style="cursor:pointer">Browse Files</label>
+                    <label for="modal-img-upload" class="img-upload-label">
+                      <app-icon name="upload" [size]="28" class="upload-icon"/>
+                      <p class="upload-text">Drag & drop or click to upload</p>
+                      <p class="upload-sub">PNG, JPG up to 10MB each</p>
+                      <p class="upload-multi-hint">Ctrl+Click ya Shift+Click se multiple files select karo</p>
+                    </label>
                   }
                   <input type="file" multiple accept="image/*" class="upload-input"
                     (change)="onImgFileSelect($event)" id="modal-img-upload" aria-label="Upload product images"/>
@@ -387,8 +389,10 @@ import { trigger, transition, style, animate } from '@angular/animations';
     }
     .upload-icon { color: var(--gold); }
     .upload-text { font-size: 0.875rem; font-weight: 500; margin: 0; }
-    .upload-sub { font-size: 0.775rem; color: var(--gray-400); margin: 0 0 0.5rem; }
+    .upload-sub { font-size: 0.775rem; color: var(--gray-400); margin: 0 0 0.25rem; }
+    .upload-multi-hint { font-size: 0.72rem; color: var(--gold-dark); font-weight: 600; margin: 0.25rem 0 0; letter-spacing: 0.02em; }
     .upload-input { display: none; }
+    .img-upload-label { display: flex; flex-direction: column; align-items: center; gap: 0.35rem; cursor: pointer; width: 100%; }
 
     /* Image previews */
     .img-preview-list { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: flex-start; width: 100%; padding: 0.25rem 0; }

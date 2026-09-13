@@ -11,11 +11,7 @@ import { SiteSettingsService } from '../../../core/services/site-settings.servic
   template: `
     <footer class="footer" role="contentinfo">
       <!-- Ornament top border -->
-      <div class="footer__ornament">
-        <div class="orn-line"></div>
-        <div class="orn-diamond"></div>
-        <div class="orn-line"></div>
-      </div>
+
 
       <div class="footer__main container">
         <div class="footer__grid">

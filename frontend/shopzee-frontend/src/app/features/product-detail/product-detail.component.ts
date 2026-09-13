@@ -43,38 +43,14 @@ import { API_BASE } from '../../core/services/api/api.config';
               </div>
             }
 
-            <!-- 2 images — side by side equal -->
-            @if (product()!.images.length === 2) {
-              <div class="pd-collage pd-collage--2">
-                @for (img of product()!.images; track $index) {
-                  <div class="pd-col-item" (click)="openLightbox($index)">
-                    <img [src]="img | safeUrl" [alt]="product()!.name + ' ' + ($index+1)" [loading]="$index===0?'eager':'lazy'"/>
-                  </div>
-                }
-                <button class="pd-wishlist-btn" [class.active]="wishlistService.isWishlisted(product()!.id)" (click)="toggleWishlist()" [attr.aria-label]="'Wishlist'">
-                  <app-icon [name]="wishlistService.isWishlisted(product()!.id) ? 'heart-filled' : 'heart'" [size]="22"/>
-                </button>
-              </div>
-            }
-
-            <!-- 3+ images — 1 big left + grid right -->
-            @if (product()!.images.length >= 3) {
-              <div class="pd-collage pd-collage--grid">
-                <!-- Big featured image -->
-                <div class="pd-col-main" (click)="openLightbox(0)">
-                  <img [src]="product()!.images[0] | safeUrl" [alt]="product()!.name" loading="eager"/>
-                </div>
-                <!-- Right grid -->
-                <div class="pd-col-grid">
+            <!-- 2+ images — simple 2-column equal grid -->
+            @if (product()!.images.length >= 2) {
+              <div class="pd-collage-wrap">
+                <div class="pd-img-grid">
                   @for (img of product()!.images; track $index) {
-                    @if ($index > 0 && $index <= 4) {
-                      <div class="pd-col-item" (click)="openLightbox($index)">
-                        <img [src]="img | safeUrl" [alt]="product()!.name + ' ' + ($index+1)" loading="lazy"/>
-                        @if ($index === 4 && product()!.images.length > 5) {
-                          <div class="pd-col-more">+{{ product()!.images.length - 5 }} more</div>
-                        }
-                      </div>
-                    }
+                    <div class="pd-grid-item" (click)="openLightbox($index)">
+                      <img [src]="img | safeUrl" [alt]="product()!.name + ' ' + ($index+1)" [loading]="$index < 2 ? 'eager' : 'lazy'"/>
+                    </div>
                   }
                 </div>
                 <button class="pd-wishlist-btn" [class.active]="wishlistService.isWishlisted(product()!.id)" (click)="toggleWishlist()" [attr.aria-label]="'Wishlist'">
@@ -103,16 +79,6 @@ import { API_BASE } from '../../core/services/api/api.config';
             <span class="pd-category">{{ product()!.subCategory }}</span>
             <h1 class="pd-name">{{ product()!.name }}</h1>
 
-            <!-- Rating -->
-            <div class="pd-rating">
-              <div class="stars">
-                @for (_ of stars(); track $index) {
-                  <app-icon name="star-filled" [size]="16" class="star-filled-icon"/>
-                }
-              </div>
-              <span class="pd-reviews">{{ product()!.rating }} ({{ product()!.reviews }} reviews)</span>
-            </div>
-
             <!-- Price -->
             <div class="pd-price-wrap">
               <span class="pd-price">PKR {{ product()!.price | number }}</span>
@@ -121,8 +87,6 @@ import { API_BASE } from '../../core/services/api/api.config';
                 <span class="pd-discount-badge">{{ product()!.discount }}% OFF</span>
               }
             </div>
-
-            <div class="ornament-divider"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
 
             <!-- Size Selector -->
             <div class="pd-option-group">
@@ -381,10 +345,10 @@ import { API_BASE } from '../../core/services/api/api.config';
 
     .pd-layout {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-12);
+      grid-template-columns: 55% 1fr;
+      gap: var(--space-10);
       margin-bottom: var(--space-16);
-      @media (max-width: 900px) { gap: var(--space-8); }
+      @media (max-width: 900px) { grid-template-columns: 52% 1fr; gap: var(--space-6); }
       @media (max-width: 768px) { grid-template-columns: 1fr; gap: var(--space-6); margin-bottom: var(--space-10); }
     }
 
@@ -408,42 +372,26 @@ import { API_BASE } from '../../core/services/api/api.config';
     }
 
     /* ── Collage layouts ─────────────────────────────── */
+    .pd-collage-wrap { position: relative; width: 100%; }
     .pd-collage { position: relative; width: 100%; }
 
-    /* 2 images — equal side by side */
-    .pd-collage--2 {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 3px;
-      .pd-col-item { aspect-ratio: 3/4; overflow: hidden; cursor: zoom-in;
-        img { width:100%; height:100%; object-fit:cover; object-position:top center; display:block; transition: transform 0.4s;
-          &:hover { transform: scale(1.03); }
-        }
-      }
-    }
-
-    /* 3+ images — 1 big left, grid right */
-    .pd-collage--grid {
+    /* ── Simple 2-col image grid ──────────────────────── */
+    .pd-img-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 3px;
-      .pd-col-main {
-        grid-row: span 2; aspect-ratio: 3/5; overflow: hidden; cursor: zoom-in;
-        img { width:100%; height:100%; object-fit:cover; object-position:top center; display:block; transition: transform 0.4s;
-          &:hover { transform: scale(1.03); }
-        }
-      }
-      .pd-col-grid {
-        display: grid; grid-template-columns: 1fr 1fr; gap: 3px;
-      }
-      .pd-col-item {
-        position: relative; aspect-ratio: 1/1; overflow: hidden; cursor: zoom-in;
-        img { width:100%; height:100%; object-fit:cover; object-position:top center; display:block; transition: transform 0.4s;
-          &:hover { transform: scale(1.03); }
-        }
-      }
-      .pd-col-more {
-        position: absolute; inset:0; background: rgba(26,26,26,0.55);
-        display: flex; align-items:center; justify-content:center;
-        color:#fff; font-size:1.1rem; font-weight:600; letter-spacing:0.05em;
+      gap: 8px;
+    }
+    .pd-grid-item {
+      overflow: hidden; cursor: zoom-in;
+      aspect-ratio: 3/4;
+      border: 1px solid var(--gray-200);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      background: var(--cream-dark);
+      img {
+        width: 100%; height: 100%;
+        object-fit: cover; object-position: top center;
+        display: block; transition: transform 0.45s ease;
+        &:hover { transform: scale(1.03); }
       }
     }
 
