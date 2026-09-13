@@ -322,6 +322,18 @@ import { trigger, transition, style, animate } from '@angular/animations';
                   Featured Product
                 </label>
               </div>
+              <div class="form-group">
+                <label class="check-label">
+                  <input type="checkbox" [(ngModel)]="formProduct.isOnSale" (ngModelChange)="onSaleToggle($event)"/>
+                  On Sale
+                </label>
+              </div>
+              @if (formProduct.isOnSale) {
+                <div class="form-group">
+                  <label>Original Price (PKR) <span class="sku-auto-label">(before discount)</span></label>
+                  <input [(ngModel)]="formProduct.originalPrice" type="number" placeholder="e.g. 5000"/>
+                </div>
+              }
 
             </div>
           </div>
@@ -550,7 +562,7 @@ export class AdminProductsComponent implements OnInit {
     return {
       name: '', categoryId: 1, price: 0, stock: 10, description: '',
       subCategory: '', sku: '', sizesStr: 'S,M,L,XL',
-      isNew: false, isFeatured: false,
+      isNew: false, isFeatured: false, isOnSale: false, originalPrice: null,
       images: [] as string[],
       colorsArr: [] as string[]
     };
@@ -653,9 +665,16 @@ export class AdminProductsComponent implements OnInit {
       categoryId: p.categoryId,
       sizesStr:   p.sizes?.join(',') || 'S,M,L,XL',
       images:     [...(p.images || [])],
-      colorsArr:  [...(p.colors || [])]
+      colorsArr:  [...(p.colors || [])],
+      isOnSale:   !!(p.originalPrice && p.originalPrice > p.price),
+      originalPrice: p.originalPrice || null
     };
     this.modalOpen.set(true);
+  }
+
+  // ── Sale toggle ──────────────────────────────────────────────
+  onSaleToggle(checked: boolean) {
+    if (!checked) this.formProduct.originalPrice = null;
   }
 
   // ── SKU auto-generation ──────────────────────────────────────
@@ -765,6 +784,8 @@ export class AdminProductsComponent implements OnInit {
       tags:    this.formProduct.tags      || [],
       isNew:       !!this.formProduct.isNew,
       isFeatured:  !!this.formProduct.isFeatured,
+      originalPrice: this.formProduct.isOnSale && this.formProduct.originalPrice
+                     ? +this.formProduct.originalPrice : null,
       isActive:    true,
       isInStock:   true
     };
