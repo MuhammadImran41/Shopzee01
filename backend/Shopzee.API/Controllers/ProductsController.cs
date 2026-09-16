@@ -10,7 +10,7 @@ namespace Shopzee.API.Controllers;
 
 [ApiController]
 [Route("api/products")]
-public class ProductsController(ShopzeeDbContext db) : ControllerBase
+public class ProductsController(ShopzeeDbContext db, StorageService storage) : ControllerBase
 {
     // GET api/products
     [HttpGet]
@@ -149,6 +149,9 @@ public class ProductsController(ShopzeeDbContext db) : ControllerBase
     [RequestFormLimits(MultipartBodyLengthLimit = 52_428_800)]
     public async Task<IActionResult> Create(CreateProductDto dto)
     {
+        // Upload base64 images to Supabase Storage
+        var processedImages = await storage.ProcessImagesAsync(dto.Images, dto.Name);
+
         var product = new Product
         {
             Name           = dto.Name.Trim(),
@@ -162,7 +165,7 @@ public class ProductsController(ShopzeeDbContext db) : ControllerBase
             CategoryId     = dto.CategoryId,
             SubCategory    = dto.SubCategory,
             Sku            = dto.Sku,
-            Images         = string.Join("|", dto.Images),
+            Images         = string.Join("|", processedImages),
             Colors         = string.Join(",", dto.Colors),
             Sizes          = string.Join(",", dto.Sizes),
             Tags           = string.Join(",", dto.Tags),
@@ -191,6 +194,9 @@ public class ProductsController(ShopzeeDbContext db) : ControllerBase
         var product = await db.Products.FindAsync(id);
         if (product is null) return NotFound();
 
+        // Upload any new base64 images to Supabase Storage
+        var processedImages = await storage.ProcessImagesAsync(dto.Images, dto.Name);
+
         product.Name           = dto.Name.Trim();
         // Make slug unique: if name changed, append id to avoid slug conflict
         var newSlug = dto.Name.ToSlug();
@@ -202,7 +208,7 @@ public class ProductsController(ShopzeeDbContext db) : ControllerBase
         product.CategoryId     = dto.CategoryId;
         product.SubCategory    = dto.SubCategory;
         product.Sku            = dto.Sku;
-        product.Images         = string.Join("|", dto.Images);
+        product.Images         = string.Join("|", processedImages);
         product.Colors         = string.Join(",", dto.Colors);
         product.Sizes          = string.Join(",", dto.Sizes);
         product.Tags           = string.Join(",", dto.Tags);
