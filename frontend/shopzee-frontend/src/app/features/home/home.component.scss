@@ -598,6 +598,7 @@
 .marquee-track {
   overflow: hidden;
   padding-bottom: var(--space-8);
+  contain: layout style;
 }
 
 .marquee-inner {
@@ -606,6 +607,8 @@
   animation: marqueeScroll 35s linear infinite;
   width: max-content;
   transform: translate3d(0, 0, 0);
+  will-change: transform;
+  backface-visibility: hidden;
 
   &:hover { animation-play-state: paused; }
 }
@@ -651,8 +654,8 @@
 .marquee-price { color: var(--gold-light); font-weight: 600; }
 
 @keyframes marqueeScroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
 }
 
 // ============================================================

@@ -2,8 +2,7 @@ import {
   Component, inject, signal, computed, HostListener, OnInit, PLATFORM_ID
 } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { RouterModule, RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { RouterModule, RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { CartService } from '../../../core/services/cart.service';
 import { WishlistService } from '../../../core/services/wishlist.service';
 import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
@@ -47,13 +46,13 @@ import { trigger, transition, style, animate } from '@angular/animations';
     ])
   ],
   template: `
-    <header class="navbar" [class.scrolled]="isScrolled() || !isHeroPage()" role="banner">
+    <header class="navbar" [class.scrolled]="isScrolled()" role="banner">
       <div class="navbar__inner container">
 
         <!-- Logo -->
-        <a routerLink="/" class="navbar__logo" aria-label="STYLEMAKER Home">
+        <a routerLink="/" class="navbar__logo" aria-label="Trendzy Home">
           <div class="logo-wrap">
-            <svg viewBox="0 0 200 40" class="logo-svg" aria-hidden="true">
+            <svg viewBox="0 0 160 40" class="logo-svg" aria-hidden="true">
               <path d="M8 28L4 14l8 6 8-12 8 12 8-6-4 14H8z"
                 fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linejoin="round"/>
               <circle cx="4"  cy="14" r="2" fill="#C9A84C"/>
@@ -61,7 +60,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
               <circle cx="36" cy="14" r="2" fill="#C9A84C"/>
               <text x="46" y="26"
                 font-family="Cormorant Garamond, Georgia, serif"
-                font-size="17" font-weight="600" fill="#1A1A1A" letter-spacing="2">STYLEMAKER</text>
+                font-size="19" font-weight="600" fill="#1A1A1A" letter-spacing="3">TRENDZY</text>
             </svg>
           </div>
         </a>
@@ -134,7 +133,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
                       Collections
                     </p>
                     <ul class="mega-links">
-                      <li><a routerLink="/new-arrivals" (click)="closeMega()" class="mega-link mega-link--featured">
+                      <li><a routerLink="/women" [queryParams]="{tag:'new'}" class="mega-link mega-link--featured">
                         <span class="mega-badge mega-badge--new">NEW</span>
                         <span class="mega-link-content"><strong>New Arrivals</strong></span>
                         <svg class="mega-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -270,7 +269,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 
             <!-- New Arrivals -->
             <li>
-              <a routerLink="/new-arrivals" routerLinkActive="active" class="nav-link">New Arrivals</a>
+              <a routerLink="/women" [queryParams]="{tag:'new'}" class="nav-link">New Arrivals</a>
             </li>
 
             <!-- Sale -->
@@ -330,11 +329,6 @@ import { trigger, transition, style, animate } from '@angular/animations';
                     <a routerLink="/account" [queryParams]="{tab:'orders'}" (click)="userDropOpen.set(false)" class="user-drop-item">
                       <app-icon name="package" [size]="16"/> My Orders
                     </a>
-                    @if (authApi.currentUser()?.role === 'reseller') {
-                      <a routerLink="/reseller" (click)="userDropOpen.set(false)" class="user-drop-item user-drop-item--reseller">
-                        <app-icon name="star-filled" [size]="16"/> Reseller Dashboard
-                      </a>
-                    }
                     <a routerLink="/wishlist" (click)="userDropOpen.set(false)" class="user-drop-item">
                       <app-icon name="heart" [size]="16"/> Wishlist
                       @if (wishlistService.count() > 0) {
@@ -391,7 +385,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
       <div class="mobile-overlay" [@overlayAnim] (click)="closeMobileMenu()" aria-hidden="true"></div>
       <nav class="mobile-drawer" [@drawerAnim] aria-label="Mobile navigation">
         <div class="drawer-header">
-          <span class="drawer-logo">STYLEMAKER</span>
+          <span class="drawer-logo">TRENDZY</span>
           <button class="action-btn" (click)="closeMobileMenu()" aria-label="Close menu">
             <app-icon name="close" [size]="24"/>
           </button>
@@ -440,7 +434,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
             }
           </li>
 
-          <li><a routerLink="/new-arrivals" (click)="closeMobileMenu()" class="drawer-link">New Arrivals</a></li>
+          <li><a routerLink="/women" [queryParams]="{tag:'new'}" (click)="closeMobileMenu()" class="drawer-link">New Arrivals</a></li>
           <li><a routerLink="/women" [queryParams]="{tag:'sale'}" (click)="closeMobileMenu()" class="drawer-link drawer-link--sale">Sale</a></li>
         </ul>
 
@@ -486,31 +480,34 @@ import { trigger, transition, style, animate } from '@angular/animations';
       width: auto; max-width: 1400px;
       margin: 0 auto;
       z-index: 200;
-      transition: background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease, top 0.35s ease;
+      /* Only animate visual properties — never top/height as they cause layout recalc & scroll glitch */
+      transition: background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
       background: transparent;
       backdrop-filter: none;
       border: 2px solid transparent;
       border-radius: 16px;
       box-shadow: none;
+      /* Promote to own compositing layer to prevent scroll repaint bleed */
       will-change: background, box-shadow;
       transform: translateZ(0);
+      backface-visibility: hidden;
 
       &__inner {
         display: flex; align-items: center;
         justify-content: space-between;
         height: 68px; padding: 0 1.5rem;
-        transition: height 0.3s ease;
+        /* No height transition — height changes cause layout reflow mid-scroll */
       }
 
       &.scrolled {
-        top: 10px;
+        /* top stays the same — no position animation */
         background: rgba(245,240,232,0.96);
         backdrop-filter: blur(24px);
         -webkit-backdrop-filter: blur(24px);
         border: 2px solid #C9A84C;
         box-shadow: 0 8px 32px rgba(26,26,26,0.13), 0 1px 0 rgba(255,255,255,0.45) inset;
 
-        .navbar__inner { height: 60px; }
+        /* height stays 68px — no shrink on scroll to prevent layout shift */
       }
 
       @media (max-width: 768px) {
@@ -522,8 +519,8 @@ import { trigger, transition, style, animate } from '@angular/animations';
     .navbar__logo { display: flex; align-items: center; text-decoration: none; }
     .logo-wrap    { display: flex; align-items: center; }
     .logo-svg {
-      width: 260px; height: 52px;
-      text { fill: #fff; filter: drop-shadow(0 1px 4px rgba(0,0,0,0.6)); }
+      width: 210px; height: 52px;
+      text { fill: #fff; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4)); }
     }
     .navbar.scrolled .logo-svg text { fill: #1A1A1A; filter: none; }
 
@@ -953,7 +950,6 @@ import { trigger, transition, style, animate } from '@angular/animations';
 
       &:hover { background: rgba(201,168,76,0.06); color: #a07830; app-icon { color: #C9A84C; } }
       &--admin { color: #a07830; font-weight: 500; app-icon { color: #C9A84C; } }
-      &--reseller { color: #a07830; font-weight: 600; background: rgba(201,168,76,0.05); app-icon { color: #C9A84C; } }
       &--logout { color: #888; &:hover { background: rgba(26,26,26,0.04); color: #1A1A1A; } }
     }
 
@@ -1094,9 +1090,6 @@ export class NavbarComponent implements OnInit {
   activeMega     = signal<string | null>(null);
   drawerAcc      = signal<string | null>(null);
 
-  // Hero page = only home '/' — all other pages get scrolled navbar
-  isHeroPage = computed(() => this.router.url === '/');
-
   private megaTimer: any;
 
   userInitial = computed(() =>
@@ -1104,42 +1097,17 @@ export class NavbarComponent implements OnInit {
   );
 
   ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      const nonHomePages = ['/account', '/cart', '/checkout', '/wishlist', '/women', '/men', '/product', '/new-arrivals', '/about', '/contact', '/admin'];
-
-      const setScrolledForRoute = (url: string) => {
-        const isNonHome = nonHomePages.some(p => url.startsWith(p));
-        if (isNonHome) {
-          this.isScrolled.set(true);
-        } else if (url === '/' || url === '') {
-          // On home page, reset to actual scroll position
-          this.isScrolled.set(window.scrollY > 20);
-        }
-      };
-
-      // Set on initial load
-      setScrolledForRoute(this.router.url);
-      this.checkScroll();
-
-      // Set on every route change
-      this.router.events.pipe(
-        filter(e => e instanceof NavigationEnd)
-      ).subscribe((e: any) => {
-        setScrolledForRoute(e.urlAfterRedirects || e.url);
-      });
-    }
+    if (isPlatformBrowser(this.platformId)) this.checkScroll();
   }
 
   private _ticking = false;
 
-  @HostListener('window:scroll')
+  @HostListener('window:scroll', [])
   checkScroll() {
     if (!this._ticking) {
       requestAnimationFrame(() => {
-        // Only update scroll state on home page — other pages always stay scrolled
-        if (this.router.url === '/' || this.router.url === '') {
-          this.isScrolled.set(window.scrollY > 20);
-        }
+        // 80px threshold prevents flicker near the top of the page
+        this.isScrolled.set(window.scrollY > 80);
         this._ticking = false;
       });
       this._ticking = true;

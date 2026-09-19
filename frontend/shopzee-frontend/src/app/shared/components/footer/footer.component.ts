@@ -20,8 +20,8 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
 
           <!-- Brand Column -->
           <div class="footer__brand">
-            <a routerLink="/" class="footer__logo" aria-label="STYLEMAKER Home">
-            <svg viewBox="0 0 200 40" class="logo-svg" aria-hidden="true">
+            <a routerLink="/" class="footer__logo" aria-label="Trendzy Home">
+            <svg viewBox="0 0 160 40" class="logo-svg" aria-hidden="true">
                 <path d="M8 28L4 14l8 6 8-12 8 12 8-6-4 14H8z"
                   fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linejoin="round"/>
                 <circle cx="4"  cy="14" r="2" fill="#C9A84C"/>
@@ -29,50 +29,55 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
                 <circle cx="36" cy="14" r="2" fill="#C9A84C"/>
                 <text x="46" y="26"
                   font-family="Cormorant Garamond, Georgia, serif"
-                  font-size="17" font-weight="600" fill="#ffffff" letter-spacing="2">STYLEMAKER</text>
+                  font-size="19" font-weight="600" fill="#1A1A1A" letter-spacing="3">TRENDZY</text>
+                <line x1="46" y1="31" x2="158" y2="31" stroke="#C9A84C" stroke-width="0.75"/>
               </svg>
             </a>
             <p class="footer__tagline">
               Timeless elegance for the modern Pakistani wardrobe. Premium men's and women's clothing crafted with love.
             </p>
-            <!-- Social Links -->
-            <div class="social-links">
-              <a href="#" class="social-link" aria-label="Instagram">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                  <circle cx="12" cy="12" r="3.5"/>
-                  <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
-                </svg>
-              </a>
-              <a href="#" class="social-link" aria-label="Facebook">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
-                </svg>
-              </a>
-              <a href="#" class="social-link" aria-label="TikTok">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                  <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05A6.34 6.34 0 003.15 15.3a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.16 8.16 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/>
-                </svg>
-              </a>
-              <a href="#" class="social-link" aria-label="WhatsApp">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
-                </svg>
-              </a>
-            </div>
+
           </div>
 
-          <!-- Quick Links -->
+          <!-- Social Media -->
           <div class="footer__col">
-            <h4 class="footer__heading">Quick Links</h4>
-            <ul class="footer__links">
-              <li><a routerLink="/">Home</a></li>
-              <li><a routerLink="/women">Women's Collection</a></li>
-              <li><a routerLink="/men">Men's Collection</a></li>
-              <li><a routerLink="/women" [queryParams]="{tag:'new'}">New Arrivals</a></li>
-              <li><a routerLink="/women" [queryParams]="{tag:'sale'}">Sale</a></li>
-              <li><a routerLink="/about">Our Story</a></li>
-            </ul>
+            <h4 class="footer__heading">Social Media</h4>
+            <div class="social-links-list">
+              <a href="#" class="social-list-link" aria-label="Instagram">
+                <span class="social-list-icon">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                    <circle cx="12" cy="12" r="3.5"/>
+                    <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+                  </svg>
+                </span>
+                Instagram
+              </a>
+              <a href="#" class="social-list-link" aria-label="Facebook">
+                <span class="social-list-icon">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+                  </svg>
+                </span>
+                Facebook
+              </a>
+              <a href="#" class="social-list-link" aria-label="TikTok">
+                <span class="social-list-icon">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05A6.34 6.34 0 003.15 15.3a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.16 8.16 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/>
+                  </svg>
+                </span>
+                TikTok
+              </a>
+              <a href="#" class="social-list-link" aria-label="WhatsApp">
+                <span class="social-list-icon">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
+                  </svg>
+                </span>
+                WhatsApp
+              </a>
+            </div>
           </div>
 
           <!-- Customer Care -->
@@ -91,7 +96,7 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
 
           <!-- Newsletter -->
           <div class="footer__col">
-            <h4 class="footer__heading">Stay Connected</h4>
+            <h4 class="footer__heading">Contact Us</h4>
             <p class="footer__newsletter-text">
               Subscribe for exclusive offers, new arrivals, and style inspiration.
             </p>
@@ -116,11 +121,11 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
               </div>
               <div class="contact-item">
                 <app-icon name="mail" [size]="16"/>
-                <span>trendzyofficial.store&#64;gmail.com</span>
+                <span>stylemakerofficial.store&#64;gmail.com</span>
               </div>
               <div class="contact-item">
                 <app-icon name="phone" [size]="16"/>
-                <span>+92 300 1234567</span>
+                <span>03364153050</span>
               </div>
             </div>
           </div>
@@ -132,7 +137,7 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
         <div class="container">
           <div class="footer__bottom-inner">
             <p class="footer__copyright">
-              &copy; {{ currentYear }} STYLEMAKER. All rights reserved. Crafted with elegance.
+              &copy; {{ currentYear }} Trendzy. All rights reserved. Crafted with elegance.
             </p>
             <div class="footer__bottom-links">
               <a href="#">Privacy Policy</a>
@@ -184,8 +189,8 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
         @media (max-width: 600px) { grid-column: 1/-1; }
 
         .logo-svg {
-          width: 200px; height: 42px; margin-bottom: 1.25rem;
-          @media (max-width: 480px) { width: 180px; height: 38px; }
+          width: 160px; height: 42px; margin-bottom: 1.25rem;
+          @media (max-width: 480px) { width: 140px; height: 36px; }
         }
       }
 
@@ -262,6 +267,28 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
       &:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.08); }
     }
 
+    .social-links-list {
+      display: flex; flex-direction: column; gap: 0.625rem;
+    }
+
+    .social-list-link {
+      display: flex; align-items: center; gap: 0.75rem;
+      font-size: 0.875rem; color: var(--gray-400); text-decoration: none;
+      transition: color 0.2s;
+      &:hover { color: var(--gold-light); }
+      @media (max-width: 480px) { font-size: 0.8rem; }
+    }
+
+    .social-list-icon {
+      display: flex; align-items: center; justify-content: center;
+      width: 34px; height: 34px; flex-shrink: 0;
+      border: 1px solid rgba(201,168,76,0.25); border-radius: 50%;
+      color: var(--gray-400); transition: all 0.25s;
+      .social-list-link:hover & {
+        border-color: var(--gold); color: var(--gold);
+        background: rgba(201,168,76,0.08);
+      }
+    }
     .newsletter-form {
       .newsletter-input-wrap {
         display: flex; align-items: stretch;
