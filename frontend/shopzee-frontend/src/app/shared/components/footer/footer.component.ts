@@ -20,22 +20,21 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
 
           <!-- Brand Column -->
           <div class="footer__brand">
-            <a routerLink="/" class="footer__logo" aria-label="STYLEMAKER Home">
-            <svg viewBox="0 0 160 40" class="logo-svg" aria-hidden="true">
-                <path d="M8 28L4 14l8 6 8-12 8 12 8-6-4 14H8z"
-                  fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linejoin="round"/>
-                <circle cx="4"  cy="14" r="2" fill="#C9A84C"/>
-                <circle cx="20" cy="8"  r="2" fill="#C9A84C"/>
-                <circle cx="36" cy="14" r="2" fill="#C9A84C"/>
-                <text x="46" y="26"
-                  font-family="Cormorant Garamond, Georgia, serif"
-                  font-size="19" font-weight="600" fill="#1A1A1A" letter-spacing="3">STYLEMAKER</text>
-                <line x1="46" y1="31" x2="158" y2="31" stroke="#C9A84C" stroke-width="0.75"/>
-              </svg>
-            </a>
-            <p class="footer__tagline">
-              Timeless elegance for the modern Pakistani wardrobe. Premium men's and women's clothing crafted with love.
-            </p>
+            <h4 class="footer__heading" style="margin-top:1rem">Contact</h4>
+            <div class="footer__contact-info">
+              <div class="contact-item">
+                <app-icon name="map-pin" [size]="16"/>
+                <span>Lahore, Pakistan</span>
+              </div>
+              <div class="contact-item">
+                <app-icon name="mail" [size]="16"/>
+                <span>stylemakerofficial.store&#64;gmail.com</span>
+              </div>
+              <div class="contact-item">
+                <app-icon name="phone" [size]="16"/>
+                <span>03364153050</span>
+              </div>
+            </div>
 
           </div>
 
@@ -94,9 +93,9 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
             </ul>
           </div>
 
-          <!-- Newsletter -->
+          <!-- Contact Us -->
           <div class="footer__col">
-            <h4 class="footer__heading">Contact Us</h4>
+            <h4 class="footer__heading">Newsletter</h4>
             <p class="footer__newsletter-text">
               Subscribe for exclusive offers, new arrivals, and style inspiration.
             </p>
@@ -114,20 +113,6 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
                 </button>
               </div>
             </form>
-            <div class="footer__contact-info">
-              <div class="contact-item">
-                <app-icon name="map-pin" [size]="16"/>
-                <span>Lahore, Pakistan</span>
-              </div>
-              <div class="contact-item">
-                <app-icon name="mail" [size]="16"/>
-                <span>stylemakerofficial.store&#64;gmail.com</span>
-              </div>
-              <div class="contact-item">
-                <app-icon name="phone" [size]="16"/>
-                <span>03364153050</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -137,7 +122,7 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
         <div class="container">
           <div class="footer__bottom-inner">
             <p class="footer__copyright">
-              &copy; {{ currentYear }} STYLEMAKER. All rights reserved. Crafted with elegance.
+              &copy; {{ currentYear }} StyleMaker. All rights reserved. Crafted with elegance.
             </p>
             <div class="footer__bottom-links">
               <a href="#">Privacy Policy</a>
@@ -195,7 +180,7 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
       }
 
       &__tagline {
-        font-size: 0.875rem; color: var(--gray-400); line-height: 1.7; margin-bottom: 1.5rem;
+        font-size: 0.875rem; color: var(--cream); line-height: 1.7; margin-bottom: 1.5rem;
         @media (max-width: 480px) { font-size: 0.8rem; }
       }
 
@@ -213,7 +198,7 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
         display: flex; flex-direction: column; gap: 0.625rem;
 
         a {
-          font-size: 0.875rem; color: var(--gray-400); text-decoration: none;
+          font-size: 0.875rem; color: var(--cream); text-decoration: none;
           transition: color 0.2s; display: inline-block;
           &:hover { color: var(--gold-light); }
           @media (max-width: 480px) { font-size: 0.8rem; }
@@ -221,12 +206,12 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
       }
 
       &__newsletter-text {
-        font-size: 0.875rem; color: var(--gray-400); line-height: 1.6; margin-bottom: 1rem;
+        font-size: 0.875rem; color: var(--cream); line-height: 1.6; margin-bottom: 1rem;
         @media (max-width: 480px) { font-size: 0.8rem; }
       }
 
       &__contact-info {
-        margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.625rem;
+        margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.25rem;
       }
 
       &__bottom {
@@ -242,7 +227,7 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
       }
 
       &__copyright {
-        font-size: 0.75rem; color: var(--gray-500); letter-spacing: 0.05em;
+        font-size: 0.75rem; color: var(--cream); letter-spacing: 0.05em;
         @media (max-width: 480px) { font-size: 0.7rem; }
       }
 
@@ -251,7 +236,7 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
         @media (max-width: 400px) { gap: 1rem; flex-wrap: wrap; justify-content: center; }
 
         a {
-          font-size: 0.75rem; color: var(--gray-500); text-decoration: none;
+          font-size: 0.75rem; color: var(--cream); text-decoration: none;
           letter-spacing: 0.05em; transition: color 0.2s;
           &:hover { color: var(--gold-light); }
         }
@@ -263,7 +248,7 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
     .social-link {
       display: flex; align-items: center; justify-content: center;
       width: 38px; height: 38px; border: 1px solid rgba(201,168,76,0.25);
-      border-radius: 50%; color: var(--gray-400); transition: all 0.3s; text-decoration: none;
+      border-radius: 50%; color: var(--cream); transition: all 0.3s; text-decoration: none;
       &:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.08); }
     }
 
@@ -273,7 +258,7 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
 
     .social-list-link {
       display: flex; align-items: center; gap: 0.75rem;
-      font-size: 0.875rem; color: var(--gray-400); text-decoration: none;
+      font-size: 0.875rem; color: var(--cream); text-decoration: none;
       transition: color 0.2s;
       &:hover { color: var(--gold-light); }
       @media (max-width: 480px) { font-size: 0.8rem; }
@@ -283,7 +268,7 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
       display: flex; align-items: center; justify-content: center;
       width: 34px; height: 34px; flex-shrink: 0;
       border: 1px solid rgba(201,168,76,0.25); border-radius: 50%;
-      color: var(--gray-400); transition: all 0.25s;
+      color: var(--cream); transition: all 0.25s;
       .social-list-link:hover & {
         border-color: var(--gold); color: var(--gold);
         background: rgba(201,168,76,0.08);
@@ -312,8 +297,9 @@ import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
     }
 
     .contact-item {
-      display: flex; align-items: center; gap: 0.5rem;
-      font-size: 0.8125rem; color: var(--gray-400);
+      display: flex; align-items: center; gap: 0.75rem;
+      font-size: 0.8125rem; color: var(--cream);
+      padding: 0.5rem 0;
       app-icon { color: var(--gold); flex-shrink: 0; }
       @media (max-width: 480px) { font-size: 0.75rem; }
     }
