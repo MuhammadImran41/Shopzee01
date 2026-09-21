@@ -3,7 +3,7 @@ import {
   PLATFORM_ID, OnDestroy, signal
 } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { ProductService } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart.service';
 import { WishlistService } from '../../core/services/wishlist.service';
@@ -24,6 +24,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   private cartService     = inject(CartService);
   private wishlistService = inject(WishlistService);
   private toastService    = inject(ToastService);
+  private router          = inject(Router);
   private el              = inject(ElementRef);
   private platformId      = inject(PLATFORM_ID);
 
@@ -102,6 +103,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   addToCart(product: Product) {
     this.cartService.addItem(product, product.sizes[1] || product.sizes[0], product.colors[0]);
     this.toastService.cart(`${product.name} added to cart`);
+    this.router.navigate(['/cart']);
   }
 
   toggleWishlist(product: Product) {

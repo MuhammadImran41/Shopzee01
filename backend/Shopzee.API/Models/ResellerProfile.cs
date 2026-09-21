@@ -76,10 +76,26 @@ public class ResellerOrderItem
     public int    ProductId       { get; set; }
     public string ProductName     { get; set; } = string.Empty;
     public string ProductImage    { get; set; } = string.Empty;
-    public decimal BasePrice      { get; set; }   // Our price
-    public decimal ResellerPrice  { get; set; }   // Price reseller charges customer
-    public decimal Profit         { get; set; }   // ResellerPrice - BasePrice
+    public decimal BasePrice      { get; set; }
+    public decimal ResellerPrice  { get; set; }
+    public decimal Profit         { get; set; }
     public int    Quantity        { get; set; } = 1;
     public string SelectedSize    { get; set; } = string.Empty;
     public string SelectedColor   { get; set; } = string.Empty;
+}
+
+// ── Payment History ───────────────────────────────────────────
+public class ResellerPayment
+{
+    public int    Id           { get; set; }
+    public int    ResellerId   { get; set; }
+    public ResellerProfile Reseller { get; set; } = null!;
+
+    public decimal Amount      { get; set; }
+    public string  Method      { get; set; } = string.Empty; // easypaisa|jazzcash|bank
+    public string  Reference   { get; set; } = string.Empty; // Transaction ID / ref
+    public string  Status      { get; set; } = "completed";  // completed|pending|failed
+    public string? Note        { get; set; }
+    public DateTime PaidAt     { get; set; } = DateTime.UtcNow;
+    public string  PaidBy      { get; set; } = "admin";      // admin name
 }

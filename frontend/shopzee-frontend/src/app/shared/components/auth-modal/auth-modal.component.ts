@@ -2,6 +2,7 @@ import { Component, inject, signal, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { SvgIconsComponent } from '../svg-icons/svg-icons.component';
 import { AuthApiService } from '../../../core/services/api/auth-api.service';
 import { ToastService } from '../../../core/services/toast.service';
@@ -475,6 +476,7 @@ export class AuthModalComponent {
   private authApi = inject(AuthApiService);
   private toast   = inject(ToastService);
   private http    = inject(HttpClient);
+  private router  = inject(Router);
 
   mode          = signal<'login' | 'register' | 'reseller'>('login');
   loading       = signal(false);
@@ -521,11 +523,15 @@ export class AuthModalComponent {
     this.loading.set(true);
     this.error.set('');
     this.authApi.login(this.loginForm.email, this.loginForm.password).subscribe({
-      next: () => {
-        this.toast.success('Welcome back!');
+      next: (res) => {
         this.loading.set(false);
         this.loggedIn.emit();
         this.close.emit();
+        if (res.user.role === 'admin') {
+          this.router.navigate(['/admin']);
+        } else {
+          this.toast.success('Welcome back!');
+        }
       },
       error: err => {
         this.error.set(err.error?.message || 'Invalid email or password.');

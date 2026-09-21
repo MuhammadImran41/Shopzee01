@@ -18,8 +18,12 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   return next(authReq).pipe(
     catchError((err: HttpErrorResponse) => {
       if (err.status === 401) {
+        // Only show toast if user was actually logged in (not just an expired stored token on app load)
+        const wasLoggedIn = !!authService.currentUser();
         authService.logout();
-        toast.error('Session expired. Please login again.');
+        if (wasLoggedIn) {
+          toast.error('Session expired. Please login again.');
+        }
       } else if (err.status === 403) {
         toast.error('You do not have permission to perform this action.');
       } else if (err.status === 0) {

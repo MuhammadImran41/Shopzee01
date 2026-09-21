@@ -1,6 +1,6 @@
 import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, ActivatedRoute } from '@angular/router';
+import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart.service';
@@ -143,7 +143,9 @@ import { Product } from '../../core/models/product.model';
           @for (product of filteredProducts(); track product.id) {
             <article class="product-card">
               @if (product.isNew) { <span class="card-badge badge-new">New</span> }
-              @if (product.discount) { <span class="card-badge badge-sale" style="top:2.5rem">-{{ product.discount }}%</span> }
+              @if (product.discount) {
+                <span class="card-badge badge-sale" [style.top]="product.isNew ? 'calc(var(--space-3) + 30px)' : 'var(--space-3)'">-{{ product.discount }}%</span>
+              }
               <button
                 class="card-wishlist"
                 [class.active]="wishlistService.isWishlisted(product.id)"
@@ -397,6 +399,7 @@ export class ShopComponent implements OnInit {
   cartService    = inject(CartService);
   wishlistService= inject(WishlistService);
   private toast  = inject(ToastService);
+  private router = inject(Router);
   private route  = inject(ActivatedRoute);
 
   category   = signal<'women' | 'men'>('women');
@@ -479,6 +482,7 @@ export class ShopComponent implements OnInit {
   addToCart(product: Product) {
     this.cartService.addItem(product, product.sizes[1] || product.sizes[0], product.colors[0]);
     this.toast.cart(`${product.name} added to cart`);
+    this.router.navigate(['/cart']);
   }
 
   toggleWishlist(product: Product) {
