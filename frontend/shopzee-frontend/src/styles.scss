@@ -3,6 +3,19 @@
 // Theme: Cream + Gold + Black
 // ============================================================
 
+// ============================================================
+// ANTI-FOUC (Flash of Unstyled Content)
+// Prevents footer/content flash on initial load
+// ============================================================
+body:not(.loaded) {
+  opacity: 0;
+  transition: opacity 0.2s ease-in;
+}
+
+body.loaded {
+  opacity: 1;
+}
+
 // Google Fonts — loaded via index.html preload for better performance.
 // @import removed from CSS to avoid render-blocking.
 // Fallback stack ensures text is always visible (font-display: swap).
