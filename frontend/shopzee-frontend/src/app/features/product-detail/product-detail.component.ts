@@ -130,7 +130,7 @@ import { Product } from '../../core/models/product.model';
 
             <!-- Actions -->
             <div class="pd-actions">
-              @if (product() && product()!.isInStock !== false) {
+              @if (product() && product()?.isInStock !== false) {
                 <button class="btn btn-primary pd-add-btn" (click)="addToCart()">
                   <app-icon name="cart" [size]="18"/> Add to Cart
                 </button>
@@ -149,8 +149,8 @@ import { Product } from '../../core/models/product.model';
             </div>
 
             <!-- Stock Info -->
-            <div class="pd-stock" [class.pd-stock--out]="product() && product()!.isInStock === false">
-              @if (product() && product()!.isInStock === false) {
+            <div class="pd-stock" [class.pd-stock--out]="product() && product()?.isInStock === false">
+              @if (product() && product()?.isInStock === false) {
                 <app-icon name="close" [size]="16" class="stock-icon-out"/>
                 <span>Currently Out of Stock</span>
               } @else if (product()) {
