@@ -427,7 +427,7 @@ import { apiToProduct } from '../../../core/services/product.service';
           }
 
           <!-- Search Results -->
-          @if (searchResults().length > 0) {
+          @if (searchQuery && searchResults().length > 0) {
             <div class="search-results-section">
               <p class="search-section-title">Search results</p>
               <div class="search-results-grid">
