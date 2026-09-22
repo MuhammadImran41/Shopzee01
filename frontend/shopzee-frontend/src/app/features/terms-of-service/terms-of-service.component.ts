@@ -122,8 +122,7 @@ import { RouterLink } from '@angular/router';
               <div class="section-label">Section 05</div>
               <h2>Shipping &amp; Delivery</h2>
               <ul>
-                <li><strong>Free shipping</strong> on all orders above <strong>PKR 5,000</strong></li>
-                <li>Standard delivery charge: <strong>PKR 300</strong> for orders below PKR 5,000</li>
+                <li><strong>Free home delivery</strong> all across Pakistan</li>
                 <li>Estimated delivery: <strong>3–7 working days</strong> across Pakistan</li>
                 <li>Remote areas may require additional time</li>
                 <li>STYLEMAKER is not liable for delays caused by courier companies, weather, or force majeure</li>

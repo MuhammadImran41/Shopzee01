@@ -191,7 +191,7 @@ import { API_BASE } from '../../core/services/api/api.config';
               </button>
               @if (shippingOpen()) {
                 <div class="accordion-content">
-                  <p>Free shipping on orders above PKR 5,000. Delivery within 3-5 business days. Easy 7-day returns.</p>
+                  <p>Free home delivery all across Pakistan. Delivery within 3-5 business days. Easy 7-day returns.</p>
                 </div>
               }
             </div>

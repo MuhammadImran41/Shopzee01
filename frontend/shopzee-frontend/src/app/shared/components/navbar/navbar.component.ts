@@ -86,7 +86,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
               </a>
               <div class="mega-menu">
                 <div class="mega-promo-bar">
-                  <span>✦ Free shipping on orders above PKR 5,000</span>
+                  <span>✦ Free Home Delivery</span>
                   <a routerLink="/new-arrivals">View New Arrivals →</a>
                 </div>
                 <div class="mega-inner">
