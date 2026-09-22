@@ -182,7 +182,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
               </a>
               <div class="mega-menu">
                 <div class="mega-promo-bar">
-                  <span>✦ New arrivals every week — stay updated</span>
+                  <span>✦ New arrivals every week stay updated</span>
                   <a routerLink="/new-arrivals">Explore Men's →</a>
                 </div>
                 <div class="mega-inner">

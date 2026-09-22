@@ -106,13 +106,13 @@ import { RouterLink } from '@angular/router';
               <div class="section-label">Section 04</div>
               <h2>Orders &amp; Payment</h2>
               <h3>Order Placement</h3>
-              <p>Placing an order constitutes an offer to purchase. STYLEMAKER may accept or decline any order, including due to unavailability, pricing errors, or suspected fraud. An order confirmation email does not guarantee acceptance — acceptance occurs upon dispatch.</p>
+              <p>Placing an order constitutes an offer to purchase. STYLEMAKER may accept or decline any order, including due to unavailability, pricing errors, or suspected fraud. An order confirmation email does not guarantee acceptance acceptance occurs upon dispatch.</p>
               <h3>Accepted Payment Methods</h3>
               <ul>
-                <li><strong>Cash on Delivery (COD)</strong> — Payment collected upon delivery</li>
-                <li><strong>EasyPaisa</strong> — Mobile wallet transfer</li>
-                <li><strong>JazzCash</strong> — Mobile wallet transfer</li>
-                <li><strong>Bank Transfer</strong> — Direct bank account deposit</li>
+                <li><strong>Cash on Delivery (COD)</strong> Payment collected upon delivery</li>
+                <li><strong>EasyPaisa</strong> Mobile wallet transfer</li>
+                <li><strong>JazzCash</strong> Mobile wallet transfer</li>
+                <li><strong>Bank Transfer</strong> Direct bank account deposit</li>
               </ul>
               <h3>Cancellations</h3>
               <p>Orders may be cancelled before dispatch. Once shipped, orders cannot be cancelled but may be returned per our Return Policy.</p>
@@ -147,7 +147,7 @@ import { RouterLink } from '@angular/router';
             <section id="ip">
               <div class="section-label">Section 07</div>
               <h2>Intellectual Property</h2>
-              <p>All content on stylemaker.store — including text, graphics, logos, product images, and software — is the exclusive property of STYLEMAKER and is protected under Pakistani and international intellectual property laws.</p>
+              <p>All content on stylemaker.store including text, graphics, logos, product images, and software is the exclusive property of STYLEMAKER and is protected under Pakistani and international intellectual property laws.</p>
               <p>You may <strong>not</strong>:</p>
               <ul>
                 <li>Copy, reproduce, or commercially exploit any content without written permission</li>

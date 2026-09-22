@@ -300,7 +300,7 @@ interface OrderItem {
                           (ngModelChange)="onProductSelect(i, $event)">
                           <option [value]="0">Select Product</option>
                           @for (p of products(); track p.id) {
-                            <option [value]="p.id">{{ p.name }} — PKR {{ p.price | number }}</option>
+                            <option [value]="p.id">{{ p.name }} PKR {{ p.price | number }}</option>
                           }
                         </select>
                         @if (orderItems().length > 1) {
@@ -376,7 +376,7 @@ interface OrderItem {
                 <button type="submit" class="btn btn-primary w-full order-submit-btn"
                   [disabled]="orderLoading()">
                   @if (orderLoading()) { Placing Order... }
-                  @else { Place Order — Profit: PKR {{ orderTotalProfit() | number }} }
+                  @else { Place Order Profit: PKR {{ orderTotalProfit() | number }} }
                 </button>
               </form>
             }
