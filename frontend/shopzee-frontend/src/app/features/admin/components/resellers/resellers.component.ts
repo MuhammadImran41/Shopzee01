@@ -2,7 +2,6 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { SvgIconsComponent } from '../../../../shared/components/svg-icons/svg-icons.component';
 import { AuthApiService } from '../../../../core/services/api/auth-api.service';
 import { ToastService } from '../../../../core/services/toast.service';
 import { API_BASE } from '../../../../core/services/api/api.config';
@@ -56,7 +55,7 @@ interface Stats { totalResellers: number; pendingResellers: number; approvedRese
 @Component({
   selector: 'app-resellers',
   standalone: true,
-  imports: [CommonModule, FormsModule, SvgIconsComponent],
+  imports: [CommonModule, FormsModule],
   template: `
 <div class="rs-page">
   <div class="rs-page-tabs">
