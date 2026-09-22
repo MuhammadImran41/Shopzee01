@@ -366,32 +366,32 @@ import { trigger, transition, style, animate } from '@angular/animations';
           </button>
         </div>
       </div>
+    </header>
 
-      <!-- Search Bar Overlay -->
-      @if (searchOpen()) {
-        <div class="search-overlay" [@overlayAnim] (click)="toggleSearch()"></div>
-      }
+    <!-- Search Bar Overlay -->
+    @if (searchOpen()) {
+      <div class="search-overlay" [@overlayAnim] (click)="toggleSearch()"></div>
+    }
 
-      <!-- Search Bar (Replaces Navbar) -->
-      @if (searchOpen()) {
-        <div class="search-bar-fullscreen" [@searchAnim]>
-          <div class="search-bar-inner" (click)="$event.stopPropagation()">
-            <div class="container">
-              <form class="search-form" (submit)="goToSearch($event)">
-                <app-icon name="search" [size]="22" class="search-icon"/>
-                <input type="search" [(ngModel)]="searchQuery" name="q"
-                  placeholder="Search clothing, styles, collections..."
-                  class="search-input" autofocus
-                  (keydown.escape)="toggleSearch()" aria-label="Search products"/>
-                <button type="button" class="close-search-btn" (click)="toggleSearch()" aria-label="Close search">
-                  <app-icon name="close" [size]="24"/>
-                </button>
-              </form>
-            </div>
+    <!-- Search Bar (Replaces Navbar) -->
+    @if (searchOpen()) {
+      <div class="search-bar-fullscreen" [@searchAnim]>
+        <div class="search-bar-inner">
+          <div class="container">
+            <form class="search-form" (submit)="goToSearch($event)">
+              <app-icon name="search" [size]="22" class="search-icon"/>
+              <input type="search" [(ngModel)]="searchQuery" name="q"
+                placeholder="Search clothing, styles, collections..."
+                class="search-input" autofocus
+                (keydown.escape)="toggleSearch()" aria-label="Search products"/>
+              <button type="button" class="close-search-btn" (click)="toggleSearch()" aria-label="Close search">
+                <app-icon name="close" [size]="24"/>
+              </button>
+            </form>
           </div>
         </div>
-      }
-    </header>
+      </div>
+    }
 
     <!-- Mobile Drawer Overlay -->
     @if (mobileMenuOpen()) {
