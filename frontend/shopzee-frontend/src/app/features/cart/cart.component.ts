@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CartService } from '../../core/services/cart.service';
 import { ToastService } from '../../core/services/toast.service';
@@ -223,9 +223,22 @@ import { SvgIconsComponent } from '../../shared/components/svg-icons/svg-icons.c
     }
   `]
 })
-export class CartComponent {
+export class CartComponent implements OnInit, OnDestroy {
   cartService = inject(CartService);
   private toast = inject(ToastService);
+  private platformId = inject(PLATFORM_ID);
+
+  ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      document.body.classList.add('navbar-dark-mode');
+    }
+  }
+
+  ngOnDestroy() {
+    if (isPlatformBrowser(this.platformId)) {
+      document.body.classList.remove('navbar-dark-mode');
+    }
+  }
 
   updateQty(id: number, size: string, color: string, qty: number) {
     this.cartService.updateQuantity(id, size, color, qty);
