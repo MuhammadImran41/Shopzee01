@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <style>
+      .sm-text {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-size: 40px;
+        font-weight: 600;
+        fill: #C9A84C;
+        letter-spacing: -2px;
+      }
+    </style>
+  </defs>
+  <text class="sm-text" x="32" y="44" text-anchor="middle">SM</text>
+</svg>
