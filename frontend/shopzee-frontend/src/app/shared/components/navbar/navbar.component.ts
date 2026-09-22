@@ -40,13 +40,24 @@ import { trigger, transition, style, animate } from '@angular/animations';
     ]),
     trigger('searchAnim', [
       transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(-20px) scale(0.95)' }),
-        animate('350ms cubic-bezier(0.34, 1.56, 0.64, 1)', 
-          style({ opacity: 1, transform: 'translateY(0) scale(1)' }))
+        style({ opacity: 0 }),
+        animate('400ms cubic-bezier(0.25, 0.46, 0.45, 0.94)', 
+          style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('300ms cubic-bezier(0.4, 0, 1, 1)', 
+          style({ opacity: 0 }))
+      ])
+    ]),
+    trigger('searchContentAnim', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-30px)' }),
+        animate('500ms 150ms cubic-bezier(0.34, 1.56, 0.64, 1)', 
+          style({ opacity: 1, transform: 'translateY(0)' }))
       ]),
       transition(':leave', [
         animate('250ms cubic-bezier(0.4, 0, 1, 1)', 
-          style({ opacity: 0, transform: 'translateY(-20px) scale(0.95)' }))
+          style({ opacity: 0, transform: 'translateY(-20px)' }))
       ])
     ])
   ],
@@ -367,23 +378,45 @@ import { trigger, transition, style, animate } from '@angular/animations';
         </div>
       </div>
 
-      <!-- Search Bar -->
+      <!-- Full-Screen Search Overlay -->
       @if (searchOpen()) {
-        <div class="search-bar" [@searchAnim]>
-          <div class="container">
-            <form class="search-inner" (submit)="goToSearch($event)">
-              <app-icon name="search" [size]="20" class="search-icon"/>
-              <input type="search" [(ngModel)]="searchQuery" name="q"
-                placeholder="Search clothing, styles, collections..."
-                class="search-input" autofocus
-                (keydown.escape)="toggleSearch()" aria-label="Search products"/>
-              <button type="submit" class="action-btn" aria-label="Submit search">
-                <app-icon name="search" [size]="20"/>
-              </button>
-              <button type="button" class="action-btn" (click)="toggleSearch()" aria-label="Close search">
-                <app-icon name="close" [size]="20"/>
-              </button>
-            </form>
+        <div class="search-overlay" [@searchAnim] (click)="toggleSearch()">
+          <div class="search-overlay__content" [@searchContentAnim] (click)="$event.stopPropagation()">
+            <div class="search-container">
+              <div class="search-header">
+                <h2 class="search-title">What are you looking for?</h2>
+                <button type="button" class="search-close" (click)="toggleSearch()" aria-label="Close search">
+                  <app-icon name="close" [size]="24"/>
+                </button>
+              </div>
+              
+              <form class="search-form" (submit)="goToSearch($event)">
+                <div class="search-input-wrapper">
+                  <app-icon name="search" [size]="24" class="search-form-icon"/>
+                  <input type="search" [(ngModel)]="searchQuery" name="q"
+                    placeholder="Search clothing, styles, collections..."
+                    class="search-form-input" autofocus
+                    (keydown.escape)="toggleSearch()" 
+                    aria-label="Search products"/>
+                  <button type="submit" class="search-submit-btn" aria-label="Search">
+                    <span>Search</span>
+                    <app-icon name="arrow-right" [size]="18"/>
+                  </button>
+                </div>
+              </form>
+              
+              <div class="search-suggestions">
+                <p class="search-suggestions-label">Popular Searches</p>
+                <div class="search-tags">
+                  <button type="button" class="search-tag" (click)="quickSearch('bridal collection')">Bridal Collection</button>
+                  <button type="button" class="search-tag" (click)="quickSearch('formal wear')">Formal Wear</button>
+                  <button type="button" class="search-tag" (click)="quickSearch('embroidered suits')">Embroidered Suits</button>
+                  <button type="button" class="search-tag" (click)="quickSearch('shalwar kameez')">Shalwar Kameez</button>
+                  <button type="button" class="search-tag" (click)="quickSearch('casual wear')">Casual Wear</button>
+                  <button type="button" class="search-tag" (click)="quickSearch('new arrivals')">New Arrivals</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       }
@@ -844,121 +877,308 @@ import { trigger, transition, style, animate } from '@angular/animations';
       display: flex; align-items: center; justify-content: center; line-height: 1;
     }
 
-    /* ── SEARCH BAR ──────────────────────────────────────── */
-    .search-bar {
+    /* ── FULL-SCREEN SEARCH OVERLAY ─────────────────────── */
+    .search-overlay {
       position: fixed;
-      top: 94px;
-      left: 24px;
-      right: 24px;
-      max-width: 1400px;
-      margin: 0 auto;
-      background: rgba(255, 255, 255, 0.98);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 2px solid rgba(201,168,76,0.3);
-      border-radius: 16px;
-      box-shadow: 
-        0 12px 48px rgba(26,26,26,0.15),
-        0 4px 12px rgba(201,168,76,0.1),
-        0 1px 0 rgba(255,255,255,0.8) inset;
-      padding: 1.25rem 2rem;
-      z-index: 198;
-      transition: all 0.3s ease;
+      inset: 0;
+      background: rgba(26, 26, 26, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 300;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 0;
+      overflow-y: auto;
+      cursor: pointer;
+    }
+    
+    .search-overlay__content {
+      width: 100%;
+      max-width: 900px;
+      background: linear-gradient(135deg, rgba(245,240,232,0.98) 0%, rgba(255,255,255,0.95) 100%);
+      margin: 0;
+      padding: 0;
+      cursor: default;
+      position: relative;
+      min-height: 280px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
       
       @media (max-width: 900px) {
-        top: 75px;
-        left: 12px;
-        right: 12px;
-        padding: 1rem 1.5rem;
-        border-radius: 14px;
+        max-width: 100%;
       }
+    }
+    
+    .search-container {
+      padding: 3rem 3rem 3.5rem;
       
-      @media (max-width: 600px) {
-        top: 68px;
-        padding: 0.875rem 1.25rem;
-        border-radius: 12px;
+      @media (max-width: 768px) {
+        padding: 2.5rem 2rem 3rem;
       }
       
       @media (max-width: 480px) {
-        top: 62px;
-        left: 8px;
-        right: 8px;
-        padding: 0.75rem 1rem;
-        border-radius: 10px;
+        padding: 2rem 1.5rem 2.5rem;
       }
+    }
+    
+    .search-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2.5rem;
+      
+      @media (max-width: 768px) {
+        margin-bottom: 2rem;
+      }
+      
+      @media (max-width: 480px) {
+        margin-bottom: 1.5rem;
+      }
+    }
+    
+    .search-title {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 400;
+      color: #1A1A1A;
+      margin: 0;
+      letter-spacing: 0.02em;
+      
+      @media (max-width: 768px) {
+        font-size: 1.75rem;
+      }
+      
+      @media (max-width: 480px) {
+        font-size: 1.5rem;
+      }
+    }
+    
+    .search-close {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(26,26,26,0.05);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      color: #666;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
       
       &:hover {
-        border-color: rgba(201,168,76,0.5);
-        box-shadow: 
-          0 16px 56px rgba(26,26,26,0.18),
-          0 6px 16px rgba(201,168,76,0.15),
-          0 1px 0 rgba(255,255,255,0.9) inset;
-      }
-
-      .search-inner { 
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        
-        @media (max-width: 600px) { gap: 0.75rem; }
-        @media (max-width: 480px) { gap: 0.5rem; }
-      }
-      
-      .search-icon  { 
-        color: #C9A84C;
-        flex-shrink: 0;
-        transition: transform 0.2s ease;
-        
-        @media (max-width: 480px) {
-          app-icon { width: 18px; height: 18px; }
-        }
-      }
-      
-      .search-input {
-        flex: 1;
-        background: none;
-        border: none;
-        font-size: 1.125rem;
-        font-family: var(--font-heading);
-        font-weight: 400;
+        background: rgba(201,168,76,0.15);
         color: #1A1A1A;
-        outline: none;
-        letter-spacing: 0.01em;
-        
-        @media (max-width: 768px) { font-size: 1rem; }
-        @media (max-width: 480px) { font-size: 0.9375rem; }
-        
-        &::placeholder { 
-          color: #999;
-          font-weight: 300;
-        }
-        
-        &:focus {
-          + .action-btn {
-            transform: scale(1.05);
-          }
-        }
+        transform: rotate(90deg);
       }
       
-      .action-btn {
-        flex-shrink: 0;
-        transition: all 0.2s ease;
-        color: #666;
+      &:active {
+        transform: rotate(90deg) scale(0.9);
+      }
+      
+      @media (max-width: 480px) {
+        width: 40px;
+        height: 40px;
         
-        &:hover {
-          color: #C9A84C;
-          background: rgba(201,168,76,0.08);
-          transform: scale(1.1);
+        app-icon {
+          width: 20px;
+          height: 20px;
         }
+      }
+    }
+    
+    .search-form {
+      margin-bottom: 3rem;
+      
+      @media (max-width: 768px) {
+        margin-bottom: 2.5rem;
+      }
+      
+      @media (max-width: 480px) {
+        margin-bottom: 2rem;
+      }
+    }
+    
+    .search-input-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: #fff;
+      border: 2px solid rgba(201,168,76,0.2);
+      border-radius: 50px;
+      padding: 0.75rem 1.5rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      
+      &:focus-within {
+        border-color: #C9A84C;
+        box-shadow: 
+          0 8px 24px rgba(0,0,0,0.08),
+          0 0 0 4px rgba(201,168,76,0.1);
+      }
+      
+      @media (max-width: 480px) {
+        padding: 0.625rem 1.25rem;
+        gap: 0.75rem;
+      }
+    }
+    
+    .search-form-icon {
+      color: #C9A84C;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+      
+      @media (max-width: 480px) {
+        app-icon {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+    
+    .search-input-wrapper:focus-within .search-form-icon {
+      transform: scale(1.1);
+    }
+    
+    .search-form-input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      font-size: 1.25rem;
+      font-family: var(--font-heading);
+      font-weight: 400;
+      color: #1A1A1A;
+      letter-spacing: 0.01em;
+      min-width: 0;
+      
+      &::placeholder {
+        color: #999;
+        font-weight: 300;
+      }
+      
+      @media (max-width: 768px) {
+        font-size: 1.125rem;
+      }
+      
+      @media (max-width: 480px) {
+        font-size: 1rem;
+      }
+    }
+    
+    .search-submit-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, #C9A84C 0%, #B89840 100%);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(201,168,76,0.3);
+      
+      &:hover {
+        background: linear-gradient(135deg, #B89840 0%, #A88838 100%);
+        box-shadow: 0 4px 16px rgba(201,168,76,0.4);
+        transform: translateY(-2px);
+      }
+      
+      &:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 8px rgba(201,168,76,0.3);
+      }
+      
+      @media (max-width: 768px) {
+        padding: 0.625rem 1.25rem;
+        font-size: 0.9375rem;
+        gap: 0.375rem;
+      }
+      
+      @media (max-width: 480px) {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
         
-        &:active {
-          transform: scale(0.95);
+        app-icon {
+          width: 16px;
+          height: 16px;
         }
-        
-        @media (max-width: 480px) {
-          padding: 0.5rem;
-          app-icon { width: 18px; height: 18px; }
-        }
+      }
+    }
+    
+    .search-suggestions {
+      animation: fadeInUp 0.6s ease 0.3s backwards;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .search-suggestions-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #666;
+      margin: 0 0 1rem 0;
+      
+      @media (max-width: 480px) {
+        font-size: 0.8125rem;
+        margin-bottom: 0.875rem;
+      }
+    }
+    
+    .search-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      
+      @media (max-width: 480px) {
+        gap: 0.625rem;
+      }
+    }
+    
+    .search-tag {
+      background: rgba(201,168,76,0.08);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 50px;
+      padding: 0.625rem 1.25rem;
+      font-size: 0.9375rem;
+      font-family: var(--font-sans);
+      color: #666;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+      
+      &:hover {
+        background: rgba(201,168,76,0.15);
+        border-color: #C9A84C;
+        color: #1A1A1A;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(201,168,76,0.15);
+      }
+      
+      &:active {
+        transform: translateY(0);
+      }
+      
+      @media (max-width: 480px) {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
       }
     }
 
@@ -1291,6 +1511,12 @@ export class NavbarComponent implements OnInit {
     this.searchOpen.set(false);
     this.searchQuery = '';
     this.router.navigate(['/search'], { queryParams: { q } });
+  }
+
+  quickSearch(query: string) {
+    this.searchQuery = query;
+    this.searchOpen.set(false);
+    this.router.navigate(['/search'], { queryParams: { q: query } });
   }
 
   logout() {
