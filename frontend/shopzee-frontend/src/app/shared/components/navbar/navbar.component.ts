@@ -375,7 +375,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
       <!-- Search Bar (Replaces Navbar) -->
       @if (searchOpen()) {
         <div class="search-bar-fullscreen" [@searchAnim]>
-          <div class="search-bar-inner">
+          <div class="search-bar-inner" (click)="$event.stopPropagation()">
             <div class="container">
               <form class="search-form" (submit)="goToSearch($event)">
                 <app-icon name="search" [size]="22" class="search-icon"/>
