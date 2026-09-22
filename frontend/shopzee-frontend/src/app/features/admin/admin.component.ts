@@ -34,8 +34,18 @@ interface Notification {
       <aside class="admin-sidebar" [attr.aria-expanded]="!sidebarCollapsed()">
         <div class="sidebar-brand">
           @if (!sidebarCollapsed()) {
-            <span class="brand-text">STYLEMAKER</span>
-            <span class="brand-sub">Admin Panel</span>
+            <div class="brand-content">
+              <div>
+                <span class="brand-text">STYLEMAKER</span>
+                <span class="brand-sub">Admin Panel</span>
+              </div>
+              <button class="sidebar-close-btn" (click)="toggleSidebar()" aria-label="Close sidebar">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
           } @else {
             <app-icon name="crown" [size]="24" class="brand-icon"/>
           }
@@ -207,6 +217,13 @@ interface Notification {
         padding: 1.25rem 1rem;
       }
       
+      .brand-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      
       .brand-text {
         font-family:var(--font-heading);
         font-size:1.25rem;
@@ -223,6 +240,35 @@ interface Notification {
         letter-spacing:0.2em;
         text-transform:uppercase;
         color:var(--gold);
+      }
+      
+      .sidebar-close-btn {
+        display: none;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        background: rgba(201,168,76,0.1);
+        border: none;
+        border-radius: 6px;
+        color: var(--gold);
+        cursor: pointer;
+        transition: all 0.2s;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        
+        @media (max-width: 768px) {
+          display: flex;
+        }
+        
+        &:hover {
+          background: rgba(201,168,76,0.2);
+          color: var(--gold-dark);
+        }
+        
+        &:active {
+          transform: scale(0.95);
+        }
       }
       
       .brand-icon {
