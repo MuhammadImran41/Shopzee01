@@ -357,7 +357,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
           }
 
           <button class="action-btn hide-desktop" (click)="toggleMobileMenu()" aria-label="Toggle menu">
-            <app-icon [name]="mobileMenuOpen() ? 'close' : 'menu'" [size]="24"/>
+            <app-icon [name]="mobileMenuOpen() ? 'close' : 'menu'" [size]="20"/>
           </button>
         </div>
       </div>
@@ -438,24 +438,6 @@ import { trigger, transition, style, animate } from '@angular/animations';
           <li><a routerLink="/sale" (click)="closeMobileMenu()" class="drawer-link drawer-link--sale">Sale</a></li>
         </ul>
 
-        <div class="drawer-actions">
-          <a routerLink="/account" (click)="closeMobileMenu()" class="drawer-action-link">
-            <app-icon name="user" [size]="18"/> My Account
-          </a>
-          <a routerLink="/wishlist" (click)="closeMobileMenu()" class="drawer-action-link">
-            <app-icon name="heart" [size]="18"/> Wishlist
-            @if (wishlistService.count() > 0) {
-              <span class="action-badge">{{ wishlistService.count() }}</span>
-            }
-          </a>
-          <a routerLink="/cart" (click)="closeMobileMenu()" class="drawer-action-link">
-            <app-icon name="cart" [size]="18"/> Cart
-            @if (cartService.itemCount() > 0) {
-              <span class="action-badge">{{ cartService.itemCount() }}</span>
-            }
-          </a>
-        </div>
-
         <div class="drawer-admin">
           @if (authApi.isLoggedIn()) {
             <span class="drawer-user">{{ authApi.currentUser()?.name }}</span>
@@ -476,18 +458,16 @@ import { trigger, transition, style, animate } from '@angular/animations';
     /* ── NAVBAR BASE ─────────────────────────────────────── */
     .navbar {
       position: fixed;
-      top: 16px; left: 24px; right: 24px;
+       top: 16px; left: 24px; right: 24px;
       width: auto; max-width: 1400px;
       margin: 0 auto;
       z-index: 200;
-      /* Only animate visual properties — never top/height as they cause layout recalc & scroll glitch */
-      transition: background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+      transition: background 0.05s ease, box-shadow 0.05s ease, border-color 0.05s ease;
       background: transparent;
       backdrop-filter: none;
       border: 2px solid transparent;
       border-radius: 16px;
       box-shadow: none;
-      /* Promote to own compositing layer to prevent scroll repaint bleed */
       will-change: background, box-shadow;
       transform: translateZ(0);
       backface-visibility: hidden;
@@ -496,35 +476,41 @@ import { trigger, transition, style, animate } from '@angular/animations';
         display: flex; align-items: center;
         justify-content: space-between;
         height: 68px; padding: 0 1.5rem;
-        /* No height transition — height changes cause layout reflow mid-scroll */
+
+        @media (max-width: 900px)  { height: 55px; padding: 0 1.25rem; }
+        @media (max-width: 600px)  { height: 50px; padding: 0 1rem; }
+        @media (max-width: 500px)  { height: 46px; padding: 0 0.75rem; }
+        @media (max-width: 360px)  { height: 42px; padding: 0 0.625rem; }
       }
 
       &.scrolled {
-        /* top stays the same — no position animation */
         background: rgba(245,240,232,0.96);
         backdrop-filter: blur(24px);
         -webkit-backdrop-filter: blur(24px);
         border: 2px solid #C9A84C;
         box-shadow: 0 8px 32px rgba(26,26,26,0.13), 0 1px 0 rgba(255,255,255,0.45) inset;
-
-        /* height stays 68px — no shrink on scroll to prevent layout shift */
       }
 
-      @media (max-width: 768px) {
-        top: 10px; left: 12px; right: 12px; border-radius: 12px;
-      }
+      /* 900px se neeche top 40px, side margins kam */
+      @media (max-width: 900px)  { top: 10px; left: 12px; right: 12px; border-radius: 12px; }
+      @media (max-width: 480px)  { top: 8px;  left: 8px;  right: 8px;  border-radius: 10px; }
+      @media (max-width: 360px)  { top: 6px;  left: 6px;  right: 6px;  border-radius: 8px; }
     }
 
     /* ── LOGO ────────────────────────────────────────────── */
     .navbar__logo { display: flex; align-items: center; text-decoration: none; }
     .logo-wrap    { display: flex; align-items: center; }
     .logo-svg {
-      width: 210px; height: 52px;
+      width: 190px; height: 48px;
       text { fill: #fff; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4)); }
 
-      @media (max-width: 400px) {
-        width: 160px; height: 40px;
-      }
+      @media (max-width: 900px)  { width: 155px; height: 38px; }
+      @media (max-width: 600px)  { width: 140px; height: 35px; }
+      @media (max-width: 500px)  { width: 155px; height: 38px; }
+      @media (max-width: 430px)  { width: 148px; height: 37px; }
+      @media (max-width: 380px)  { width: 140px; height: 35px; }
+      @media (max-width: 340px)  { width: 130px; height: 33px; }
+      @media (max-width: 300px)  { width: 118px; height: 30px; }
     }
     .navbar.scrolled .logo-svg text { fill: #1A1A1A; filter: none; }
 
@@ -533,6 +519,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
       .nav-list {
         display: flex; align-items: center; gap: 0.25rem;
         list-style: none; padding: 0; margin: 0;
+        @media (max-width: 1100px) and (min-width: 901px) { gap: 0; }
         @media (max-width: 900px) { display: none; }
       }
     }
@@ -551,6 +538,21 @@ import { trigger, transition, style, animate } from '@angular/animations';
       border-radius: 8px;
       position: relative;
       transition: color 0.2s ease, background 0.2s ease;
+      white-space: nowrap;
+
+      /* 100px – 900px: font size kam karo taake sab ek line mein aaye */
+      @media (max-width: 900px) and (min-width: 100px) {
+        font-size: 0.62rem;
+        letter-spacing: 0.06em;
+        padding: 0.4rem 0.4rem;
+        gap: 2px;
+      }
+
+      @media (max-width: 1100px) and (min-width: 901px) {
+        font-size: 0.72rem;
+        letter-spacing: 0.1em;
+        padding: 0.5rem 0.5rem;
+      }
 
       &:hover { color: #C9A84C; text-shadow: none; background: rgba(255,255,255,0.08); }
       &.active { color: #C9A84C; text-shadow: none; }
@@ -784,23 +786,34 @@ import { trigger, transition, style, animate } from '@angular/animations';
     /* ── ACTIONS ─────────────────────────────────────────── */
     .navbar__actions {
       display: flex; align-items: center; gap: 2px; flex-shrink: 0;
+      align-self: center;
 
-      @media (max-width: 400px) {
-        gap: 0;
-        .action-btn { width: 36px; height: 36px; }
-      }
+      @media (max-width: 500px) { gap: 3px; }
+      @media (max-width: 360px) { gap: 2px; }
     }
 
     .action-btn {
       position: relative;
       display: flex; align-items: center; justify-content: center;
-      width: 44px; height: 44px;
+      width: 40px; height: 40px;
       background: none; border: none; cursor: pointer;
       color: #fff;
       filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
       border-radius: 50%;
       transition: all 0.2s ease;
       text-decoration: none; flex-shrink: 0;
+      box-sizing: border-box;
+
+      @media (max-width: 900px) { width: 36px; height: 36px; }
+
+      @media (max-width: 500px) {
+        width: 32px; height: 32px;
+        svg { width: 16px !important; height: 16px !important; }
+      }
+      @media (max-width: 360px) {
+        width: 28px; height: 28px;
+        svg { width: 14px !important; height: 14px !important; }
+      }
 
       &:hover { color: #C9A84C; filter: none; background: rgba(201,168,76,0.12); }
     }
@@ -844,21 +857,40 @@ import { trigger, transition, style, animate } from '@angular/animations';
 
     /* ── LOGIN BTN ───────────────────────────────────────── */
     .login-btn {
-      display: flex; align-items: center; gap: 0.35rem;
+      display: flex; align-items: center; justify-content: center; gap: 0.35rem;
       border: 1.5px solid rgba(255,255,255,0.6) !important;
       border-radius: 20px !important;
       padding: 0.35rem 0.9rem !important;
       font-size: 0.68rem !important; font-weight: 700 !important;
       letter-spacing: 0.1em !important; text-transform: uppercase !important;
-      white-space: nowrap !important; width: auto !important; height: auto !important;
+      white-space: nowrap !important; width: auto !important;
+      height: 36px !important; box-sizing: border-box;
       color: #fff !important;
-      filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4));
+      filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4)); flex-shrink: 0;
 
       &:hover {
         background: rgba(201,168,76,0.15) !important;
         border-color: #C9A84C !important;
         color: #C9A84C !important;
         filter: none;
+      }
+
+      @media (max-width: 900px) { height: 30px !important; }
+
+      /* 500px se neeche: sirf icon, circle shape, same height as action-btn */
+      @media (max-width: 500px) {
+        padding: 0 !important;
+        border-radius: 50% !important;
+        gap: 0 !important;
+        width: 32px !important;
+        height: 32px !important;
+        min-width: unset !important;
+        min-height: unset !important;
+      }
+
+      @media (max-width: 360px) {
+        width: 28px !important;
+        height: 28px !important;
       }
     }
 
@@ -876,6 +908,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
       font-size: 0.68rem; font-weight: 700;
       letter-spacing: 0.1em; text-transform: uppercase;
       white-space: nowrap; line-height: 1;
+      @media (max-width: 500px) { display: none; }
     }
 
     /* ── USER DROPDOWN ───────────────────────────────────── */
@@ -975,7 +1008,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
     .mobile-overlay {
       position: fixed; inset: 0;
       background: rgba(26,26,26,0.55);
-      backdrop-filter: blur(4px); z-index: 150;
+      backdrop-filter: blur(4px); z-index: 201;
     }
 
     /* ── MOBILE DRAWER ───────────────────────────────────── */
@@ -983,7 +1016,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
       position: fixed; top: 0; left: 0; bottom: 0;
       width: min(320px, 85vw);
       background: #fff;
-      z-index: 160;
+      z-index: 202;
       display: flex; flex-direction: column;
       padding: 1.5rem; overflow-y: auto;
 
@@ -1082,6 +1115,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 
     /* ── RESPONSIVE ──────────────────────────────────────── */
     @media (min-width: 901px) { .hide-desktop { display: none !important; } }
+    @media (max-width: 900px) { .hide-desktop { display: flex !important; } }
     @media (max-width: 768px) { .hide-mobile  { display: none !important; } }
   `]
 })
@@ -1116,8 +1150,7 @@ export class NavbarComponent implements OnInit {
   checkScroll() {
     if (!this._ticking) {
       requestAnimationFrame(() => {
-        // 80px threshold prevents flicker near the top of the page
-        this.isScrolled.set(window.scrollY > 80);
+        this.isScrolled.set(window.scrollY > 0);
         this._ticking = false;
       });
       this._ticking = true;

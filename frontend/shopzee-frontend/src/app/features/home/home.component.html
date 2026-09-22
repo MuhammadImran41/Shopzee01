@@ -27,18 +27,9 @@
           <em class="hero__title-em">Elegance</em>
         </h1>
 
-        <!-- Gold Ornament -->
-        <div class="hero__ornament animate-fade-in-up" style="animation-delay:0.35s">
-          <span class="hero__ornament-line"></span>
-          <svg viewBox="0 0 20 20" class="hero__ornament-diamond" aria-hidden="true">
-            <path d="M10 1l3 9h6l-5 4 2 6-6-4-6 4 2-6-5-4h6z" fill="#C9A84C"/>
-          </svg>
-          <span class="hero__ornament-line"></span>
-        </div>
-
         <!-- Subtitle -->
         <p class="hero__subtitle animate-fade-in-up" style="animation-delay:0.45s">
-          Premium Pakistani fashion — handcrafted luxury<br/>
+          Premium Pakistani fashion, handcrafted luxury<br/>
           for the modern wardrobe
         </p>
 
@@ -58,12 +49,6 @@
       </div>
 
     </div>
-  </div>
-
-  <!-- Scroll Indicator -->
-  <div class="hero__scroll" aria-hidden="true">
-    <span class="hero__scroll-text">Scroll</span>
-    <div class="hero__scroll-line"></div>
   </div>
 
 </section>
@@ -107,47 +92,49 @@
 </section>
 
 <!-- ============================================================ -->
+<!-- WOMEN'S IMAGE SECTION -->
+<!-- ============================================================ -->
+<section class="women-video-section" aria-labelledby="women-video-heading">
+  <div class="men-video-inner">
+    <div class="men-video-wrap reveal-left">
+      <img
+        src="assets/images/women/women-3.png"
+        alt="Women's collection"
+        class="men-video"
+        loading="lazy"
+        decoding="async"
+      />
+      <div class="men-video-overlay"></div>
+    </div>
+    <div class="men-video-content reveal-right">
+      <span class="section-label">Women's Collection</span>
+      <h2 class="men-video-title" id="women-video-heading">
+        Her Story<br/>Begins Here
+      </h2>
+      <p class="men-video-desc">
+        Exquisite embroidered suits and bridal luxury, crafted for the modern woman.
+        From festive formals to timeless classics.
+      </p>
+      <ul class="men-features">
+        <li><app-icon name="check" [size]="16" class="check-icon"/> Luxury Embroidery</li>
+        <li><app-icon name="check" [size]="16" class="check-icon"/> Bridal Collections</li>
+        <li><app-icon name="check" [size]="16" class="check-icon"/> Premium Fabrics</li>
+      </ul>
+      <a routerLink="/women" class="btn btn-primary">Shop Women's Collection</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
 <!-- WOMEN'S COLLECTION SECTION -->
 <!-- ============================================================ -->
 <section class="collection-section section" aria-labelledby="women-heading">
   <div class="container">
-    <!-- Women's Banner — 4 image mosaic -->
-    <div class="collection-mosaic collection-mosaic--women reveal">
-      <div class="mosaic-main">
-        <img
-          src="assets/images/women/women-3.png"
-          alt="Ivory gold bridal luxury"
-          loading="lazy"
-          decoding="async"
-          class="mosaic-img"
-        />
-      </div>
-      <div class="mosaic-side">
-        <div class="mosaic-cell">
-          <img src="assets/images/women/women-1.png" alt="Sage embroidered suit" loading="lazy" decoding="async" class="mosaic-img"/>
-        </div>
-        <div class="mosaic-cell">
-          <img src="assets/images/women/women-5.png" alt="Cream pearl suit" loading="lazy" decoding="async" class="mosaic-img"/>
-        </div>
-        <div class="mosaic-cell">
-          <img src="assets/images/women/women-6.png" alt="Rose gold gown" loading="lazy" decoding="async" class="mosaic-img"/>
-        </div>
-      </div>
-      <div class="mosaic-overlay">
-        <span class="collection-banner__label">Women's Collection</span>
-        <h2 class="collection-banner__title" id="women-heading">Her Story<br/>Begins Here</h2>
-        <a routerLink="/women" class="btn btn-outline">Explore Collection</a>
-      </div>
-    </div>
-
     <!-- Section Header -->
-    <div class="section-header reveal" style="margin-top:4rem">
+    <div class="section-header reveal">
       <span class="section-label">Featured</span>
-      <h2 class="section-title">Women's Picks</h2>
-      <div class="gold-divider">
-        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z" fill="#C9A84C"/></svg>
-      </div>
-      <p class="section-desc">Curated elegance — from festive suits to bridal luxury</p>
+      <h2 class="section-title" id="women-heading">Women's Picks</h2>
+      <p class="section-desc">Curated elegance, from festive suits to bridal luxury</p>
     </div>
 
     <!-- Products Grid -->
