@@ -1,9 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- S -->
-  <path d="M14 20 C14 16, 16 14, 20 14 L24 14 C28 14, 30 16, 30 20 C30 22, 28 23, 26 23.5 C28 24, 30 25, 30 28 C30 32, 28 34, 24 34 L20 34 C16 34, 14 32, 14 28" 
-        fill="none" stroke="#C9A84C" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Background circle for better visibility -->
+  <circle cx="32" cy="32" r="30" fill="#C9A84C"/>
   
-  <!-- M -->
-  <path d="M36 34 L36 14 L43 26 L50 14 L50 34" 
-        fill="none" stroke="#C9A84C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- S letter - Bold and centered -->
+  <path d="M18 24 C18 20, 20 18, 24 18 L28 18 C32 18, 34 20, 34 24 C34 26.5, 32 27.5, 30 28 C32 28.5, 34 29.5, 34 32 C34 36, 32 38, 28 38 L24 38 C20 38, 18 36, 18 32" 
+        fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round"/>
+  
+  <!-- M letter - Bold and centered -->
+  <path d="M40 38 L40 18 L46 32 L52 18 L52 38" 
+        fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
