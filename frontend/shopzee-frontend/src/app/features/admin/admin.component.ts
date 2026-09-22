@@ -771,6 +771,11 @@ export class AdminComponent implements OnInit, OnDestroy {
   unreadCount = () => this.notifications().filter(n => !n.read).length;
 
   ngOnInit() {
+    // Mobile: sidebar collapsed by default (off-canvas drawer)
+    if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+      this.sidebarCollapsed.set(true);
+    }
+    
     // Simulate real-time notifications
     this.notifTimer = setInterval(() => {
       const newNotif: Notification = {
