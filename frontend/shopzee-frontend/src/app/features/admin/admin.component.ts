@@ -149,16 +149,16 @@ interface Notification {
       background:var(--cream);
       
       /* Mobile: Stack layout */
-      @media (max-width: 768px) {
+      @media (max-width: 900px) {
         position: relative;
       }
     }
     
     /* ============================================================ */
     /* SIDEBAR — RESPONSIVE BEHAVIOR */
-    /* Desktop: Full sidebar always visible (240px) */
-    /* Tablet (769-1024px): Collapsible (72px) */
-    /* Mobile (<768px): Off-canvas drawer from left */
+    /* Desktop: Full sidebar always visible (240px) - Above 900px */
+    /* Tablet (769-900px): Off-canvas drawer */
+    /* Mobile (<769px): Off-canvas drawer from left */
     /* ============================================================ */
     .admin-sidebar {
       width:240px;
@@ -170,17 +170,17 @@ interface Notification {
       overflow:hidden;
       z-index: 100;
       
-      /* Collapsed state — desktop/tablet */
+      /* Collapsed state — desktop only (above 900px) */
       .admin-shell.collapsed & {
         width:72px;
         
-        @media (max-width: 768px) {
-          width: 240px; /* On mobile, drawer is always full width when open */
+        @media (max-width: 900px) {
+          width: 240px; /* On mobile/tablet, drawer is always full width when open */
         }
       }
       
-      /* Mobile: Off-canvas drawer */
-      @media (max-width: 768px) {
+      /* Mobile & Tablet: Off-canvas drawer */
+      @media (max-width: 900px) {
         position: fixed;
         left: 0;
         top: 0;
@@ -327,8 +327,8 @@ interface Notification {
       }
     }
     
-    /* Mobile overlay when sidebar is open */
-    @media (max-width: 768px) {
+    /* Mobile & Tablet overlay when sidebar is open */
+    @media (max-width: 900px) {
       .admin-shell:not(.collapsed)::before {
         content: '';
         position: fixed;
@@ -349,7 +349,7 @@ interface Notification {
       overflow:hidden;
       min-width: 0; /* Prevent overflow */
       
-      @media (max-width: 768px) {
+      @media (max-width: 900px) {
         width: 100%;
       }
     }
@@ -368,9 +368,10 @@ interface Notification {
       flex-shrink:0;
       gap: 1rem;
       
-      @media (max-width: 768px) {
+      @media (max-width: 900px) {
         padding: 0 1rem;
         height: 56px;
+        gap: 0.75rem;
       }
       
       @media (max-width: 480px) {
