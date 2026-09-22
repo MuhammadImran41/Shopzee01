@@ -145,7 +145,7 @@
             <span class="card-badge badge-new">New</span>
           }
           @if (product.discount) {
-            <span class="card-badge badge-sale" style="top:2.5rem">-{{ product.discount }}%</span>
+            <span class="card-badge badge-sale">-{{ product.discount }}%</span>
           }
           @if (product.isInStock === false) {
             <span class="card-badge badge-stockout">Out of Stock</span>

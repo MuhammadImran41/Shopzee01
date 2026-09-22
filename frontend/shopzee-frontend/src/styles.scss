@@ -952,6 +952,42 @@ video {
 }
 
 // ============================================================
+// ADMIN PANEL GLOBAL RESPONSIVE STYLES
+// ============================================================
+@import './app/features/admin/admin-responsive.scss';
+
+// ============================================================
+// NAVBAR DARK MODE — product detail page
+// ============================================================
+body.navbar-dark-mode .navbar {
+  background: rgba(245,240,232,0.97) !important;
+  backdrop-filter: blur(24px) !important;
+  border: 2px solid #C9A84C !important;
+  box-shadow: 0 8px 32px rgba(26,26,26,0.13) !important;
+}
+
+body.navbar-dark-mode .navbar .nav-link {
+  color: #1A1A1A !important;
+  text-shadow: none !important;
+}
+
+body.navbar-dark-mode .navbar .action-btn {
+  color: #1A1A1A !important;
+  filter: none !important;
+}
+
+body.navbar-dark-mode .navbar .logo-svg text {
+  fill: #1A1A1A !important;
+  filter: none !important;
+}
+
+body.navbar-dark-mode .navbar .login-btn {
+  border-color: rgba(201,168,76,0.4) !important;
+  color: #1A1A1A !important;
+  filter: none !important;
+}
+
+// ============================================================
 // FONT PERFORMANCE
 // ============================================================
 h1, h2, h3, h4, h5, h6,

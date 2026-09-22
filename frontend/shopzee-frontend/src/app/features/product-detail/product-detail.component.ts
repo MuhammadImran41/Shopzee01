@@ -1,5 +1,5 @@
-import { Component, inject, signal, OnInit, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, signal, OnInit, OnDestroy, computed, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart.service';
@@ -399,12 +399,13 @@ import { Product } from '../../core/models/product.model';
     }
   `]
 })
-export class ProductDetailComponent implements OnInit {
+export class ProductDetailComponent implements OnInit, OnDestroy {
   private productService  = inject(ProductService);
   cartService    = inject(CartService);
   wishlistService= inject(WishlistService);
   private toast  = inject(ToastService);
   private route  = inject(ActivatedRoute);
+  private platformId = inject(PLATFORM_ID);
 
   product      = signal<Product | undefined>(undefined);
   activeImage  = signal(0);
@@ -424,6 +425,9 @@ export class ProductDetailComponent implements OnInit {
   });
 
   ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      document.body.classList.add('navbar-dark-mode');
+    }
     this.route.params.subscribe(params => {
       const id = +params['id'];
       // Try API first, fallback to mock
@@ -451,6 +455,12 @@ export class ProductDetailComponent implements OnInit {
 
   incQty() { this.qty.update(q => q + 1); }
   decQty() { this.qty.update(q => Math.max(1, q - 1)); }
+
+  ngOnDestroy() {
+    if (isPlatformBrowser(this.platformId)) {
+      document.body.classList.remove('navbar-dark-mode');
+    }
+  }
 
   addToCart() {
     const p = this.product();
