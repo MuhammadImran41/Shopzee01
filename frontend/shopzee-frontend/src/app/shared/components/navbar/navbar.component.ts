@@ -40,10 +40,14 @@ import { trigger, transition, style, animate } from '@angular/animations';
     ]),
     trigger('searchAnim', [
       transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(-10px)' }),
-        animate('300ms ease', style({ opacity: 1, transform: 'translateY(0)' }))
+        style({ opacity: 0, transform: 'translateY(-20px) scale(0.95)' }),
+        animate('350ms cubic-bezier(0.34, 1.56, 0.64, 1)', 
+          style({ opacity: 1, transform: 'translateY(0) scale(1)' }))
       ]),
-      transition(':leave', [animate('200ms ease', style({ opacity: 0, transform: 'translateY(-10px)' }))])
+      transition(':leave', [
+        animate('250ms cubic-bezier(0.4, 0, 1, 1)', 
+          style({ opacity: 0, transform: 'translateY(-20px) scale(0.95)' }))
+      ])
     ])
   ],
   template: `
@@ -843,24 +847,118 @@ import { trigger, transition, style, animate } from '@angular/animations';
     /* ── SEARCH BAR ──────────────────────────────────────── */
     .search-bar {
       position: fixed;
-      /* 16px navbar-top + 68px navbar height + 4px = 88px */
-      top: 88px; left: 24px; right: 24px;
-      max-width: 1400px; margin: 0 auto;
-      background: rgba(245,240,232,0.98);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(201,168,76,0.25);
-      border-radius: 12px;
-      box-shadow: 0 8px 32px rgba(26,26,26,0.12);
-      padding: 1rem 1.5rem;
+      top: 94px;
+      left: 24px;
+      right: 24px;
+      max-width: 1400px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 2px solid rgba(201,168,76,0.3);
+      border-radius: 16px;
+      box-shadow: 
+        0 12px 48px rgba(26,26,26,0.15),
+        0 4px 12px rgba(201,168,76,0.1),
+        0 1px 0 rgba(255,255,255,0.8) inset;
+      padding: 1.25rem 2rem;
       z-index: 198;
+      transition: all 0.3s ease;
+      
+      @media (max-width: 900px) {
+        top: 75px;
+        left: 12px;
+        right: 12px;
+        padding: 1rem 1.5rem;
+        border-radius: 14px;
+      }
+      
+      @media (max-width: 600px) {
+        top: 68px;
+        padding: 0.875rem 1.25rem;
+        border-radius: 12px;
+      }
+      
+      @media (max-width: 480px) {
+        top: 62px;
+        left: 8px;
+        right: 8px;
+        padding: 0.75rem 1rem;
+        border-radius: 10px;
+      }
+      
+      &:hover {
+        border-color: rgba(201,168,76,0.5);
+        box-shadow: 
+          0 16px 56px rgba(26,26,26,0.18),
+          0 6px 16px rgba(201,168,76,0.15),
+          0 1px 0 rgba(255,255,255,0.9) inset;
+      }
 
-      .search-inner { display: flex; align-items: center; gap: 0.75rem; }
-      .search-icon  { color: #aaa; flex-shrink: 0; }
+      .search-inner { 
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        
+        @media (max-width: 600px) { gap: 0.75rem; }
+        @media (max-width: 480px) { gap: 0.5rem; }
+      }
+      
+      .search-icon  { 
+        color: #C9A84C;
+        flex-shrink: 0;
+        transition: transform 0.2s ease;
+        
+        @media (max-width: 480px) {
+          app-icon { width: 18px; height: 18px; }
+        }
+      }
+      
       .search-input {
-        flex: 1; background: none; border: none;
-        font-size: 1.125rem; font-family: var(--font-heading);
-        color: #1A1A1A; outline: none;
-        &::placeholder { color: #bbb; }
+        flex: 1;
+        background: none;
+        border: none;
+        font-size: 1.125rem;
+        font-family: var(--font-heading);
+        font-weight: 400;
+        color: #1A1A1A;
+        outline: none;
+        letter-spacing: 0.01em;
+        
+        @media (max-width: 768px) { font-size: 1rem; }
+        @media (max-width: 480px) { font-size: 0.9375rem; }
+        
+        &::placeholder { 
+          color: #999;
+          font-weight: 300;
+        }
+        
+        &:focus {
+          + .action-btn {
+            transform: scale(1.05);
+          }
+        }
+      }
+      
+      .action-btn {
+        flex-shrink: 0;
+        transition: all 0.2s ease;
+        color: #666;
+        
+        &:hover {
+          color: #C9A84C;
+          background: rgba(201,168,76,0.08);
+          transform: scale(1.1);
+        }
+        
+        &:active {
+          transform: scale(0.95);
+        }
+        
+        @media (max-width: 480px) {
+          padding: 0.5rem;
+          app-icon { width: 18px; height: 18px; }
+        }
       }
     }
 
